@@ -15,5 +15,14 @@ Description: This package provides an ergonomic interface for accessing the
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
-URL: https://github.com/viralemergence/virionData
+URL: https://github.com/viralemergence/virionData, https://viralemergence.github.io/virionData/
 BugReports: https://github.com/viralemergence/virionData/issues
+Suggests: 
+    httptest,
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Imports: 
+    jsonlite
+VignetteBuilder: knitr
