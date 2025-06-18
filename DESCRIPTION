@@ -1,16 +1,17 @@
 Package: virionData
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Access Versioned VIRION Data
 Version: 0.1.0.9000
 Authors@R: c(
     person(
-      "Jane", "Doe",
-      email = "jane@example.com",
-      role = c("aut", "cre")
+      "Collin", "Schwantes",
+      email = "collin@viralemergence.org",
+      role = c("aut", "cre"),
+      comment = c(ORCID = "0000-0002-9882-941X")
     )
   )
-Description: More about what it does (maybe more than one line).
-    Continuation lines should be indented.
+Description: This package provides an ergonomic interface for accessing the 
+    VIRION dataset (https://doi.org/10.5281/zenodo.15643003). 
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
