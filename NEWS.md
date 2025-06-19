@@ -1,4 +1,3 @@
 # virionData (development version)
 
-* adding initial functionality
- 
+* Initial development.
