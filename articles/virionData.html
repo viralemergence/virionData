@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">virionData</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,8 +61,528 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/viralemergence/virionData" class="external-link">virionData</a></span><span class="op">)</span></span></code></pre></div>
-  </main>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/viralemergence/virionData" class="external-link">virionData</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/frictionlessdata/frictionless-r" class="external-link">frictionless</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://haozhu233.github.io/kableExtra/" class="external-link">kableExtra</a></span><span class="op">)</span></span></code></pre></div>
+<div class="section level2">
+<h2 id="check-available-versions-of-the-dataset">Check available versions of the dataset<a class="anchor" aria-label="anchor" href="#check-available-versions-of-the-dataset"></a>
+</h2>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span> <span class="fu"><a href="../reference/list_deposit_versions.html">list_deposit_versions</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/deposit_summary.html">deposit_summary</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         id latest_version publication_date</span></span>
+<span><span class="co">#&gt; 1 15692263           TRUE       2025-06-18</span></span>
+<span><span class="co">#&gt; 2 15677843          FALSE       2025-06-16</span></span>
+<span><span class="co">#&gt; 3 15677137          FALSE       2025-06-16</span></span>
+<span><span class="co">#&gt; 4 15643004          FALSE       2025-06-11</span></span>
+<span><span class="co">#&gt;                                   doi_url</span></span>
+<span><span class="co">#&gt; 1 https://doi.org/10.5281/zenodo.15692263</span></span>
+<span><span class="co">#&gt; 2 https://doi.org/10.5281/zenodo.15677843</span></span>
+<span><span class="co">#&gt; 3 https://doi.org/10.5281/zenodo.15677137</span></span>
+<span><span class="co">#&gt; 4 https://doi.org/10.5281/zenodo.15643004</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="get-latest-version-of-the-data">Get latest version of the data<a class="anchor" aria-label="anchor" href="#get-latest-version-of-the-data"></a>
+</h2>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># get data</span></span>
+<span><span class="fu"><a href="../reference/get_versioned_data.html">get_versioned_data</a></span><span class="op">(</span>dir_path <span class="op">=</span> <span class="st">"outputs"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Cole Brookson, Collin Schwantes, Timothée Poisot, Tad Dallas, Greg Albery, Colin J. Carlson, Cecilia A. Sanchez, Renata Muylaert, Evan Eskew, Rory Gibb, &amp; Maxwell J Farrell. (2025). The Global Virome in One Network (VIRION): Data Package [Data set]. Zenodo. https://doi.org/10.5281/zenodo.15692263</span></span>
+<span><span class="co">#&gt; deposit will download to outputs/15692263</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">outputs/15692263</span></span></span>
+<span><span class="co"># list files</span></span>
+<span><span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/dir_ls.html" class="external-link">dir_ls</a></span><span class="op">(</span><span class="st">"outputs/15692263"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; outputs/15692263/datapackage.json   <span style="color: #BB0000; font-weight: bold;">outputs/15692263/detection.csv.gz</span>   </span></span>
+<span><span class="co">#&gt; outputs/15692263/edgelist.csv       <span style="color: #BB0000; font-weight: bold;">outputs/15692263/provenance.csv.gz</span>  </span></span>
+<span><span class="co">#&gt; outputs/15692263/taxonomy_host.csv  outputs/15692263/taxonomy_virus.csv </span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000; font-weight: bold;">outputs/15692263/temporal.csv.gz</span>    <span style="color: #BB0000; font-weight: bold;">outputs/15692263/virion.csv.gz</span></span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="read-the-data">Read the data<a class="anchor" aria-label="anchor" href="#read-the-data"></a>
+</h2>
+<p>Now that you have the data locally, you can read it! The virion files
+are comma delimited with period decimal markers.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="va">virion</span> <span class="op">&lt;-</span> <span class="fu">vroom</span><span class="fu">::</span><span class="fu"><a href="https://vroom.r-lib.org/reference/vroom.html" class="external-link">vroom</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"outputs/15692263/virion.csv.gz"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="what-do-the-fields-mean">What do the fields mean?<a class="anchor" aria-label="anchor" href="#what-do-the-fields-mean"></a>
+</h2>
+<p>Great question! The datapackage.json file contains field
+descriptions. It is fairly human readable but we can take a closer look
+using the frictionless package.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># this function wraps frictionless functions and extracts </span></span>
+<span><span class="va">dict_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_data_dictionary.html">get_data_dictionary</a></span><span class="op">(</span>datapackage_json <span class="op">=</span> <span class="st">"outputs/15692263/datapackage.json"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">dict_list</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_classic.html" class="external-link">kable_paper</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $detection_csv</span></span>
+<span><span class="co">#&gt; &lt;table class=" lightable-paper" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;'&gt;</span></span>
+<span><span class="co">#&gt;  &lt;thead&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;th style="text-align:left;"&gt; name &lt;/th&gt;</span></span>
+<span><span class="co">#&gt;    &lt;th style="text-align:left;"&gt; type &lt;/th&gt;</span></span>
+<span><span class="co">#&gt;    &lt;th style="text-align:left;"&gt; description &lt;/th&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;  &lt;/thead&gt;</span></span>
+<span><span class="co">#&gt; &lt;tbody&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; AssocID &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; number &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Row number from current VIRION version &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; DetectionMethod &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Four harmonized categories in descending order of strength of evidence: “Isolation/Observation,” “PCR/Sequencing,” “Antibodies,” and “Not specified”. In some cases where detection method is not available via metadata, source information is used as DetectionOriginal (e.g., “NCBI Nucleotide”). &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; DetectionOriginal &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Method used for determing the presence of a virus as described in the original work &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; HostFlagID &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; boolean &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Denotes the presence of possible uncertainty in host identification, which users may want to check before proceeding any further. &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; NCBIAccession &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; A unique identifier assigned to a record in sequence databases such as GenBank &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt; &lt;/tbody&gt;</span></span>
+<span><span class="co">#&gt; &lt;/table&gt;</span></span>
+<span><span class="co">#&gt; $edgelist</span></span>
+<span><span class="co">#&gt; &lt;table class=" lightable-paper" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;'&gt;</span></span>
+<span><span class="co">#&gt;  &lt;thead&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;th style="text-align:left;"&gt; name &lt;/th&gt;</span></span>
+<span><span class="co">#&gt;    &lt;th style="text-align:left;"&gt; type &lt;/th&gt;</span></span>
+<span><span class="co">#&gt;    &lt;th style="text-align:left;"&gt; description &lt;/th&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;  &lt;/thead&gt;</span></span>
+<span><span class="co">#&gt; &lt;tbody&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; HostTaxID &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; number &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Taxonomic identification number from NCBI for host taxa. &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; VirusTaxID &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; number &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Taxonomic identification number from NCBI for virus taxa. &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; AssocID &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Row number from current VIRION version &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt; &lt;/tbody&gt;</span></span>
+<span><span class="co">#&gt; &lt;/table&gt;</span></span>
+<span><span class="co">#&gt; $provenance_csv</span></span>
+<span><span class="co">#&gt; &lt;table class=" lightable-paper" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;'&gt;</span></span>
+<span><span class="co">#&gt;  &lt;thead&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;th style="text-align:left;"&gt; name &lt;/th&gt;</span></span>
+<span><span class="co">#&gt;    &lt;th style="text-align:left;"&gt; type &lt;/th&gt;</span></span>
+<span><span class="co">#&gt;    &lt;th style="text-align:left;"&gt; description &lt;/th&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;  &lt;/thead&gt;</span></span>
+<span><span class="co">#&gt; &lt;tbody&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; AssocID &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; number &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Row number from current VIRION version &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; HostOriginal &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Host name from original dataset &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; VirusOriginal &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Virus name from original dataset &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Database &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Source for the record. One of EID2, Shaw, HP3, GMPD2, PREDICT, OR GenBank &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; DatabaseVersion &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; For static data, a citation. For dynamic data (e.g. Genbank) the access URL and a time stamp &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; ReferenceText &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; A text description of literature sources &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; PMID &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; number &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; PubMed identifiers for literature sources &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt; &lt;/tbody&gt;</span></span>
+<span><span class="co">#&gt; &lt;/table&gt;</span></span>
+<span><span class="co">#&gt; $taxonomy_host</span></span>
+<span><span class="co">#&gt; &lt;table class=" lightable-paper" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;'&gt;</span></span>
+<span><span class="co">#&gt;  &lt;thead&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;th style="text-align:left;"&gt; name &lt;/th&gt;</span></span>
+<span><span class="co">#&gt;    &lt;th style="text-align:left;"&gt; type &lt;/th&gt;</span></span>
+<span><span class="co">#&gt;    &lt;th style="text-align:left;"&gt; description &lt;/th&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;  &lt;/thead&gt;</span></span>
+<span><span class="co">#&gt; &lt;tbody&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; HostTaxID &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; number &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Taxonomic identification number from NCBI for host taxa. &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Host &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Host species name &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; HostGenus &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Host genus name &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; HostFamily &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Host family name &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; HostOrder &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Host order name &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; HostClass &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Host class name &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; HostNCBIResolved &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; boolean &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Indicates whether or not the host taxa could harmonized with the NCBI taxonomy. &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt; &lt;/tbody&gt;</span></span>
+<span><span class="co">#&gt; &lt;/table&gt;</span></span>
+<span><span class="co">#&gt; $taxonomy_virus</span></span>
+<span><span class="co">#&gt; &lt;table class=" lightable-paper" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;'&gt;</span></span>
+<span><span class="co">#&gt;  &lt;thead&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;th style="text-align:left;"&gt; name &lt;/th&gt;</span></span>
+<span><span class="co">#&gt;    &lt;th style="text-align:left;"&gt; type &lt;/th&gt;</span></span>
+<span><span class="co">#&gt;    &lt;th style="text-align:left;"&gt; description &lt;/th&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;  &lt;/thead&gt;</span></span>
+<span><span class="co">#&gt; &lt;tbody&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; VirusTaxID &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; number &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Taxonomic identification number from NCBI for virus taxa. &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Virus &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Virus species name &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; VirusGenus &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Virus genus name &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; VirusFamily &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Virus family name &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; VirusOrder &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Virus order name &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; VirusClass &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Virus class name &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; VirusNCBIResolved &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; boolean &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Indicates whether or not the virus taxa could harmonized with the NCBI taxonomy. &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; ICTVRatified &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; boolean &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Indicates whether or not the virus taxa is ratified by the nternational Committee on Taxonomy of Viruses (ICTV). &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Database &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Source for the record. One of EID2, Shaw, HP3, GMPD2, PREDICT, OR GenBank &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt; &lt;/tbody&gt;</span></span>
+<span><span class="co">#&gt; &lt;/table&gt;</span></span>
+<span><span class="co">#&gt; $temporal_csv</span></span>
+<span><span class="co">#&gt; &lt;table class=" lightable-paper" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;'&gt;</span></span>
+<span><span class="co">#&gt;  &lt;thead&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;th style="text-align:left;"&gt; name &lt;/th&gt;</span></span>
+<span><span class="co">#&gt;    &lt;th style="text-align:left;"&gt; type &lt;/th&gt;</span></span>
+<span><span class="co">#&gt;    &lt;th style="text-align:left;"&gt; description &lt;/th&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;  &lt;/thead&gt;</span></span>
+<span><span class="co">#&gt; &lt;tbody&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; AssocID &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; number &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Row number from current VIRION version &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; PublicationYear &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; number &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; For literature derived records. PublicationYear provides the year the literature source was published, accessed either from the original database’s reference description or from scraping the PubMed database. &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; ReleaseYear &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; number &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; The year a given association was “released” in public information (EID2 and PREDICT) or a publicly deposited sample on GenBank. For PREDICT, all values are given as 2021, given the release of a static file at that time even though some findings may have been published or deposited in GenBank earlier. (This redundancy should be captured in overlap with GenBank and EID2.) &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; ReleaseMonth &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; number &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; The month a given association was “released” to the public &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; ReleaseDay &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; number &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; The day a given association was “released” to the public &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; CollectionYear &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; number &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Reports the year of actual sample collection (GenBank and Predict) &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; CollectionMonth &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; number &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Reports the month of actual sample collection (GenBank and Predict) &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; CollectionDay &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; number &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Reports the day of actual sample collection (GenBank and Predict) &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt; &lt;/tbody&gt;</span></span>
+<span><span class="co">#&gt; &lt;/table&gt;</span></span>
+<span><span class="co">#&gt; $virion_csv</span></span>
+<span><span class="co">#&gt; &lt;table class=" lightable-paper" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;'&gt;</span></span>
+<span><span class="co">#&gt;  &lt;thead&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;th style="text-align:left;"&gt; name &lt;/th&gt;</span></span>
+<span><span class="co">#&gt;    &lt;th style="text-align:left;"&gt; type &lt;/th&gt;</span></span>
+<span><span class="co">#&gt;    &lt;th style="text-align:left;"&gt; description &lt;/th&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;  &lt;/thead&gt;</span></span>
+<span><span class="co">#&gt; &lt;tbody&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Host &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Host species name &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Virus &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Virus species name &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; HostTaxID &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; number &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Taxonomic identification number from NCBI for host taxa. &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; VirusTaxID &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; number &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Taxonomic identification number from NCBI for virus taxa. &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; HostNCBIResolved &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; boolean &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Indicates whether or not the host taxa could harmonized with the NCBI taxonomy. &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; VirusNCBIResolved &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; boolean &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Indicates whether or not the virus taxa could harmonized with the NCBI taxonomy. &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; ICTVRatified &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; boolean &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Indicates whether or not the virus taxa is ratified by the nternational Committee on Taxonomy of Viruses (ICTV). &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; HostGenus &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Host genus name &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; HostFamily &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Host family name &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; HostOrder &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Host order name &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; HostClass &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Host class name &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; HostOriginal &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Host name from original dataset &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; VirusGenus &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Virus genus name &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; VirusFamily &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Virus family name &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; VirusOrder &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Virus order name &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; VirusClass &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Virus class name &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; VirusOriginal &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Virus name from original dataset &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; HostFlagID &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; boolean &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Denotes the presence of possible uncertainty in host identification, which users may want to check before proceeding any further. &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; DetectionMethod &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Four harmonized categories in descending order of strength of evidence: “Isolation/Observation,” “PCR/Sequencing,” “Antibodies,” and “Not specified”. In some cases where detection method is not available via metadata, source information is used as DetectionOriginal (e.g., “NCBI Nucleotide”). &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; DetectionOriginal &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Method used for determing the presence of a virus as described in the original work &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Database &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Source for the record. One of EID2, Shaw, HP3, GMPD2, PREDICT, OR GenBank &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; DatabaseVersion &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; For static data, a citation. For dynamic data (e.g. Genbank) the access URL and a time stamp &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; PublicationYear &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; number &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; For literature derived records. PublicationYear provides the year the literature source was published, accessed either from the original database’s reference description or from scraping the PubMed database. &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; ReferenceText &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; A text description of literature sources &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; PMID &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; number &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; PubMed identifiers for literature sources &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; ReleaseYear &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; number &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; The year a given association was “released” in public information (EID2 and PREDICT) or a publicly deposited sample on GenBank. For PREDICT, all values are given as 2021, given the release of a static file at that time even though some findings may have been published or deposited in GenBank earlier. (This redundancy should be captured in overlap with GenBank and EID2.) &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; ReleaseMonth &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; number &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; The month a given association was “released” to the public &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; ReleaseDay &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; number &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; The day a given association was “released” to the public &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; CollectionYear &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; number &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Reports the year of actual sample collection (GenBank and Predict) &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; CollectionMonth &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; number &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Reports the month of actual sample collection (GenBank and Predict) &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; CollectionDay &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; number &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Reports the day of actual sample collection (GenBank and Predict) &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; AssocID &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; number &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Row number. Used as an id. Will be specific to a given version of the data &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; DatabaseDOI &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Persistent digital identifer for the database &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Release_Date &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; date &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Date data were released &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Collection_Date &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; Date of actual sample collection &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt;   &lt;tr&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; NCBIAccession &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; string &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;    &lt;td style="text-align:left;"&gt; A unique identifier assigned to a record in sequence databases such as GenBank &lt;/td&gt;</span></span>
+<span><span class="co">#&gt;   &lt;/tr&gt;</span></span>
+<span><span class="co">#&gt; &lt;/tbody&gt;</span></span>
+<span><span class="co">#&gt; &lt;/table&gt;</span></span></code></pre></div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
