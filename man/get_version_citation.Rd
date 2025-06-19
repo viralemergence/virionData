@@ -12,13 +12,14 @@ get_version_citation(
 )
 }
 \arguments{
-\item{zenodo_id}{Character. Version or Deposit ID from Zenodo}
+\item{zenodo_id}{String. ID for a Zenodo deposit. Should correspond to the version of a deposit.}
 
 \item{style}{Character. One of "havard-cite-them-right",
 "apa",
 "modern-language-association",
 "vancouver",
-"chicago-fullnote-bibliography", or}
+"chicago-fullnote-bibliography", or
+"ieee"}
 
 \item{verbose}{Logical. Print the citation?}
 }

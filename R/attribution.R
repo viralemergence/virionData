@@ -1,42 +1,62 @@
-#' Get bibtex for citaiton
+#' Export Deposit Metadata in various formats
 #'
-#' @param zenodo_id Character
-#' @param verbose Logical
+#'
+#' @param zenodo_id String. ID for a Zenodo deposit. Should correspond to the version of a deposit.
+#' @param format String. File format for export. One of "json", "json-ld","csl","datacite-json","datacite-xml",
+#' "dublincore","marcxml","bibtex","geojson","dcat-ap","codemeta", or "cff"
+#' @param verbose Logical. Print the formatted metadata?
+#'
+#' @returns Character. Returns text in selected format.
+#' @export
+#'
+#' @examples
+#'  \dontrun{
+#' export_deposit_metadata(zenodo_id = "15692263","json-ld" ) |>
+#'   writeLines(con = "outputs/citation.jsonld")
+#' }
+export_deposit_metadata <- function(zenodo_id = the$working_version, format, verbose = TRUE){
+  zenodo_id <- sanitize_version(zenodo_id)
+  export_url <- sprintf("https://zenodo.org/records/%s/export/%s",zenodo_id,format)
+  content <- httr::GET(export_url)
+  content_text <- httr::content(content,as = "text")
+
+  if(verbose){
+    cat(content_text)
+  }
+
+  invisible(content_text)
+}
+
+#' Get bibtex entry for a deposit.
+#'
+#' Bibtex specific wrapper for export_deposit_metadata
+#'
+#' @inheritParams export_deposit_metadata
 #'
 #' @returns Character. bibtex formatted entry
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' get_version_bibtex(zenodo_id ) |>
+#' export_deposit_bibtex(zenodo_id ) |>
 #'   writeLines(con = "outputs/citation.bib")
 #' }
-get_version_bibtex <- function(zenodo_id = the$working_version,verbose = TRUE){
+export_deposit_bibtex <- function(zenodo_id = the$working_version,verbose = TRUE){
 
-  zenodo_id <- sanitize_version(zenodo_id)
-
-  bibtex_url <- sprintf("https://zenodo.org/records/%s/export/bibtex",zenodo_id)
-
-  content <- httr::GET(bibtex_url)
-  bibtex_text <- httr::content(content,as = "text")
-
-  if(verbose){
-    cat(bibtex_text)
-  }
-
-  invisible(bibtex_text)
+  out <- export_deposit_metadata(zenodo_id = zenodo_id,format = "bibtex",verbose = verbose)
+  invisible(out)
 }
 
 
 #' Get Deposit Citation
 #'
-#' @param zenodo_id Character. Version or Deposit ID from Zenodo
+#' @param zenodo_id String. ID for a Zenodo deposit. Should correspond to the version of a deposit.
 #' @param style Character. One of "havard-cite-them-right",
 #' "apa",
 #' "modern-language-association",
 #' "vancouver",
 #' "chicago-fullnote-bibliography", or
-# '"ieee"
+#' "ieee"
 #' @param verbose Logical. Print the citation?
 #'
 #' @returns Character. Text for a citation

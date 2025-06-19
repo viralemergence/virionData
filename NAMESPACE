@@ -2,7 +2,8 @@
 
 export(batch_download_deposit_versions)
 export(download_deposit_version)
-export(get_version_bibtex)
+export(export_deposit_bibtex)
+export(export_deposit_metadata)
 export(get_version_citation)
 export(list_deposit_versions)
 export(sanitize_version)
