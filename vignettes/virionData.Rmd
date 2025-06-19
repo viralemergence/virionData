@@ -16,4 +16,54 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(virionData)
+library(frictionless)
+library(kableExtra)
+```
+
+
+## Check available versions of the dataset
+
+```{r list deposits}
+ list_deposit_versions()
+  deposit_summary()
+
+```
+
+## Get latest version of the data
+```{r get data}
+# get data
+get_versioned_data(dir_path = "outputs")
+# list files
+fs::dir_ls("outputs/15692263")
+```
+
+
+## Read the data
+
+Now that you have the data locally, you can read it! 
+The virion files are comma delimited with period decimal markers.
+
+```{r read data, eval=FALSE}
+
+virion <- vroom::vroom(file = "outputs/15692263/virion.csv.gz")
+
+```
+
+
+## What do the fields mean?
+
+Great question! The datapackage.json file contains field descriptions. 
+It is fairly human readable but we can take a closer look using the frictionless package.
+
+```{r frictionless}
+
+# this function wraps frictionless functions and extracts 
+dict_list <- get_data_dictionary(datapackage_json = "outputs/15692263/datapackage.json")
+
+purrr::map(dict_list, function(x){
+  kableExtra::kable(x = x) |>
+  kableExtra::kable_paper()
+})
+
+
 ```

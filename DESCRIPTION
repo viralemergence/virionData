@@ -18,7 +18,10 @@ LazyData: true
 URL: https://github.com/viralemergence/virionData, https://viralemergence.github.io/virionData/
 BugReports: https://github.com/viralemergence/virionData/issues
 Suggests: 
+    dplyr,
+    frictionless,
     httptest,
+    kableExtra,
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)
