@@ -8,7 +8,8 @@
 <url><loc>https://viralemergence.github.io/virionData/news/index.html</loc></url>
 <url><loc>https://viralemergence.github.io/virionData/reference/batch_download_deposit_versions.html</loc></url>
 <url><loc>https://viralemergence.github.io/virionData/reference/download_deposit_version.html</loc></url>
-<url><loc>https://viralemergence.github.io/virionData/reference/get_version_bibtex.html</loc></url>
+<url><loc>https://viralemergence.github.io/virionData/reference/export_deposit_bibtex.html</loc></url>
+<url><loc>https://viralemergence.github.io/virionData/reference/export_deposit_metadata.html</loc></url>
 <url><loc>https://viralemergence.github.io/virionData/reference/get_version_citation.html</loc></url>
 <url><loc>https://viralemergence.github.io/virionData/reference/get_versioned_data.html</loc></url>
 <url><loc>https://viralemergence.github.io/virionData/reference/index.html</loc></url>
