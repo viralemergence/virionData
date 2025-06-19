@@ -4,6 +4,7 @@
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/viralemergence/virionData/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/viralemergence/virionData/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/viralemergence/virionData/graph/badge.svg)](https://app.codecov.io/gh/viralemergence/virionData)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
 The goal of virionData is to provide a consistent and ergonomic way to access
@@ -23,4 +24,4 @@ devtools::install_github("viralemergence/wddsWizard")
 
 ## Getting Started
 
-See the getting started vignette (ADD HYPERLINK)
+See the [getting started vignette](https://viralemergence.github.io/virionData/articles/virionData.html)
