@@ -9,23 +9,37 @@ get_versioned_data(
   style = "apa",
   dir_path,
   refresh_deposits_versions = TRUE,
-  verbose = TRUE
+  verbose = TRUE,
+  ...
 )
 }
 \arguments{
 \item{version}{Character. identifier for a version e.g. "15643003" or "latest"}
 
-\item{style}{Charater.}
+\item{style}{Charater. Character. One of "havard-cite-them-right",
+"apa",
+"modern-language-association",
+"vancouver",
+"chicago-fullnote-bibliography", or
+"ieee"}
 
-\item{dir_path}{Character.}
+\item{dir_path}{Character. Path to folder where files should be downloaded.}
 
-\item{refresh_deposits_versions}{Logical.}
+\item{refresh_deposits_versions}{Logical. Should the function check for new
+versions of the deposit?}
 
-\item{verbose}{Logical.}
+\item{verbose}{Logical. Include print statements?}
+
+\item{...}{Additional arguments to pass to `download_deposit_version`}
 }
 \value{
 Character. path to versioned data.
 }
 \description{
-Get a specific version of the data
+This is a convenience function that downloads a specific version of the
+ data and returns attribution information.
+}
+\details{
+If you would like to download a bibtex entry use `export_deposit_bibtex`. For
+ other metadata types (CSL, CFF, JSON-LD, etcetera) use `export_deposit_metadata`.
 }

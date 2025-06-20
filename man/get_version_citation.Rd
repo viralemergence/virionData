@@ -2,7 +2,7 @@
 % Please edit documentation in R/attribution.R
 \name{get_version_citation}
 \alias{get_version_citation}
-\title{Get Deposit Citation}
+\title{Get Version Citation}
 \usage{
 get_version_citation(
   zenodo_id = the$working_version,
@@ -27,7 +27,7 @@ get_version_citation(
 Character. Text for a citation
 }
 \description{
-Get Deposit Citation
+Get Version Citation
 }
 \examples{
 

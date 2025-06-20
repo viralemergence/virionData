@@ -7,16 +7,19 @@
 download_deposit_version(
   zenodo_id,
   deposit_versions = list_deposit_versions(),
-  dir_path
+  dir_path,
+  datapackage_only = FALSE
 )
 }
 \arguments{
 \item{zenodo_id}{String. ID for a Zenodo deposit. Should correspond to the version of a deposit.}
 
-\item{deposit_versions}{data frame}
+\item{deposit_versions}{data frame. Output from `list_deposit_versions`}
 
 \item{dir_path}{String. Path to directory where the files should be downloaded
 e.g. "inst/extdata/wdds_archive" note no trailing slash on the path.}
+
+\item{datapackage_only}{Logical. Download only the datapackage.json file}
 }
 \value{
 String. Path to downloaded version.

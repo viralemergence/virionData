@@ -55,7 +55,7 @@ virion <- vroom::vroom(file = "outputs/15692263/virion.csv.gz")
 Great question! The datapackage.json file contains field descriptions. 
 It is fairly human readable but we can take a closer look using the frictionless package.
 
-```{r frictionless}
+```{r frictionless, results='asis'}
 
 # this function wraps frictionless functions and extracts 
 dict_list <- get_data_dictionary(datapackage_json = "outputs/15692263/datapackage.json")

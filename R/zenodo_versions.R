@@ -145,29 +145,18 @@ download_deposit_version <- function(zenodo_id, deposit_versions = list_deposit_
 #' batch_download_deposit_versions(dir_path = "outputs")
 #'
 #' # get select versions
-#' batch_download_deposit_versions(zenodo_ids = c("15677137", "15643004"), dir_path = "outputs)
+#' batch_download_deposit_versions(zenodo_ids = c("15677137", "15643004"), dir_path = "outputs")
 #' }
 #'
-batch_download_deposit_versions <- function(zenodo_ids = "all", dir_path,refresh_deposits_versions = FALSE, ...){
+batch_download_deposit_versions <- function(zenodo_ids = "all", dir_path, ...){
 
   assertthat::assert_that(is.character(zenodo_ids))
   assertthat::assert_that(is.character(dir_path))
-  assertthat::assert_that(is.logical(refresh_deposits_versions))
 
-
-  # update versions if requested
-  if(refresh_deposits_versions){
-    list_deposit_versions()
-  }
+  deposit_versions = list_deposit_versions()
 
 
   if(zenodo_ids == "all"){
-
-    # check that all version is not empty
-    if(the$all_versions == ""){
-      list_deposit_versions()
-    }
-
     zenodo_ids <- the$all_versions
   }
 

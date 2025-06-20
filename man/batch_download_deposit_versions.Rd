@@ -4,12 +4,18 @@
 \alias{batch_download_deposit_versions}
 \title{Batch download deposit versions}
 \usage{
-batch_download_deposit_versions(zenodo_ids = "all", dir_path)
+batch_download_deposit_versions(zenodo_ids = "all", dir_path, ...)
 }
 \arguments{
 \item{zenodo_ids}{Character. Either a vector of zenodo ids or "all"}
 
 \item{dir_path}{Character. Path to folder where files should be downloaded.}
+
+\item{...}{Other arguments passed to `download_deposit_version`}
+
+\item{refresh_deposits_versions}{Logical. Should the function check for new
+versions of the deposit? If `list_deposit_versions` has not been run in the
+current session it will be be re-run.}
 }
 \value{
 List of download locations.
@@ -23,7 +29,7 @@ This is `download_deposit_version` wrapped in a `purr::map` call.
 batch_download_deposit_versions(dir_path = "outputs")
 
 # get select versions
-batch_download_deposit_versions(zenodo_ids = c(15677137", "15643004"), dir_path = "outputs)
+batch_download_deposit_versions(zenodo_ids = c("15677137", "15643004"), dir_path = "outputs")
 }
 
 }
