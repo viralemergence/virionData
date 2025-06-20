@@ -1,5 +1,3 @@
-
-
 #' Get Data Dictionary for a data Package
 #'
 #' Creates a list of data frames that constitutes the data dictionary.
@@ -19,6 +17,8 @@
 #' }
 #'
 get_data_dictionary <- function(datapackage_json){
+
+  assertthat::assert_that(fs::file_exists(datapackage_json))
 
   pkg_json <- frictionless::read_package(file = datapackage_json)
 
@@ -49,6 +49,11 @@ get_individual_dictionary <- function(x){
   return(out)
 }
 
+#' Get the name of a resource
+#'
+#' @param x data frame with name field
+#'
+#' @returns character. Name of resources
 get_resource_name <- function(x){
   x$name
 }

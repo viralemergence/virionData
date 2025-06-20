@@ -80,31 +80,37 @@ deposit_summary <- function(){
 #' @param zenodo_id String. ID for a Zenodo deposit. Should correspond to the version of a deposit.
 #' @param dir_path String. Path to directory where the files should be downloaded
 #'  e.g. "inst/extdata/wdds_archive" note no trailing slash on the path.
-#' @param deposit_versions data frame
+#' @param deposit_versions data frame. Output from `list_deposit_versions`
+#' @param datapackage_only Logical. Download only the datapackage.json file
 #'
 #' @returns String. Path to downloaded version.
 #' @export
 #'
-download_deposit_version <- function(zenodo_id, deposit_versions = list_deposit_versions(), dir_path){
+download_deposit_version <- function(zenodo_id, deposit_versions = list_deposit_versions(), dir_path, datapackage_only = FALSE){
+
+  assertthat::assert_that(is.character(dir_path))
+  assertthat::assert_that(is.logical(datapackage_only))
 
   ## clean up zenodo id
   zenodo_id <- sanitize_version(zenodo_id)
 
   ## create folder in archive for version
+
   version_dir <- fs::path(dir_path,zenodo_id)
 
   msg <- sprintf("deposit will download to %s",version_dir)
 
-  message(msg)
+  rlang::inform(msg)
 
   fs::dir_create(path = version_dir)
 
   ## use id to get the thing
   version_files <- deposit_versions[deposit_versions$id == zenodo_id,"files"][[1]]
 
-  # api_url <- sprintf("https://zenodo.org/api/records/%s",zenodo_id)
-  #
-  # id_json <- jsonlite::fromJSON(api_url)
+
+  if(datapackage_only){
+    version_files <- version_files[version_files$key == "datapackage.json",]
+  }
 
   deposit_file  <- fs::path_file(version_files$key)
 
@@ -125,6 +131,10 @@ download_deposit_version <- function(zenodo_id, deposit_versions = list_deposit_
 #'
 #' @param dir_path Character. Path to folder where files should be downloaded.
 #' @param zenodo_ids Character. Either a vector of zenodo ids or "all"
+#' @param ... Other arguments passed to `download_deposit_version`
+#' @param refresh_deposits_versions Logical. Should the function check for new
+#' versions of the deposit? If `list_deposit_versions` has not been run in the
+#' current session it will be be re-run.
 #'
 #' @returns List of download locations.
 #' @export
@@ -135,13 +145,29 @@ download_deposit_version <- function(zenodo_id, deposit_versions = list_deposit_
 #' batch_download_deposit_versions(dir_path = "outputs")
 #'
 #' # get select versions
-#' batch_download_deposit_versions(zenodo_ids = c(15677137", "15643004"), dir_path = "outputs)
+#' batch_download_deposit_versions(zenodo_ids = c("15677137", "15643004"), dir_path = "outputs)
 #' }
 #'
-batch_download_deposit_versions <- function(zenodo_ids = "all", dir_path){
+batch_download_deposit_versions <- function(zenodo_ids = "all", dir_path,refresh_deposits_versions = FALSE, ...){
 
-  deposit_versions = list_deposit_versions()
+  assertthat::assert_that(is.character(zenodo_ids))
+  assertthat::assert_that(is.character(dir_path))
+  assertthat::assert_that(is.logical(refresh_deposits_versions))
+
+
+  # update versions if requested
+  if(refresh_deposits_versions){
+    list_deposit_versions()
+  }
+
+
   if(zenodo_ids == "all"){
+
+    # check that all version is not empty
+    if(the$all_versions == ""){
+      list_deposit_versions()
+    }
+
     zenodo_ids <- the$all_versions
   }
 
@@ -149,7 +175,7 @@ batch_download_deposit_versions <- function(zenodo_ids = "all", dir_path){
   out  <- purrr::map_chr(zenodo_ids,function(x){
     download_deposit_version(zenodo_id = x,
                              deposit_versions = deposit_versions,
-                             dir_path = dir_path)})
+                             dir_path = dir_path,...)})
 
   return(out)
 
@@ -186,6 +212,7 @@ sanitize_version <- function(version){
   verify_integer <- grepl(pattern = "^[0-9]+$",x = version_nows)
 
   if(verify_integer){
+    assertthat::assert_that(is.character(version_nows))
     return(version_nows)
   }
 
@@ -197,16 +224,30 @@ sanitize_version <- function(version){
 
 #' Get a specific version of the data
 #'
+#'  This is a convenience function that downloads a specific version of the
+#'  data and returns attribution information.
+#'
+#'  If you would like to download a bibtex entry use `export_deposit_bibtex`. For
+#'  other metadata types (CSL, CFF, JSON-LD, etcetera) use `export_deposit_metadata`.
+#'
 #' @param version Character. identifier for a version e.g. "15643003" or "latest"
-#' @param style  Charater.
-#' @param dir_path Character.
-#' @param refresh_deposits_versions Logical.
-#' @param verbose Logical.
+#' @param style  Charater. Character. One of "havard-cite-them-right",
+#' "apa",
+#' "modern-language-association",
+#' "vancouver",
+#' "chicago-fullnote-bibliography", or
+#' "ieee"
+#' @param dir_path Character. Path to folder where files should be downloaded.
+#' @param refresh_deposits_versions Logical. Should the function check for new
+#' versions of the deposit?
+#' @param verbose Logical. Include print statements?
+#' @param ... Additional arguments to pass to `download_deposit_version`
 #'
 #' @returns Character. path to versioned data.
 #' @export
 #'
-get_versioned_data <- function(version = "latest", style = "apa",dir_path, refresh_deposits_versions = TRUE, verbose = TRUE){
+get_versioned_data <- function(version = "latest", style = "apa",dir_path, refresh_deposits_versions = TRUE, verbose = TRUE, ...){
+
 
   if(refresh_deposits_versions || the$all_versions == ""){
     list_deposit_versions()
@@ -222,7 +263,7 @@ get_versioned_data <- function(version = "latest", style = "apa",dir_path, refre
   get_version_citation(style = style,verbose = verbose)
 
   # download data
-  out <- download_deposit_version(zenodo_id = version,dir_path = dir_path)
+  out <- download_deposit_version(zenodo_id = version,dir_path = dir_path,...)
 
   return(out)
 
