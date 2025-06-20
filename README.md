@@ -18,7 +18,7 @@ You can install the development version of virionData from [GitHub](https://gith
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("viralemergence/wddsWizard")
+remotes::install_github("viralemergence/virionData")
 ```
 
 ## Getting Started
