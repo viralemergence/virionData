@@ -3,7 +3,6 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/viralemergence/virionData/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/viralemergence/virionData/actions/workflows/R-CMD-check.yaml)
-[![Codecov test coverage](https://codecov.io/gh/viralemergence/virionData/graph/badge.svg)](https://app.codecov.io/gh/viralemergence/virionData)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
@@ -18,8 +17,8 @@ with, provides easy access to metadata, and allows users to export metadata.
 You can install the development version of virionData from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("viralemergence/wddsWizard")
+# install.packages("remotes")
+remotes::install_github("viralemergence/wddsWizard")
 ```
 
 ## Getting Started

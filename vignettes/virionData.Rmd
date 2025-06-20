@@ -55,17 +55,29 @@ virion <- vroom::vroom(file = "outputs/15692263/virion.csv.gz")
 Great question! The datapackage.json file contains field descriptions. 
 It is fairly human readable but we can take a closer look using the frictionless package.
 
-```{r frictionless, results='asis'}
+```{r frictionless}
 
 # this function wraps frictionless functions and extracts 
 dict_list <- get_data_dictionary(datapackage_json = "outputs/15692263/datapackage.json")
 
-purrr::map(dict_list, function(x){
+dict_list$detection_csv
+```
+
+Use `purrr::map` to make a full data dictionary for a given deposit.
+
+```{r frictionless tables, results='asis'}
+
+html_tables <- purrr::map(dict_list, function(x){
   html_tables <- kableExtra::kable(x = x) |>
-  kableExtra::kable_paper()
-  sprintf("<div> %s </div>",html_tables)
+  kableExtra::kable_material()
   
 })
 
+list_items <- names(dict_list)
+
+tables <- sprintf("<h3>%s</h3><br>%s",list_items,html_tables) |>
+  paste(collapse = "<br>")
+
+cat(tables)
 
 ```
