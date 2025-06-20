@@ -26,9 +26,15 @@
 #' @export
 #'
 list_deposit_versions <- function(parent_id = "15643003"){
+
+  assertthat::assert_that(is.character(parent_id))
+
   parent_url <- sprintf("https://zenodo.org/api/records/%s",parent_id)
 
-  parent_json <- jsonlite::fromJSON(txt = parent_url)
+  parent_json <- rlang::try_fetch(jsonlite::fromJSON(txt = parent_url),
+                                  error = function(cnd) rlang::abort("Failed.", parent = cnd),
+                                  warning = function(cnd) rlang::abort("Failed", parent = cnd))
+
 
   latest_id <- as.character(parent_json$id)
 
@@ -166,6 +172,7 @@ batch_download_deposit_versions <- function(zenodo_ids = "all", dir_path){
 #'
 sanitize_version <- function(version){
 
+  # auto converts to character
   version_nows <- trimws(version,which = "both")
 
   if(version_nows == "latest"){
