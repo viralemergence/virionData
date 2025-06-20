@@ -12,10 +12,6 @@ batch_download_deposit_versions(zenodo_ids = "all", dir_path, ...)
 \item{dir_path}{Character. Path to folder where files should be downloaded.}
 
 \item{...}{Other arguments passed to `download_deposit_version`}
-
-\item{refresh_deposits_versions}{Logical. Should the function check for new
-versions of the deposit? If `list_deposit_versions` has not been run in the
-current session it will be be re-run.}
 }
 \value{
 List of download locations.

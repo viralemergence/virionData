@@ -132,9 +132,6 @@ download_deposit_version <- function(zenodo_id, deposit_versions = list_deposit_
 #' @param dir_path Character. Path to folder where files should be downloaded.
 #' @param zenodo_ids Character. Either a vector of zenodo ids or "all"
 #' @param ... Other arguments passed to `download_deposit_version`
-#' @param refresh_deposits_versions Logical. Should the function check for new
-#' versions of the deposit? If `list_deposit_versions` has not been run in the
-#' current session it will be be re-run.
 #'
 #' @returns List of download locations.
 #' @export
