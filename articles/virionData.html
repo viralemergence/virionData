@@ -118,738 +118,633 @@ using the frictionless package.</p>
 <span><span class="va">dict_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_data_dictionary.html">get_data_dictionary</a></span><span class="op">(</span>datapackage_json <span class="op">=</span> <span class="st">"outputs/15692263/datapackage.json"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">dict_list</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span>
-<span>  <span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="va">html_tables</span> <span class="op">&lt;-</span> <span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_classic.html" class="external-link">kable_paper</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"&lt;div&gt; %s &lt;/div&gt;"</span>,<span class="va">html_tables</span><span class="op">)</span></span>
+<span>  </span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<span class="math inline">$detection_csv
-&lt;table class=" lightable-paper" style='font-family: "Arial Narrow",
+$detection_csv [1] “
+<div>
+&lt;table class=" lightable-paper" style=‘font-family: "Arial Narrow",
 arial, helvetica, sans-serif; margin-left: auto; margin-right:
-auto;'&gt;
-&lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt; name &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; type &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; description &lt;/th&gt;
-  &lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; AssocID &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; number &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Row number from current VIRION
-version &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; DetectionMethod &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; string &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Four harmonized categories in
-descending order of strength of evidence: “Isolation/Observation,”
-“PCR/Sequencing,” “Antibodies,” and “Not specified”. In some cases where
-detection method is not available via metadata, source information is
-used as DetectionOriginal (e.g., “NCBI Nucleotide”). &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; DetectionOriginal &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; string &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Method used for determing the
-presence of a virus as described in the original work &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; HostFlagID &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; boolean &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Denotes the presence of possible
-uncertainty in host identification, which users may want to check before
-proceeding any further. &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; NCBIAccession &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; string &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; A unique identifier assigned to a
-record in sequence databases such as GenBank &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;$</span>edgelist
-<table class="table  lightable-paper" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;'>
+auto;’&gt;
 <thead><tr>
-<th style="text-align:left;">
+<th style='\"text-align:left;\"'>
 name
 </th>
-<th style="text-align:left;">
+
+<th style='\"text-align:left;\"'>
 type
 </th>
-<th style="text-align:left;">
+
+<th style='\"text-align:left;\"'>
 description
 </th>
+
 </tr></thead>
 <tbody>
 <tr>
-<td style="text-align:left;">
-HostTaxID
-</td>
-<td style="text-align:left;">
-number
-</td>
-<td style="text-align:left;">
-Taxonomic identification number from NCBI for host taxa.
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-VirusTaxID
-</td>
-<td style="text-align:left;">
-number
-</td>
-<td style="text-align:left;">
-Taxonomic identification number from NCBI for virus taxa.
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
+<td style='\"text-align:left;\"'>
 AssocID
 </td>
-<td style="text-align:left;">
-string
+
+<td style='\"text-align:left;\"'>
+number
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 Row number from current VIRION version
 </td>
-</tr>
-</tbody>
-</table>
-<span class="math inline">$provenance_csv
-&lt;table class=" lightable-paper" style='font-family: "Arial Narrow",
-arial, helvetica, sans-serif; margin-left: auto; margin-right:
-auto;'&gt;
-&lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt; name &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; type &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; description &lt;/th&gt;
-  &lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; AssocID &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; number &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Row number from current VIRION
-version &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; HostOriginal &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; string &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Host name from original dataset
-&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; VirusOriginal &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; string &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Virus name from original dataset
-&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Database &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; string &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Source for the record. One of
-EID2, Shaw, HP3, GMPD2, PREDICT, OR GenBank &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; DatabaseVersion &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; string &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; For static data, a citation. For
-dynamic data (e.g. Genbank) the access URL and a time stamp &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; ReferenceText &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; string &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; A text description of literature
-sources &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; PMID &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; number &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; PubMed identifiers for literature
-sources &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;$</span>taxonomy_host
-<table class="table  lightable-paper" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;'>
-<thead><tr>
-<th style="text-align:left;">
-name
-</th>
-<th style="text-align:left;">
-type
-</th>
-<th style="text-align:left;">
-description
-</th>
-</tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-HostTaxID
-</td>
-<td style="text-align:left;">
-number
-</td>
-<td style="text-align:left;">
-Taxonomic identification number from NCBI for host taxa.
-</td>
+
 </tr>
 <tr>
-<td style="text-align:left;">
-Host
-</td>
-<td style="text-align:left;">
-string
-</td>
-<td style="text-align:left;">
-Host species name
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-HostGenus
-</td>
-<td style="text-align:left;">
-string
-</td>
-<td style="text-align:left;">
-Host genus name
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-HostFamily
-</td>
-<td style="text-align:left;">
-string
-</td>
-<td style="text-align:left;">
-Host family name
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-HostOrder
-</td>
-<td style="text-align:left;">
-string
-</td>
-<td style="text-align:left;">
-Host order name
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-HostClass
-</td>
-<td style="text-align:left;">
-string
-</td>
-<td style="text-align:left;">
-Host class name
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-HostNCBIResolved
-</td>
-<td style="text-align:left;">
-boolean
-</td>
-<td style="text-align:left;">
-Indicates whether or not the host taxa could harmonized with the NCBI
-taxonomy.
-</td>
-</tr>
-</tbody>
-</table>
-<span class="math inline">$taxonomy_virus
-&lt;table class=" lightable-paper" style='font-family: "Arial Narrow",
-arial, helvetica, sans-serif; margin-left: auto; margin-right:
-auto;'&gt;
-&lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt; name &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; type &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; description &lt;/th&gt;
-  &lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; VirusTaxID &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; number &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Taxonomic identification number
-from NCBI for virus taxa. &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Virus &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; string &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Virus species name &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; VirusGenus &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; string &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Virus genus name &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; VirusFamily &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; string &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Virus family name &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; VirusOrder &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; string &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Virus order name &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; VirusClass &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; string &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Virus class name &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; VirusNCBIResolved &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; boolean &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Indicates whether or not the
-virus taxa could harmonized with the NCBI taxonomy. &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; ICTVRatified &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; boolean &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Indicates whether or not the
-virus taxa is ratified by the nternational Committee on Taxonomy of
-Viruses (ICTV). &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Database &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; string &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Source for the record. One of
-EID2, Shaw, HP3, GMPD2, PREDICT, OR GenBank &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;$</span>temporal_csv
-<table class="table  lightable-paper" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;'>
-<thead><tr>
-<th style="text-align:left;">
-name
-</th>
-<th style="text-align:left;">
-type
-</th>
-<th style="text-align:left;">
-description
-</th>
-</tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-AssocID
-</td>
-<td style="text-align:left;">
-number
-</td>
-<td style="text-align:left;">
-Row number from current VIRION version
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-PublicationYear
-</td>
-<td style="text-align:left;">
-number
-</td>
-<td style="text-align:left;">
-For literature derived records. PublicationYear provides the year the
-literature source was published, accessed either from the original
-database’s reference description or from scraping the PubMed database.
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-ReleaseYear
-</td>
-<td style="text-align:left;">
-number
-</td>
-<td style="text-align:left;">
-The year a given association was “released” in public information (EID2
-and PREDICT) or a publicly deposited sample on GenBank. For PREDICT, all
-values are given as 2021, given the release of a static file at that
-time even though some findings may have been published or deposited in
-GenBank earlier. (This redundancy should be captured in overlap with
-GenBank and EID2.)
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-ReleaseMonth
-</td>
-<td style="text-align:left;">
-number
-</td>
-<td style="text-align:left;">
-The month a given association was “released” to the public
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-ReleaseDay
-</td>
-<td style="text-align:left;">
-number
-</td>
-<td style="text-align:left;">
-The day a given association was “released” to the public
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-CollectionYear
-</td>
-<td style="text-align:left;">
-number
-</td>
-<td style="text-align:left;">
-Reports the year of actual sample collection (GenBank and Predict)
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-CollectionMonth
-</td>
-<td style="text-align:left;">
-number
-</td>
-<td style="text-align:left;">
-Reports the month of actual sample collection (GenBank and Predict)
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-CollectionDay
-</td>
-<td style="text-align:left;">
-number
-</td>
-<td style="text-align:left;">
-Reports the day of actual sample collection (GenBank and Predict)
-</td>
-</tr>
-</tbody>
-</table>
-$virion_csv
-<table class="table  lightable-paper" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;'>
-<thead><tr>
-<th style="text-align:left;">
-name
-</th>
-<th style="text-align:left;">
-type
-</th>
-<th style="text-align:left;">
-description
-</th>
-</tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Host
-</td>
-<td style="text-align:left;">
-string
-</td>
-<td style="text-align:left;">
-Host species name
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Virus
-</td>
-<td style="text-align:left;">
-string
-</td>
-<td style="text-align:left;">
-Virus species name
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-HostTaxID
-</td>
-<td style="text-align:left;">
-number
-</td>
-<td style="text-align:left;">
-Taxonomic identification number from NCBI for host taxa.
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-VirusTaxID
-</td>
-<td style="text-align:left;">
-number
-</td>
-<td style="text-align:left;">
-Taxonomic identification number from NCBI for virus taxa.
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-HostNCBIResolved
-</td>
-<td style="text-align:left;">
-boolean
-</td>
-<td style="text-align:left;">
-Indicates whether or not the host taxa could harmonized with the NCBI
-taxonomy.
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-VirusNCBIResolved
-</td>
-<td style="text-align:left;">
-boolean
-</td>
-<td style="text-align:left;">
-Indicates whether or not the virus taxa could harmonized with the NCBI
-taxonomy.
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-ICTVRatified
-</td>
-<td style="text-align:left;">
-boolean
-</td>
-<td style="text-align:left;">
-Indicates whether or not the virus taxa is ratified by the nternational
-Committee on Taxonomy of Viruses (ICTV).
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-HostGenus
-</td>
-<td style="text-align:left;">
-string
-</td>
-<td style="text-align:left;">
-Host genus name
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-HostFamily
-</td>
-<td style="text-align:left;">
-string
-</td>
-<td style="text-align:left;">
-Host family name
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-HostOrder
-</td>
-<td style="text-align:left;">
-string
-</td>
-<td style="text-align:left;">
-Host order name
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-HostClass
-</td>
-<td style="text-align:left;">
-string
-</td>
-<td style="text-align:left;">
-Host class name
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-HostOriginal
-</td>
-<td style="text-align:left;">
-string
-</td>
-<td style="text-align:left;">
-Host name from original dataset
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-VirusGenus
-</td>
-<td style="text-align:left;">
-string
-</td>
-<td style="text-align:left;">
-Virus genus name
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-VirusFamily
-</td>
-<td style="text-align:left;">
-string
-</td>
-<td style="text-align:left;">
-Virus family name
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-VirusOrder
-</td>
-<td style="text-align:left;">
-string
-</td>
-<td style="text-align:left;">
-Virus order name
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-VirusClass
-</td>
-<td style="text-align:left;">
-string
-</td>
-<td style="text-align:left;">
-Virus class name
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-VirusOriginal
-</td>
-<td style="text-align:left;">
-string
-</td>
-<td style="text-align:left;">
-Virus name from original dataset
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-HostFlagID
-</td>
-<td style="text-align:left;">
-boolean
-</td>
-<td style="text-align:left;">
-Denotes the presence of possible uncertainty in host identification,
-which users may want to check before proceeding any further.
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
+<td style='\"text-align:left;\"'>
 DetectionMethod
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 string
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 Four harmonized categories in descending order of strength of evidence:
 “Isolation/Observation,” “PCR/Sequencing,” “Antibodies,” and “Not
 specified”. In some cases where detection method is not available via
 metadata, source information is used as DetectionOriginal (e.g., “NCBI
 Nucleotide”).
 </td>
+
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style='\"text-align:left;\"'>
 DetectionOriginal
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 string
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 Method used for determing the presence of a virus as described in the
 original work
 </td>
+
 </tr>
 <tr>
-<td style="text-align:left;">
-Database
+<td style='\"text-align:left;\"'>
+HostFlagID
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
+boolean
+</td>
+
+<td style='\"text-align:left;\"'>
+Denotes the presence of possible uncertainty in host identification,
+which users may want to check before proceeding any further.
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+NCBIAccession
+</td>
+
+<td style='\"text-align:left;\"'>
 string
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
+A unique identifier assigned to a record in sequence databases such as
+GenBank
+</td>
+
+</tr>
+</tbody>
+</div>
+<p>”</p>
+$edgelist [1] “
+<div>
+&lt;table class=" lightable-paper" style=‘font-family: "Arial Narrow",
+arial, helvetica, sans-serif; margin-left: auto; margin-right:
+auto;’&gt;
+<thead><tr>
+<th style='\"text-align:left;\"'>
+name
+</th>
+
+<th style='\"text-align:left;\"'>
+type
+</th>
+
+<th style='\"text-align:left;\"'>
+description
+</th>
+
+</tr></thead>
+<tbody>
+<tr>
+<td style='\"text-align:left;\"'>
+HostTaxID
+</td>
+
+<td style='\"text-align:left;\"'>
+number
+</td>
+
+<td style='\"text-align:left;\"'>
+Taxonomic identification number from NCBI for host taxa.
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+VirusTaxID
+</td>
+
+<td style='\"text-align:left;\"'>
+number
+</td>
+
+<td style='\"text-align:left;\"'>
+Taxonomic identification number from NCBI for virus taxa.
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+AssocID
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Row number from current VIRION version
+</td>
+
+</tr>
+</tbody>
+</div>
+<p>”</p>
+$provenance_csv [1] “
+<div>
+&lt;table class=" lightable-paper" style=‘font-family: "Arial Narrow",
+arial, helvetica, sans-serif; margin-left: auto; margin-right:
+auto;’&gt;
+<thead><tr>
+<th style='\"text-align:left;\"'>
+name
+</th>
+
+<th style='\"text-align:left;\"'>
+type
+</th>
+
+<th style='\"text-align:left;\"'>
+description
+</th>
+
+</tr></thead>
+<tbody>
+<tr>
+<td style='\"text-align:left;\"'>
+AssocID
+</td>
+
+<td style='\"text-align:left;\"'>
+number
+</td>
+
+<td style='\"text-align:left;\"'>
+Row number from current VIRION version
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+HostOriginal
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Host name from original dataset
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+VirusOriginal
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Virus name from original dataset
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+Database
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
 Source for the record. One of EID2, Shaw, HP3, GMPD2, PREDICT, OR
 GenBank
 </td>
+
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style='\"text-align:left;\"'>
 DatabaseVersion
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 string
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 For static data, a citation. For dynamic data (e.g. Genbank) the access
 URL and a time stamp
 </td>
+
 </tr>
 <tr>
-<td style="text-align:left;">
-PublicationYear
+<td style='\"text-align:left;\"'>
+ReferenceText
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+A text description of literature sources
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+PMID
+</td>
+
+<td style='\"text-align:left;\"'>
 number
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
+PubMed identifiers for literature sources
+</td>
+
+</tr>
+</tbody>
+</div>
+<p>”</p>
+$taxonomy_host [1] “
+<div>
+&lt;table class=" lightable-paper" style=‘font-family: "Arial Narrow",
+arial, helvetica, sans-serif; margin-left: auto; margin-right:
+auto;’&gt;
+<thead><tr>
+<th style='\"text-align:left;\"'>
+name
+</th>
+
+<th style='\"text-align:left;\"'>
+type
+</th>
+
+<th style='\"text-align:left;\"'>
+description
+</th>
+
+</tr></thead>
+<tbody>
+<tr>
+<td style='\"text-align:left;\"'>
+HostTaxID
+</td>
+
+<td style='\"text-align:left;\"'>
+number
+</td>
+
+<td style='\"text-align:left;\"'>
+Taxonomic identification number from NCBI for host taxa.
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+Host
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Host species name
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+HostGenus
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Host genus name
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+HostFamily
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Host family name
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+HostOrder
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Host order name
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+HostClass
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Host class name
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+HostNCBIResolved
+</td>
+
+<td style='\"text-align:left;\"'>
+boolean
+</td>
+
+<td style='\"text-align:left;\"'>
+Indicates whether or not the host taxa could harmonized with the NCBI
+taxonomy.
+</td>
+
+</tr>
+</tbody>
+</div>
+<p>”</p>
+$taxonomy_virus [1] “
+<div>
+&lt;table class=" lightable-paper" style=‘font-family: "Arial Narrow",
+arial, helvetica, sans-serif; margin-left: auto; margin-right:
+auto;’&gt;
+<thead><tr>
+<th style='\"text-align:left;\"'>
+name
+</th>
+
+<th style='\"text-align:left;\"'>
+type
+</th>
+
+<th style='\"text-align:left;\"'>
+description
+</th>
+
+</tr></thead>
+<tbody>
+<tr>
+<td style='\"text-align:left;\"'>
+VirusTaxID
+</td>
+
+<td style='\"text-align:left;\"'>
+number
+</td>
+
+<td style='\"text-align:left;\"'>
+Taxonomic identification number from NCBI for virus taxa.
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+Virus
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Virus species name
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+VirusGenus
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Virus genus name
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+VirusFamily
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Virus family name
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+VirusOrder
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Virus order name
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+VirusClass
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Virus class name
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+VirusNCBIResolved
+</td>
+
+<td style='\"text-align:left;\"'>
+boolean
+</td>
+
+<td style='\"text-align:left;\"'>
+Indicates whether or not the virus taxa could harmonized with the NCBI
+taxonomy.
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+ICTVRatified
+</td>
+
+<td style='\"text-align:left;\"'>
+boolean
+</td>
+
+<td style='\"text-align:left;\"'>
+Indicates whether or not the virus taxa is ratified by the nternational
+Committee on Taxonomy of Viruses (ICTV).
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+Database
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Source for the record. One of EID2, Shaw, HP3, GMPD2, PREDICT, OR
+GenBank
+</td>
+
+</tr>
+</tbody>
+</div>
+<p>”</p>
+$temporal_csv [1] “
+<div>
+&lt;table class=" lightable-paper" style=‘font-family: "Arial Narrow",
+arial, helvetica, sans-serif; margin-left: auto; margin-right:
+auto;’&gt;
+<thead><tr>
+<th style='\"text-align:left;\"'>
+name
+</th>
+
+<th style='\"text-align:left;\"'>
+type
+</th>
+
+<th style='\"text-align:left;\"'>
+description
+</th>
+
+</tr></thead>
+<tbody>
+<tr>
+<td style='\"text-align:left;\"'>
+AssocID
+</td>
+
+<td style='\"text-align:left;\"'>
+number
+</td>
+
+<td style='\"text-align:left;\"'>
+Row number from current VIRION version
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+PublicationYear
+</td>
+
+<td style='\"text-align:left;\"'>
+number
+</td>
+
+<td style='\"text-align:left;\"'>
 For literature derived records. PublicationYear provides the year the
 literature source was published, accessed either from the original
 database’s reference description or from scraping the PubMed database.
 </td>
+
 </tr>
 <tr>
-<td style="text-align:left;">
-ReferenceText
-</td>
-<td style="text-align:left;">
-string
-</td>
-<td style="text-align:left;">
-A text description of literature sources
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-PMID
-</td>
-<td style="text-align:left;">
-number
-</td>
-<td style="text-align:left;">
-PubMed identifiers for literature sources
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
+<td style='\"text-align:left;\"'>
 ReleaseYear
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 number
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 The year a given association was “released” in public information (EID2
 and PREDICT) or a publicly deposited sample on GenBank. For PREDICT, all
 values are given as 2021, given the release of a static file at that
@@ -857,121 +752,628 @@ time even though some findings may have been published or deposited in
 GenBank earlier. (This redundancy should be captured in overlap with
 GenBank and EID2.)
 </td>
+
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style='\"text-align:left;\"'>
 ReleaseMonth
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 number
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 The month a given association was “released” to the public
 </td>
+
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style='\"text-align:left;\"'>
 ReleaseDay
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 number
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 The day a given association was “released” to the public
 </td>
+
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style='\"text-align:left;\"'>
 CollectionYear
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 number
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 Reports the year of actual sample collection (GenBank and Predict)
 </td>
+
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style='\"text-align:left;\"'>
 CollectionMonth
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 number
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 Reports the month of actual sample collection (GenBank and Predict)
 </td>
+
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style='\"text-align:left;\"'>
 CollectionDay
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 number
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 Reports the day of actual sample collection (GenBank and Predict)
 </td>
+
+</tr>
+</tbody>
+</div>
+<p>”</p>
+$virion_csv [1] “
+<div>
+&lt;table class=" lightable-paper" style=‘font-family: "Arial Narrow",
+arial, helvetica, sans-serif; margin-left: auto; margin-right:
+auto;’&gt;
+<thead><tr>
+<th style='\"text-align:left;\"'>
+name
+</th>
+
+<th style='\"text-align:left;\"'>
+type
+</th>
+
+<th style='\"text-align:left;\"'>
+description
+</th>
+
+</tr></thead>
+<tbody>
+<tr>
+<td style='\"text-align:left;\"'>
+Host
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Host species name
+</td>
+
 </tr>
 <tr>
-<td style="text-align:left;">
-AssocID
+<td style='\"text-align:left;\"'>
+Virus
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Virus species name
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+HostTaxID
+</td>
+
+<td style='\"text-align:left;\"'>
 number
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
+Taxonomic identification number from NCBI for host taxa.
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+VirusTaxID
+</td>
+
+<td style='\"text-align:left;\"'>
+number
+</td>
+
+<td style='\"text-align:left;\"'>
+Taxonomic identification number from NCBI for virus taxa.
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+HostNCBIResolved
+</td>
+
+<td style='\"text-align:left;\"'>
+boolean
+</td>
+
+<td style='\"text-align:left;\"'>
+Indicates whether or not the host taxa could harmonized with the NCBI
+taxonomy.
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+VirusNCBIResolved
+</td>
+
+<td style='\"text-align:left;\"'>
+boolean
+</td>
+
+<td style='\"text-align:left;\"'>
+Indicates whether or not the virus taxa could harmonized with the NCBI
+taxonomy.
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+ICTVRatified
+</td>
+
+<td style='\"text-align:left;\"'>
+boolean
+</td>
+
+<td style='\"text-align:left;\"'>
+Indicates whether or not the virus taxa is ratified by the nternational
+Committee on Taxonomy of Viruses (ICTV).
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+HostGenus
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Host genus name
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+HostFamily
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Host family name
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+HostOrder
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Host order name
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+HostClass
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Host class name
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+HostOriginal
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Host name from original dataset
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+VirusGenus
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Virus genus name
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+VirusFamily
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Virus family name
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+VirusOrder
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Virus order name
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+VirusClass
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Virus class name
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+VirusOriginal
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Virus name from original dataset
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+HostFlagID
+</td>
+
+<td style='\"text-align:left;\"'>
+boolean
+</td>
+
+<td style='\"text-align:left;\"'>
+Denotes the presence of possible uncertainty in host identification,
+which users may want to check before proceeding any further.
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+DetectionMethod
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Four harmonized categories in descending order of strength of evidence:
+“Isolation/Observation,” “PCR/Sequencing,” “Antibodies,” and “Not
+specified”. In some cases where detection method is not available via
+metadata, source information is used as DetectionOriginal (e.g., “NCBI
+Nucleotide”).
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+DetectionOriginal
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Method used for determing the presence of a virus as described in the
+original work
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+Database
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+Source for the record. One of EID2, Shaw, HP3, GMPD2, PREDICT, OR
+GenBank
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+DatabaseVersion
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+For static data, a citation. For dynamic data (e.g. Genbank) the access
+URL and a time stamp
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+PublicationYear
+</td>
+
+<td style='\"text-align:left;\"'>
+number
+</td>
+
+<td style='\"text-align:left;\"'>
+For literature derived records. PublicationYear provides the year the
+literature source was published, accessed either from the original
+database’s reference description or from scraping the PubMed database.
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+ReferenceText
+</td>
+
+<td style='\"text-align:left;\"'>
+string
+</td>
+
+<td style='\"text-align:left;\"'>
+A text description of literature sources
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+PMID
+</td>
+
+<td style='\"text-align:left;\"'>
+number
+</td>
+
+<td style='\"text-align:left;\"'>
+PubMed identifiers for literature sources
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+ReleaseYear
+</td>
+
+<td style='\"text-align:left;\"'>
+number
+</td>
+
+<td style='\"text-align:left;\"'>
+The year a given association was “released” in public information (EID2
+and PREDICT) or a publicly deposited sample on GenBank. For PREDICT, all
+values are given as 2021, given the release of a static file at that
+time even though some findings may have been published or deposited in
+GenBank earlier. (This redundancy should be captured in overlap with
+GenBank and EID2.)
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+ReleaseMonth
+</td>
+
+<td style='\"text-align:left;\"'>
+number
+</td>
+
+<td style='\"text-align:left;\"'>
+The month a given association was “released” to the public
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+ReleaseDay
+</td>
+
+<td style='\"text-align:left;\"'>
+number
+</td>
+
+<td style='\"text-align:left;\"'>
+The day a given association was “released” to the public
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+CollectionYear
+</td>
+
+<td style='\"text-align:left;\"'>
+number
+</td>
+
+<td style='\"text-align:left;\"'>
+Reports the year of actual sample collection (GenBank and Predict)
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+CollectionMonth
+</td>
+
+<td style='\"text-align:left;\"'>
+number
+</td>
+
+<td style='\"text-align:left;\"'>
+Reports the month of actual sample collection (GenBank and Predict)
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+CollectionDay
+</td>
+
+<td style='\"text-align:left;\"'>
+number
+</td>
+
+<td style='\"text-align:left;\"'>
+Reports the day of actual sample collection (GenBank and Predict)
+</td>
+
+</tr>
+<tr>
+<td style='\"text-align:left;\"'>
+AssocID
+</td>
+
+<td style='\"text-align:left;\"'>
+number
+</td>
+
+<td style='\"text-align:left;\"'>
 Row number. Used as an id. Will be specific to a given version of the
 data
 </td>
+
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style='\"text-align:left;\"'>
 DatabaseDOI
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 string
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 Persistent digital identifer for the database
 </td>
+
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style='\"text-align:left;\"'>
 Release_Date
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 date
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 Date data were released
 </td>
+
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style='\"text-align:left;\"'>
 Collection_Date
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 string
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 Date of actual sample collection
 </td>
+
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style='\"text-align:left;\"'>
 NCBIAccession
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 string
 </td>
-<td style="text-align:left;">
+
+<td style='\"text-align:left;\"'>
 A unique identifier assigned to a record in sequence databases such as
 GenBank
 </td>
+
 </tr>
 </tbody>
-</table>
+</div>
+<p>”</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
