@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">virionData</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9002</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,7 +43,8 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">download_deposit_version</span><span class="op">(</span></span>
 <span>  <span class="va">zenodo_id</span>,</span>
 <span>  deposit_versions <span class="op">=</span> <span class="fu"><a href="list_deposit_versions.html">list_deposit_versions</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  <span class="va">dir_path</span></span>
+<span>  <span class="va">dir_path</span>,</span>
+<span>  datapackage_only <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -56,12 +57,16 @@
 
 
 <dt id="arg-deposit-versions">deposit_versions<a class="anchor" aria-label="anchor" href="#arg-deposit-versions"></a></dt>
-<dd><p>data frame</p></dd>
+<dd><p>data frame. Output from `list_deposit_versions`</p></dd>
 
 
 <dt id="arg-dir-path">dir_path<a class="anchor" aria-label="anchor" href="#arg-dir-path"></a></dt>
 <dd><p>String. Path to directory where the files should be downloaded
 e.g. "inst/extdata/wdds_archive" note no trailing slash on the path.</p></dd>
+
+
+<dt id="arg-datapackage-only">datapackage_only<a class="anchor" aria-label="anchor" href="#arg-datapackage-only"></a></dt>
+<dd><p>Logical. Download only the datapackage.json file</p></dd>
 
 </dl></div>
     <div class="section level2">
