@@ -61,8 +61,10 @@ It is fairly human readable but we can take a closer look using the frictionless
 dict_list <- get_data_dictionary(datapackage_json = "outputs/15692263/datapackage.json")
 
 purrr::map(dict_list, function(x){
-  kableExtra::kable(x = x) |>
+  html_tables <- kableExtra::kable(x = x) |>
   kableExtra::kable_paper()
+  sprintf("<div> %s </div>",html_tables)
+  
 })
 
 
