@@ -1,7 +1,7 @@
 Package: virionData
 Type: Package
 Title: Access Versioned VIRION Data
-Version: 0.1.0.9001
+Version: 0.1.0.9002
 Authors@R: c(
     person(
       "Collin", "Schwantes",
