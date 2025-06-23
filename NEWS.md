@@ -1,2 +1,7 @@
 # virionData (development version)
-* Initial development.
+
+- Added attribution documentation
+
+# virionData (development version)
+
+- Initial development.
