@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">virionData</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9004</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,7 +47,7 @@
 
 
 
-
+<script src="virionData_files/kePrint-0.0.1/kePrint.js"></script><link href="virionData_files/lightable-0.0.1/lightable.css" rel="stylesheet">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
@@ -85,7 +85,7 @@
 <h2 id="get-latest-version-of-the-data">Get latest version of the data<a class="anchor" aria-label="anchor" href="#get-latest-version-of-the-data"></a>
 </h2>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># get data</span></span>
+<code class="sourceCode R"><span><span class="co"># get data - by default this is the latest version of the data.</span></span>
 <span><span class="fu"><a href="../reference/get_versioned_data.html">get_versioned_data</a></span><span class="op">(</span>dir_path <span class="op">=</span> <span class="st">"outputs"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Cole Brookson, Collin Schwantes, Timothée Poisot, Tad Dallas, Greg Albery, Colin J. Carlson, Cecilia A. Sanchez, Renata Muylaert, Evan Eskew, Rory Gibb, &amp; Maxwell J Farrell. (2025). The Global Virome in One Network (VIRION): Data Package [Data set]. Zenodo. https://doi.org/10.5281/zenodo.15692263</span></span>
 <span><span class="co">#&gt; deposit will download to outputs/15692263</span></span>
@@ -107,12 +107,184 @@ are comma delimited with period decimal markers.</p>
 <span><span class="va">virion</span> <span class="op">&lt;-</span> <span class="fu">vroom</span><span class="fu">::</span><span class="fu"><a href="https://vroom.r-lib.org/reference/vroom.html" class="external-link">vroom</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"outputs/15692263/virion.csv.gz"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="cite-the-data">Cite the data<a class="anchor" aria-label="anchor" href="#cite-the-data"></a>
+</h2>
+<p>Citing data makes increases reproducibility and incentivizes data
+sharing.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># by default the citation will be generated for the current working version.</span></span>
+<span><span class="co"># this is set when we run `get_versioned_data`</span></span>
+<span><span class="fu"><a href="../reference/get_version_citation.html">get_version_citation</a></span><span class="op">(</span>style <span class="op">=</span> <span class="st">"modern-language-association"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Cole Brookson, et al. The Global Virome in One Network (VIRION): Data Package. Zenodo, 18 June 2025, doi:10.5281/zenodo.15692263.</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># we can cite a specific version by providing a zenodo id</span></span>
+<span><span class="fu"><a href="../reference/get_version_citation.html">get_version_citation</a></span><span class="op">(</span>zenodo_id <span class="op">=</span> <span class="st">"15643004"</span>,style <span class="op">=</span> <span class="st">"apa"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Cole Brookson, Collin Schwantes, Timothée Poisot, Tad Dallas, Greg Albery, Colin J. Carlson, Cecilia A. Sanchez, Renata Muylaert, Evan Eskew, Rory Gibb, &amp; Maxwell J Farrell. (2025). The Global Virome in One Network (VIRION): Data Package [Data set]. Zenodo. https://doi.org/10.5281/zenodo.15643004</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># sometimes you want a bibtex entry item</span></span>
+<span><span class="fu"><a href="../reference/export_deposit_bibtex.html">export_deposit_bibtex</a></span><span class="op">(</span><span class="st">"15643004"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; @dataset{cole_brookson_2025_15643004,</span></span>
+<span><span class="co">#&gt;   author       = {Cole Brookson and</span></span>
+<span><span class="co">#&gt;                   Collin Schwantes and</span></span>
+<span><span class="co">#&gt;                   Timothée Poisot and</span></span>
+<span><span class="co">#&gt;                   Tad Dallas and</span></span>
+<span><span class="co">#&gt;                   Greg Albery and</span></span>
+<span><span class="co">#&gt;                   Colin J. Carlson and</span></span>
+<span><span class="co">#&gt;                   Cecilia A. Sanchez and</span></span>
+<span><span class="co">#&gt;                   Renata Muylaert and</span></span>
+<span><span class="co">#&gt;                   Evan Eskew and</span></span>
+<span><span class="co">#&gt;                   Rory Gibb and</span></span>
+<span><span class="co">#&gt;                   Maxwell J Farrell},</span></span>
+<span><span class="co">#&gt;   title        = {The Global Virome in One Network (VIRION): Data</span></span>
+<span><span class="co">#&gt;                    Package</span></span>
+<span><span class="co">#&gt;                   },</span></span>
+<span><span class="co">#&gt;   month        = jun,</span></span>
+<span><span class="co">#&gt;   year         = 2025,</span></span>
+<span><span class="co">#&gt;   publisher    = {Zenodo},</span></span>
+<span><span class="co">#&gt;   doi          = {10.5281/zenodo.15643004},</span></span>
+<span><span class="co">#&gt;   url          = {https://doi.org/10.5281/zenodo.15643004},</span></span>
+<span><span class="co">#&gt; }</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="what-about-the-data-sources">What about the data sources?<a class="anchor" aria-label="anchor" href="#what-about-the-data-sources"></a>
+</h3>
+<p>The data sources used to create Virion are referenced directly in the
+deposit metadata. These can be accessed by retrieving the deposit
+metadata.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="va">metadata_json_text</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/export_deposit_metadata.html">export_deposit_metadata</a></span><span class="op">(</span>zenodo_id <span class="op">=</span> <span class="st">"15692263"</span>,format <span class="op">=</span> <span class="st">"json"</span>,verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">metadata_list</span> <span class="op">&lt;-</span> <span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://jeroen.r-universe.dev/jsonlite/reference/fromJSON.html" class="external-link">fromJSON</a></span><span class="op">(</span><span class="va">metadata_json_text</span>,<span class="op">)</span></span>
+<span></span>
+<span><span class="va">related_identifiers</span> <span class="op">&lt;-</span> <span class="va">metadata_list</span><span class="op">$</span><span class="va">metadata</span><span class="op">$</span><span class="va">related_identifiers</span></span>
+<span></span>
+<span><span class="va">required_items_filter</span> <span class="op">&lt;-</span> <span class="va">related_identifiers</span><span class="op">$</span><span class="va">relation_type</span><span class="op">$</span><span class="va">id</span> <span class="op">==</span> <span class="st">"requires"</span></span>
+<span></span>
+<span><span class="va">required_items</span> <span class="op">&lt;-</span> <span class="va">related_identifiers</span><span class="op">[</span><span class="va">required_items_filter</span>,<span class="op">]</span></span>
+<span></span>
+<span><span class="va">required_items</span><span class="op">$</span><span class="va">resource_type</span> <span class="op">&lt;-</span> <span class="va">required_items</span><span class="op">$</span><span class="va">resource_type</span><span class="op">$</span><span class="va">id</span></span>
+<span></span>
+<span><span class="va">required_items</span><span class="op">$</span><span class="va">relation_type</span> <span class="op">&lt;-</span> <span class="st">"requires"</span></span>
+<span></span>
+<span><span class="va">required_items</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_classic.html" class="external-link">kable_material</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<table class="table  lightable-material" style='font-family: "Source Sans Pro", helvetica, sans-serif; margin-left: auto; margin-right: auto;'>
+<thead><tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+identifier
+</th>
+<th style="text-align:left;">
+relation_type
+</th>
+<th style="text-align:left;">
+resource_type
+</th>
+<th style="text-align:left;">
+scheme
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+<a href="https://ftp.ncbi.nlm.nih.gov/genomes/Viruses/AllNuclMetadata/" class="external-link uri">https://ftp.ncbi.nlm.nih.gov/genomes/Viruses/AllNuclMetadata/</a>
+accessed on 2025-06-09
+</td>
+<td style="text-align:left;">
+requires
+</td>
+<td style="text-align:left;">
+dataset
+</td>
+<td style="text-align:left;">
+url
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:left;">
+10.5281/zenodo.5167655
+</td>
+<td style="text-align:left;">
+requires
+</td>
+<td style="text-align:left;">
+dataset
+</td>
+<td style="text-align:left;">
+doi
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+<a href="https://catalog.data.gov/dataset/predict-animals-sampled-c593d" class="external-link uri">https://catalog.data.gov/dataset/predict-animals-sampled-c593d</a>
+</td>
+<td style="text-align:left;">
+requires
+</td>
+<td style="text-align:left;">
+dataset
+</td>
+<td style="text-align:left;">
+url
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+6
+</td>
+<td style="text-align:left;">
+<a href="https://ictv.global/sites/default/files/MSL/ICTV_Master_Species_List_2024_MSL40.v1.xlsx" class="external-link uri">https://ictv.global/sites/default/files/MSL/ICTV_Master_Species_List_2024_MSL40.v1.xlsx</a>
+</td>
+<td style="text-align:left;">
+requires
+</td>
+<td style="text-align:left;">
+dataset
+</td>
+<td style="text-align:left;">
+url
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+7
+</td>
+<td style="text-align:left;">
+<a href="https://ictv.global/sites/default/files/VMR/VMR_MSL40.v1.20250307.xlsx" class="external-link uri">https://ictv.global/sites/default/files/VMR/VMR_MSL40.v1.20250307.xlsx</a>
+</td>
+<td style="text-align:left;">
+requires
+</td>
+<td style="text-align:left;">
+dataset
+</td>
+<td style="text-align:left;">
+url
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section level2">
 <h2 id="what-do-the-fields-mean">What do the fields mean?<a class="anchor" aria-label="anchor" href="#what-do-the-fields-mean"></a>
 </h2>
 <p>Great question! The datapackage.json file contains field
 descriptions. It is fairly human readable but we can take a closer look
 using the frictionless package.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># this function wraps frictionless functions and extracts </span></span>
 <span><span class="va">dict_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_data_dictionary.html">get_data_dictionary</a></span><span class="op">(</span>datapackage_json <span class="op">=</span> <span class="st">"outputs/15692263/datapackage.json"</span><span class="op">)</span></span>
@@ -128,7 +300,7 @@ using the frictionless package.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> NCBIAccession     string  A unique identifier assigned to a record in sequenc…</span></span></code></pre></div>
 <p>Use <code><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">purrr::map</a></code> to make a full data dictionary for a
 given deposit.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">html_tables</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">dict_list</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="va">html_tables</span> <span class="op">&lt;-</span> <span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span><span class="op">)</span> <span class="op">|&gt;</span></span>
