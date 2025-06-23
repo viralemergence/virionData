@@ -118,7 +118,7 @@ download_deposit_version <- function(zenodo_id, deposit_versions = list_deposit_
 
   ## add check for version in dir?
   for(i in 1:length(version_files$links$self)){
-    utils::download.file(url = version_files$links$self[i], destfile = download_path[i])
+    curl::curl_download(url = version_files$links$self[i], destfile = download_path[i])
   }
 
 

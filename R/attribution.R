@@ -45,7 +45,7 @@ export_deposit_metadata <- function(zenodo_id = the$working_version, format, ver
 #'
 #' @examples
 #' \dontrun{
-#' export_deposit_bibtex(zenodo_id ) |>
+#' export_deposit_bibtex(zenodo_id = "15692263" ) |>
 #'   writeLines(con = "outputs/citation.bib")
 #' }
 export_deposit_bibtex <- function(zenodo_id = the$working_version,verbose = TRUE){

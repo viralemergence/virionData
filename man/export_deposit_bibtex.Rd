@@ -19,7 +19,7 @@ Bibtex specific wrapper for export_deposit_metadata
 }
 \examples{
 \dontrun{
-export_deposit_bibtex(zenodo_id ) |>
+export_deposit_bibtex(zenodo_id = "15692263" ) |>
   writeLines(con = "outputs/citation.bib")
 }
 }
