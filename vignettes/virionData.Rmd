@@ -31,7 +31,7 @@ library(kableExtra)
 
 ## Get latest version of the data
 ```{r get data}
-# get data
+# get data - by default this is the latest version of the data.
 get_versioned_data(dir_path = "outputs")
 # list files
 fs::dir_ls("outputs/15692263")
@@ -48,6 +48,60 @@ The virion files are comma delimited with period decimal markers.
 virion <- vroom::vroom(file = "outputs/15692263/virion.csv.gz")
 
 ```
+
+## Cite the data
+
+Citing data makes increases reproducibility and incentivizes data sharing. 
+
+
+```{r citation, results='markup'}
+
+# by default the citation will be generated for the current working version.
+# this is set when we run `get_versioned_data`
+get_version_citation(style = "modern-language-association")
+```
+
+
+
+```{r citation-specific, results='markup'}
+# we can cite a specific version by providing a zenodo id
+get_version_citation(zenodo_id = "15643004",style = "apa")
+
+```
+
+```{r bibtex export}
+# sometimes you want a bibtex entry item
+export_deposit_bibtex("15643004")
+
+```
+
+### What about the data sources?
+
+The data sources used to create Virion are referenced directly in the deposit metadata.
+These can be accessed by retrieving the deposit metadata. 
+
+```{r data sources, results='asis'}
+
+metadata_json_text <- export_deposit_metadata(zenodo_id = "15692263",format = "json",verbose = FALSE)
+
+metadata_list <- jsonlite::fromJSON(metadata_json_text,)
+
+related_identifiers <- metadata_list$metadata$related_identifiers
+
+required_items_filter <- related_identifiers$relation_type$id == "requires"
+
+required_items <- related_identifiers[required_items_filter,]
+
+required_items$resource_type <- required_items$resource_type$id
+
+required_items$relation_type <- "requires"
+
+required_items |>
+  kableExtra::kable() |>
+  kableExtra::kable_material()
+
+```
+
 
 
 ## What do the fields mean?
