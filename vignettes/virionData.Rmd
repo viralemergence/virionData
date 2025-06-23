@@ -107,7 +107,10 @@ required_items |>
 ## What do the fields mean?
 
 Great question! The datapackage.json file contains field descriptions. 
-It is fairly human readable but we can take a closer look using the frictionless package.
+It is fairly human readable but we can take a closer look using some
+built in functions.
+
+For a deeper dive, check out the [frictionless](https://docs.ropensci.org/frictionless/) package.
 
 ```{r frictionless}
 
