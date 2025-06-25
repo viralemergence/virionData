@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">virionData</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,22 +71,30 @@
 <code class="sourceCode R"><span> <span class="fu"><a href="../reference/list_deposit_versions.html">list_deposit_versions</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="../reference/deposit_summary.html">deposit_summary</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         id latest_version publication_date</span></span>
-<span><span class="co">#&gt; 1 15692263           TRUE       2025-06-18</span></span>
-<span><span class="co">#&gt; 2 15677843          FALSE       2025-06-16</span></span>
-<span><span class="co">#&gt; 3 15677137          FALSE       2025-06-16</span></span>
-<span><span class="co">#&gt; 4 15643004          FALSE       2025-06-11</span></span>
+<span><span class="co">#&gt; 1 15733485           TRUE       2025-06-24</span></span>
+<span><span class="co">#&gt; 2 15732796          FALSE       2025-06-24</span></span>
+<span><span class="co">#&gt; 3 15723628          FALSE       2025-06-23</span></span>
+<span><span class="co">#&gt; 4 15723072          FALSE       2025-06-23</span></span>
+<span><span class="co">#&gt; 5 15692263          FALSE       2025-06-18</span></span>
+<span><span class="co">#&gt; 6 15677843          FALSE       2025-06-16</span></span>
+<span><span class="co">#&gt; 7 15677137          FALSE       2025-06-16</span></span>
+<span><span class="co">#&gt; 8 15643004          FALSE       2025-06-11</span></span>
 <span><span class="co">#&gt;                                   doi_url</span></span>
-<span><span class="co">#&gt; 1 https://doi.org/10.5281/zenodo.15692263</span></span>
-<span><span class="co">#&gt; 2 https://doi.org/10.5281/zenodo.15677843</span></span>
-<span><span class="co">#&gt; 3 https://doi.org/10.5281/zenodo.15677137</span></span>
-<span><span class="co">#&gt; 4 https://doi.org/10.5281/zenodo.15643004</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 https://doi.org/10.5281/zenodo.15733485</span></span>
+<span><span class="co">#&gt; 2 https://doi.org/10.5281/zenodo.15732796</span></span>
+<span><span class="co">#&gt; 3 https://doi.org/10.5281/zenodo.15723628</span></span>
+<span><span class="co">#&gt; 4 https://doi.org/10.5281/zenodo.15723072</span></span>
+<span><span class="co">#&gt; 5 https://doi.org/10.5281/zenodo.15692263</span></span>
+<span><span class="co">#&gt; 6 https://doi.org/10.5281/zenodo.15677843</span></span>
+<span><span class="co">#&gt; 7 https://doi.org/10.5281/zenodo.15677137</span></span>
+<span><span class="co">#&gt; 8 https://doi.org/10.5281/zenodo.15643004</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="get-latest-version-of-the-data">Get latest version of the data<a class="anchor" aria-label="anchor" href="#get-latest-version-of-the-data"></a>
 </h2>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get data - by default this is the latest version of the data.</span></span>
-<span><span class="fu"><a href="../reference/get_versioned_data.html">get_versioned_data</a></span><span class="op">(</span>dir_path <span class="op">=</span> <span class="st">"outputs"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/get_versioned_data.html">get_versioned_data</a></span><span class="op">(</span>version <span class="op">=</span> <span class="st">"15692263"</span>, dir_path <span class="op">=</span> <span class="st">"outputs"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Cole Brookson, Collin Schwantes, Timothée Poisot, Tad Dallas, Greg Albery, Colin J. Carlson, Cecilia A. Sanchez, Renata Muylaert, Evan Eskew, Rory Gibb, &amp; Maxwell J Farrell. (2025). The Global Virome in One Network (VIRION): Data Package [Data set]. Zenodo. https://doi.org/10.5281/zenodo.15692263</span></span>
 <span><span class="co">#&gt; deposit will download to outputs/15692263</span></span>
 <span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">outputs/15692263</span></span></span>
@@ -279,7 +287,7 @@ url
 </div>
 </div>
 <div class="section level2">
-<h2 id="what-do-the-fields-mean">What do the fields mean?<a class="anchor" aria-label="anchor" href="#what-do-the-fields-mean"></a>
+<h2 id="what-do-the-fields-in-virion-mean">What do the fields in VIRION mean?<a class="anchor" aria-label="anchor" href="#what-do-the-fields-in-virion-mean"></a>
 </h2>
 <p>Great question! The datapackage.json file contains field
 descriptions. It is fairly human readable but we can take a closer look
@@ -316,9 +324,9 @@ given deposit.</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span>collapse <span class="op">=</span> <span class="st">"&lt;br&gt;"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="va">tables</span><span class="op">)</span></span></code></pre></div>
-<h3 id="what-do-the-fields-mean-1">
+<h3 id="what-do-the-fields-in-virion-mean-1">
 detection_csv
-<a class="anchor" aria-label="anchor" href="#what-do-the-fields-mean-1"></a>
+<a class="anchor" aria-label="anchor" href="#what-do-the-fields-in-virion-mean-1"></a>
 </h3>
 <br><table class="table  lightable-material" style='font-family: "Source Sans Pro", helvetica, sans-serif; margin-left: auto; margin-right: auto;'>
 <thead><tr>
@@ -397,9 +405,9 @@ GenBank
 </tr>
 </tbody>
 </table>
-<br><h3 id="what-do-the-fields-mean-2">
+<br><h3 id="what-do-the-fields-in-virion-mean-2">
 edgelist
-<a class="anchor" aria-label="anchor" href="#what-do-the-fields-mean-2"></a>
+<a class="anchor" aria-label="anchor" href="#what-do-the-fields-in-virion-mean-2"></a>
 </h3>
 <br><table class="table  lightable-material" style='font-family: "Source Sans Pro", helvetica, sans-serif; margin-left: auto; margin-right: auto;'>
 <thead><tr>
@@ -449,9 +457,9 @@ Row number from current VIRION version
 </tr>
 </tbody>
 </table>
-<br><h3 id="what-do-the-fields-mean-3">
+<br><h3 id="what-do-the-fields-in-virion-mean-3">
 provenance_csv
-<a class="anchor" aria-label="anchor" href="#what-do-the-fields-mean-3"></a>
+<a class="anchor" aria-label="anchor" href="#what-do-the-fields-in-virion-mean-3"></a>
 </h3>
 <br><table class="table  lightable-material" style='font-family: "Source Sans Pro", helvetica, sans-serif; margin-left: auto; margin-right: auto;'>
 <thead><tr>
@@ -547,9 +555,9 @@ PubMed identifiers for literature sources
 </tr>
 </tbody>
 </table>
-<br><h3 id="what-do-the-fields-mean-4">
+<br><h3 id="what-do-the-fields-in-virion-mean-4">
 taxonomy_host
-<a class="anchor" aria-label="anchor" href="#what-do-the-fields-mean-4"></a>
+<a class="anchor" aria-label="anchor" href="#what-do-the-fields-in-virion-mean-4"></a>
 </h3>
 <br><table class="table  lightable-material" style='font-family: "Source Sans Pro", helvetica, sans-serif; margin-left: auto; margin-right: auto;'>
 <thead><tr>
@@ -644,9 +652,9 @@ taxonomy.
 </tr>
 </tbody>
 </table>
-<br><h3 id="what-do-the-fields-mean-5">
+<br><h3 id="what-do-the-fields-in-virion-mean-5">
 taxonomy_virus
-<a class="anchor" aria-label="anchor" href="#what-do-the-fields-mean-5"></a>
+<a class="anchor" aria-label="anchor" href="#what-do-the-fields-in-virion-mean-5"></a>
 </h3>
 <br><table class="table  lightable-material" style='font-family: "Source Sans Pro", helvetica, sans-serif; margin-left: auto; margin-right: auto;'>
 <thead><tr>
@@ -765,9 +773,9 @@ GenBank
 </tr>
 </tbody>
 </table>
-<br><h3 id="what-do-the-fields-mean-6">
+<br><h3 id="what-do-the-fields-in-virion-mean-6">
 temporal_csv
-<a class="anchor" aria-label="anchor" href="#what-do-the-fields-mean-6"></a>
+<a class="anchor" aria-label="anchor" href="#what-do-the-fields-in-virion-mean-6"></a>
 </h3>
 <br><table class="table  lightable-material" style='font-family: "Source Sans Pro", helvetica, sans-serif; margin-left: auto; margin-right: auto;'>
 <thead><tr>
@@ -879,9 +887,9 @@ Reports the day of actual sample collection (GenBank and Predict)
 </tr>
 </tbody>
 </table>
-<br><h3 id="what-do-the-fields-mean-7">
+<br><h3 id="what-do-the-fields-in-virion-mean-7">
 virion_csv
-<a class="anchor" aria-label="anchor" href="#what-do-the-fields-mean-7"></a>
+<a class="anchor" aria-label="anchor" href="#what-do-the-fields-in-virion-mean-7"></a>
 </h3>
 <br><table class="table  lightable-material" style='font-family: "Source Sans Pro", helvetica, sans-serif; margin-left: auto; margin-right: auto;'>
 <thead><tr>
