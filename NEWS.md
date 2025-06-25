@@ -1,4 +1,4 @@
-# virionData (development version)
+# virionData 1.0.0
 
 - Added attribution documentation
 
