@@ -32,7 +32,7 @@ library(kableExtra)
 ## Get latest version of the data
 ```{r get data}
 # get data - by default this is the latest version of the data.
-get_versioned_data(dir_path = "outputs")
+get_versioned_data(version = "15692263", dir_path = "outputs")
 # list files
 fs::dir_ls("outputs/15692263")
 ```
@@ -104,7 +104,7 @@ required_items |>
 
 
 
-## What do the fields mean?
+## What do the fields in VIRION mean?
 
 Great question! The datapackage.json file contains field descriptions. 
 It is fairly human readable but we can take a closer look using some

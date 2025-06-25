@@ -12,6 +12,8 @@ versions of the [VIRION data set stored in Zenodo](https://doi.org/10.5281/zenod
 This package allows users to select specific versions of the data set to work
 with, provides easy access to metadata, and allows users to export metadata. 
 
+The pipeline for creating virion can be found here: https://github.com/viralemergence/virion
+
 ## Installation
 
 You can install the development version of virionData from [GitHub](https://github.com/) with:
