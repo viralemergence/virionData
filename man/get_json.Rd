@@ -13,7 +13,8 @@ get_json(url)
 List. JSON as a list
 }
 \description{
-Get json
+\link{jsonlite::fromJSON} wrapped in \link{rlang::try_fetch} to make calls
+smoother.
 }
 \examples{
 \dontrun{

@@ -2,6 +2,9 @@
 
 #' Get json
 #'
+#' \link{jsonlite::fromJSON} wrapped in \link{rlang::try_fetch} to make calls
+#' smoother.
+#'
 #' @param url String. A url fed to \link{jsonlite::fromJSON}
 #'
 #' @returns List. JSON as a list
@@ -25,8 +28,8 @@ get_json <- function(url){
 #'
 #' Appends a zenodo id to the zenodo api url.
 #'
-#' @param base_url
-#' @param id
+#' @param base_url string. url for zenodo api
+#' @param id string. zenodo id.
 #'
 #' @returns String. URL for zenodo api.
 #' @export
@@ -37,6 +40,22 @@ get_json <- function(url){
 make_url <- function(base_url = "https://zenodo.org/api/records/%s", id){
  out <- sprintf("https://zenodo.org/api/records/%s", id)
  return(out)
+}
+
+download_refresh <- function(file_url, local, refresh){
+
+  if(refresh){
+    rlang::inform("refreshing file cache")
+    curl::curl_download(url =  file_url,
+                        destfile = local)
+  }else if(!fs::file_exists(local)){
+    rlang::inform("downloading file")
+    curl::curl_download(url =  file_url,
+                        destfile = local)
+  } else {
+    rlang::inform("using cached file")
+  }
+  return(local)
 }
 
 

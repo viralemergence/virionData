@@ -14,7 +14,7 @@ Character. Version identifier from Zenodo.
 }
 \description{
 Checks that version ids are properly formatted. IDs should
- either be integers ("15643003") OR "latest"
+either be integers ("15643003") OR "latest"
 }
 \examples{
 

@@ -4,7 +4,7 @@
 \alias{deposit}
 \title{deposit}
 \value{
-A `deposit` class (R6 class)
+A \code{deposit} class (R6 class)
 
 invisibly returns self
 
@@ -12,11 +12,20 @@ dataframe of remote csv file.
 
 String. Path to downlod location.
 
+data.frame from \code{\link[readr:read_delim]{readr::read_csv()}}
+
 String. cleaned zenodo id
 
 String. A cleaned zenodo id.
 
 metadata in the specificed format (invisible)
+
+List. Named list of data frames with the following fields:
+\itemize{
+\item name = field name
+\item type = field type
+\item description = characterization of the field
+}
 }
 \description{
 An R6 client for getting virion data and metadata.
@@ -87,6 +96,27 @@ virion_deposit$download_versioned_data("latest")
 virion_deposit$download_versioned_data("19502921")
 }
 
+Load a local csv file
+
+Assumes you would like to load the file from
+the current working version.
+
+If the csv file is not present, a persistent version
+of the file will be downloaded to your machine.
+
+
+## ------------------------------------------------
+## Method `deposit$load_local_csv_file`
+## ------------------------------------------------
+
+\dontrun{
+
+virion <- deposit$new()
+virion$set_working_version()
+virion$working_files$file_key
+virion$load_local_csv_file("virion.csv.gz")
+}
+
 
 ## ------------------------------------------------
 ## Method `deposit$check_zenodo_id`
@@ -112,6 +142,20 @@ virion_deposit$sanitize_id(" 2948598")
 
 \dontrun{
  virion_deposit$export_metadata("working")
+}
+
+Title
+
+
+## ------------------------------------------------
+## Method `deposit$get_data_dictionary`
+## ------------------------------------------------
+
+\dontrun{
+virion <- deposit$new()
+virion$set_working_version()
+virion$get_data_dictionary()
+
 }
 
 }
@@ -143,9 +187,11 @@ virion_deposit$sanitize_id(" 2948598")
 \item \href{#method-deposit-set_working_version}{\code{deposit$set_working_version()}}
 \item \href{#method-deposit-load_remote_csv_file}{\code{deposit$load_remote_csv_file()}}
 \item \href{#method-deposit-download_versioned_data}{\code{deposit$download_versioned_data()}}
+\item \href{#method-deposit-load_local_csv_file}{\code{deposit$load_local_csv_file()}}
 \item \href{#method-deposit-check_zenodo_id}{\code{deposit$check_zenodo_id()}}
 \item \href{#method-deposit-sanitize_id}{\code{deposit$sanitize_id()}}
 \item \href{#method-deposit-export_metadata}{\code{deposit$export_metadata()}}
+\item \href{#method-deposit-get_data_dictionary}{\code{deposit$get_data_dictionary()}}
 \item \href{#method-deposit-clone}{\code{deposit$clone()}}
 }
 }
@@ -153,7 +199,7 @@ virion_deposit$sanitize_id(" 2948598")
 \if{html}{\out{<a id="method-deposit-new"></a>}}
 \if{latex}{\out{\hypertarget{method-deposit-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new `deposit` object, as an \pkg{R6}
+Create a new \code{deposit} object, as an \link[R6:R6-package]{R6}
 client. This object is connected to the zenodo deposit for virion
 and is the gateway for accessing different versions of the data.
 \subsection{Usage}{
@@ -168,7 +214,7 @@ and is the gateway for accessing different versions of the data.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A new `deposit` object
+A new \code{deposit} object
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -187,10 +233,10 @@ virion_deposit <- deposit$new()
 \subsection{Method \code{set_working_version()}}{
 Set the version of the data you would
 like to work with. Note that the structure of Virion
- data may change through time.
+data may change through time.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{deposit$set_working_version(
-  zenodo_id,
+  zenodo_id = "latest",
   style = "apa",
   print_bibtex = TRUE,
   print_citation = TRUE
@@ -232,11 +278,21 @@ virion_deposit$set_working_version("19502921")
 \if{html}{\out{<a id="method-deposit-load_remote_csv_file"></a>}}
 \if{latex}{\out{\hypertarget{method-deposit-load_remote_csv_file}{}}}
 \subsection{Method \code{load_remote_csv_file()}}{
-Load a remote csv directly into the environment
+Load a remote csv listed in the working files field
+directly into the environment.
 
-Can handle either csv or csv.gz files
+Can handle either csv or csv.gz files. This function
+downloads a temporary file to your machine, reads it,
+then returns a dataframe.
+
+The local file cache is removed when your R session
+restarts.
+
+Consider using the \link{download_versioned_data} to
+save a persistent version of the virion dataset on
+your machine.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{deposit$load_remote_csv_file(file_key, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{deposit$load_remote_csv_file(file_key, refresh = FALSE, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -244,7 +300,9 @@ Can handle either csv or csv.gz files
 \describe{
 \item{\code{file_key}}{String. A file key as seen in the working files field}
 
-\item{\code{...}}{Additional arguments to pass to \link{readr::read_csv}}
+\item{\code{refresh}}{Logical. Should files be re-downloaded.}
+
+\item{\code{...}}{Additional arguments to pass to \code{\link[readr:read_delim]{readr::read_csv()}}}
 }
 \if{html}{\out{</div>}}
 }
@@ -269,11 +327,15 @@ virion_data <- virion_deposit$load_remote_csv_file("virion.csv.gz")
 Download versioned data
 
 Downloads all the files for a particular version of
-Virion to `dir/zenodo_id`.
+Virion to \code{dir/zenodo_id}.
 
 This function does not change the working version!
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{deposit$download_versioned_data(zenodo_id = "working", dir = "outputs")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{deposit$download_versioned_data(
+  zenodo_id = "working",
+  dir = "outputs",
+  refresh = FALSE
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -282,6 +344,8 @@ This function does not change the working version!
 \item{\code{zenodo_id}}{String. A zenodo id, working or latest}
 
 \item{\code{dir}}{String. Storage location for files}
+
+\item{\code{refresh}}{Logical. Should files be re-downloaded.}
 }
 \if{html}{\out{</div>}}
 }
@@ -296,6 +360,49 @@ virion_deposit$download_versioned_data("latest")
 
 # download files for some zenodo id
 virion_deposit$download_versioned_data("19502921")
+}
+
+Load a local csv file
+
+Assumes you would like to load the file from
+the current working version.
+
+If the csv file is not present, a persistent version
+of the file will be downloaded to your machine.
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-deposit-load_local_csv_file"></a>}}
+\if{latex}{\out{\hypertarget{method-deposit-load_local_csv_file}{}}}
+\subsection{Method \code{load_local_csv_file()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{deposit$load_local_csv_file(file_key, refresh, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{file_key}}{string. Name of file from \link{working_files}}
+
+\item{\code{refresh}}{logical. Should the file be re-downloaded?}
+
+\item{\code{...}}{Additional parameters to pass to \code{\link[readr:read_delim]{readr::read_csv()}}}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+
+virion <- deposit$new()
+virion$set_working_version()
+virion$working_files$file_key
+virion$load_local_csv_file("virion.csv.gz")
 }
 
 }
@@ -390,6 +497,46 @@ Export metadata for a version of the deposit.
 \preformatted{
 \dontrun{
  virion_deposit$export_metadata("working")
+}
+
+Title
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-deposit-get_data_dictionary"></a>}}
+\if{latex}{\out{\hypertarget{method-deposit-get_data_dictionary}{}}}
+\subsection{Method \code{get_data_dictionary()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{deposit$get_data_dictionary(
+  file_key = "datapackage.json",
+  dir = tempdir(),
+  refresh
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{file_key}}{string. Name of file from \link{working_files}}
+
+\item{\code{dir}}{string. Name of directory}
+
+\item{\code{refresh}}{refresh Logical. Should files be re-downloaded.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+virion <- deposit$new()
+virion$set_working_version()
+virion$get_data_dictionary()
+
 }
 
 }

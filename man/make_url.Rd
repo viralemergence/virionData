@@ -7,7 +7,9 @@
 make_url(base_url = "https://zenodo.org/api/records/\%s", id)
 }
 \arguments{
-\item{id}{}
+\item{base_url}{string. url for zenodo api}
+
+\item{id}{string. zenodo id.}
 }
 \value{
 String. URL for zenodo api.

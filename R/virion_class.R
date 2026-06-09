@@ -46,8 +46,8 @@ deposit <- R6::R6Class("deposit",
                          working_citation = "",
                          #' @field working_files Data frame. Working files consist of key (file name) and url (url to file on zenodo)
                          working_files = data.frame(),
-                         ### init deposit ####
-                         #' @description Create a new `deposit` object, as an \pkg{R6}
+
+                         #' @description Create a new `deposit` object, as an [R6][R6::R6-package]
                          #' client. This object is connected to the zenodo deposit for virion
                          #' and is the gateway for accessing different versions of the data.
                          #'
@@ -89,7 +89,7 @@ deposit <- R6::R6Class("deposit",
 
                            invisible(self)
                          },
-                         ### set working version ####
+
                          #' @description Set the version of the data you would
                          #' like to work with. Note that the structure of Virion
                          #'  data may change through time.
@@ -113,7 +113,7 @@ deposit <- R6::R6Class("deposit",
                          #' virion_deposit$set_working_version("19502921")
                          #' }
                          #'
-                         set_working_version = function(zenodo_id,
+                         set_working_version = function(zenodo_id = "latest",
                                                         style = "apa",
                                                         print_bibtex = TRUE,
                                                         print_citation = TRUE) {
@@ -142,12 +142,23 @@ deposit <- R6::R6Class("deposit",
                            invisible(self)
                          },
                          ## stream files -- makes and deletes a temp file
-                         #' @description Load a remote csv directly into the environment
+                         #' @description Load a remote csv listed in the working files field
+                         #' directly into the environment.
                          #'
-                         #' Can handle either csv or csv.gz files
+                         #' Can handle either csv or csv.gz files. This function
+                         #' downloads a temporary file to your machine, reads it,
+                         #' then returns a dataframe.
+                         #'
+                         #' The local file cache is removed when your R session
+                         #' restarts.
+                         #'
+                         #' Consider using the \link{download_versioned_data} to
+                         #' save a persistent version of the virion dataset on
+                         #' your machine.
                          #'
                          #' @param file_key String. A file key as seen in the working files field
-                         #' @param ... Additional arguments to pass to \link{readr::read_csv}
+                         #' @param ... Additional arguments to pass to [readr::read_csv()]
+                         #' @param refresh Logical. Should files be re-downloaded.
                          #'
                          #' @returns dataframe of remote csv file.
                          #' @export
@@ -160,21 +171,17 @@ deposit <- R6::R6Class("deposit",
                          #'
                          #' }
                          load_remote_csv_file = function(file_key,
+                                                         refresh = FALSE,
                                                          ... # additional arguments for read_csv
                          ){
 
-                           url_file <- self$working_files[self$working_files$file_key == file_key, "file_url"]
+                           match.arg(arg = fs::path_ext(file_key),choices = c("csv","csv.gz"))
 
-                           print(url_file)
+                           local_path <- private$load_remote_file(file_key = file_key,
+                                                                  dir = tempdir(),
+                                                                  refresh = refresh)
 
-                           extension <- fs::path_ext(file_key)
-                           local <- tempfile(fileext = extension)
-                           curl::curl_download(url =  url_file,
-                                               destfile = local)
-
-
-                           out <- readr::read_csv(file = local,...)
-                           unlink(local)
+                           out <- readr::read_csv(file = local_path,...)
 
                            return(out)
 
@@ -189,6 +196,7 @@ deposit <- R6::R6Class("deposit",
                          #'
                          #' @param zenodo_id String. A zenodo id, working or latest
                          #' @param dir String. Storage location for files
+                         #' @param refresh Logical. Should files be re-downloaded.
                          #'
                          #' @returns String. Path to downlod location.
                          #' @export
@@ -206,7 +214,8 @@ deposit <- R6::R6Class("deposit",
                          #' }
                          #'
                          download_versioned_data = function(zenodo_id = "working",
-                                                            dir = "outputs"){
+                                                            dir = "outputs",
+                                                            refresh = FALSE){
                            # preserve the working version of the object
                            working_version <- self$working_version
 
@@ -220,13 +229,17 @@ deposit <- R6::R6Class("deposit",
                            # make the directory if it doesnt exist
                            version_dir <- fs::path(dir, self$working_version)
                            fs::dir_create(path = version_dir)
+                           self$working_files$local_path <- ""
 
                            for(i in 1:nrow(self$working_files)){
                              item <- self$working_files[i,]
-                             local  <- fs::path(version_dir,item$file_key)
 
-                             curl::curl_download(url =  item$file_url,
-                                                 destfile = local)
+                             local <- private$load_remote_file(file_key =item$file_key,
+                                                               dir = version_dir,
+                                                               refresh = refresh )
+
+                             # append local files to working files
+                             self$working_files[i,"local_path"] <- local
                            }
 
                            #keep the working version the same
@@ -237,6 +250,56 @@ deposit <- R6::R6Class("deposit",
                            }
 
                            return(version_dir)
+
+                         },
+                         ## load a persistent version of the file
+                         ## assume working version is the version id
+                         ## inform?
+                         #' Load a local csv file
+                         #'
+                         #' Assumes you would like to load the file from
+                         #' the current working version.
+                         #'
+                         #' If the csv file is not present, a persistent version
+                         #' of the file will be downloaded to your machine.
+                         #'
+                         #' @param file_key string. Name of file from \link{working_files}
+                         #' @param refresh logical. Should the file be re-downloaded?
+                         #' @param ... Additional parameters to pass to [readr::read_csv()]
+                         #'
+                         #' @returns data.frame from [readr::read_csv()]
+                         #' @export
+                         #'
+                         #' @examples
+                         #' \dontrun{
+                         #'
+                         #' virion <- deposit$new()
+                         #' virion$set_working_version()
+                         #' virion$working_files$file_key
+                         #' virion$load_local_csv_file("virion.csv.gz")
+                         #' }
+                         #'
+                         load_local_csv_file = function(file_key,
+                                                        refresh,
+                                                        ...){
+
+                           # should be one of csv or csg.gz
+                           match.arg(fs::path_ext(file_key),choices = c(".csv", "csv.gz"))
+
+                           ## loads from the working version
+                           if(self$working_version == ""){
+                             rlang::abort("Set the working version")
+                           }
+                           ## check that there are local files in the working files
+                           if(any(!"local_path" %in% names(self$working_files), refresh)){
+                             self$download_versioned_data(refresh = refresh)
+                           }
+                           ## match to key
+                           local_path <- self$working_files[self$working_files$file_key == file_key, "local_path"]
+
+                           out <- readr::read_csv(local_path,...)
+
+                           return(out)
 
                          },
                          ## check id
@@ -333,7 +396,86 @@ deposit <- R6::R6Class("deposit",
                            }
 
                            invisible(content_text)
+                         },
+                         #' Title
+                         #'
+                         #' @param file_key string. Name of file from \link{working_files}
+                         #' @param dir string. Name of directory
+                         #' @param refresh refresh Logical. Should files be re-downloaded.
+                         #'
+                         #' @returns  List. Named list of data frames with the following fields:
+                         #' * name = field name
+                         #' * type = field type
+                         #' * description = characterization of the field
+                         #' @export
+                         #'
+                         #' @examples
+                         #' \dontrun{
+                         #' virion <- deposit$new()
+                         #' virion$set_working_version()
+                         #' virion$get_data_dictionary()
+                         #'
+                         #' }
+                         #'
+                         get_data_dictionary = function(file_key = "datapackage.json", dir = tempdir(), refresh){
+                           ## loads from the working version
+                           if(self$working_version == ""){
+                             rlang::abort("Set the working version")
+                           }
+
+                           if(any(refresh,!"local_path" %in% names(self$working_files))){
+                             # always load the file from remote if refresh is true or no local paths
+                             local_path <- private$load_remote_file(file_key = file_key,
+                                                                    dir = dir,
+                                                                    refresh = refresh)
+                           } else if("local_path" %in% names(self$working_files)){
+                             # else grab the file from self if a local path is recorded
+                             local_path <- self$working_files[self$working_files$file_key == file_key, "local_path"]
+                           }
+
+                           get_data_dictionary(datapackage_json = local_path)
                          }
 
+                       ),
+                       private = list(
+                         # @description Downloads remote files to a specific location.
+                         #
+                         # @param file_key string. Name of file from \link{working_files}
+                         # @param dir string. Name of directory
+                         # @param refresh Logical. Should files be re-downloaded.
+                         #
+                         # @returns String. Path to local file
+                         # @noRd
+                         load_remote_file = function(file_key, dir, refresh ){
+
+                           if(self$working_version == ""){
+                             rlang::abort("set working version")
+                           }
+
+                           ## make sure that types are correct
+                           assertthat::assert_that(
+                             assertthat::is.string(file_key),msg = "file_key must be a string."
+                           )
+                           assertthat::assert_that(
+                             assertthat::is.string(dir),msg = "dir must be a string."
+                           )
+
+                           assertthat::assert_that(
+                             assertthat::is.flag(refresh),msg = "refresh must be TRUE or FALSE."
+                           )
+
+                           file_url <- self$working_files[self$working_files$file_key == file_key, "file_url"]
+
+                           # make a directory in dir for the current working version
+                           local_dir <- fs::path(dir,self$working_version)
+                           fs::dir_create(local_dir)
+                           # make a file path in that directory
+                           local_path <- fs::path(local_dir, file_key)
+
+                           out  <- download_refresh(file_url,local_path,refresh)
+                           return(out)
+                         }
                        )
+
+
 )
