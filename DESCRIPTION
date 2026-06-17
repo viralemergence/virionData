@@ -20,10 +20,12 @@ BugReports: https://github.com/viralemergence/virionData/issues
 Suggests: 
     dplyr,
     frictionless,
+    glue,
     httptest,
     kableExtra,
     knitr,
     rmarkdown,
+    stringr,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Imports: 

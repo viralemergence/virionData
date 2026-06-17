@@ -7,13 +7,13 @@
 get_json(url)
 }
 \arguments{
-\item{url}{String. A url fed to \link{jsonlite::fromJSON}}
+\item{url}{String. A url fed to \code{\link[jsonlite:fromJSON]{jsonlite::fromJSON()}}}
 }
 \value{
 List. JSON as a list
 }
 \description{
-\link{jsonlite::fromJSON} wrapped in \link{rlang::try_fetch} to make calls
+\code{\link[jsonlite:fromJSON]{jsonlite::fromJSON()}} wrapped in \code{\link[rlang:try_fetch]{rlang::try_fetch()}} to make calls
 smoother.
 }
 \examples{

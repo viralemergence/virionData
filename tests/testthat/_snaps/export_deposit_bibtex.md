@@ -2,7 +2,7 @@
 
     Code
       export_deposit_bibtex(zenodo_id = "15643004", verbose = TRUE)
-    Output
+    Message
       @dataset{cole_brookson_2025_15643004,
         author       = {Cole Brookson and
                         Collin Schwantes and

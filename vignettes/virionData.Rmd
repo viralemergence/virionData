@@ -18,14 +18,159 @@ knitr::opts_chunk$set(
 library(virionData)
 library(frictionless)
 library(kableExtra)
+library(glue)
+library(stringr)
 ```
 
 
-## Check available versions of the dataset
+The **virionData** package is meant to facilitate access to the virion dataset
+on Zenodo and nudge users towards best practices for data use. 
+
+## Make a new deposit object
+
+The virionData package contains a [class of object](https://r6.r-lib.org/articles/Introduction.html#basics) called a deposit. 
+The deposit object contains attributes related to the Zenodo deposit, allows you to 
+establish a working version of the data, and contains methods for accessing 
+versioned data.
+
+```{r new virion}
+
+virion <- deposit$new()
+# see the latest version of virion 
+virion$latest_version
+# see a table of all versions, their publication dates, and doi's
+virion$summary_df |> head()
+```
+
+## Set the working version
+
+After you make a new deposit object, you will likely want to set the data version.
+Here you can supply a specific Zenodo id OR simply use "latest" to get the latest
+version of the data. 
+
+Setting the working version will add some additional metadata to your virion
+object and enable you to start working with data. 
+
+`virion$working_files` will be added to the object, allowing you to specify
+the files you'd like to work with.
+
+```{r set working version}
+
+# get the latest version of the data
+virion$set_working_version(zenodo_id = "latest")
+# Get a specific version of the data. 
+# It is usually a good idea to explicitly provide the version id. 
+virion$set_working_version(zenodo_id = "20517628", print_bibtex = FALSE,
+                           print_citation = FALSE)
+
+# after you've set the working version, you can get the working citation or working bibtex.
+virion$working_citation
+
+# you can also see the files contained in that version of virion
+# the file_key field is used throughout the package to access the files.
+virion$working_files
+```
+
+## Start working with data
+
+Here you have two options. One is to download a persistent copy of the data to
+your machine and the other is to load the data from Zenodo without storing a
+persistent copy. 
+
+*Note* Starting in May 2026, taxonomic data is split from the main `virion.csv.gz` file and can be joined based on TaxHashID.
+
+`load_*_csv` assumes you are trying to load the data from the current working
+version. 
+
+```{r get the data}
+
+# if the csv is not already downloaded, it will be downloaded first
+virion_data <- virion$load_local_csv_file(file_key = "virion.csv.gz",
+                                          refresh = TRUE)
+
+# loading a remote csv creates a temporary file that will be deleted when
+# the R session ends.
+virion_data_remote <- virion$load_remote_csv_file(file_key = "virion.csv.gz")
+
+# While files for a particular version of virion on Zenodo are unlikely to change,
+# you can re-download cached files by using the the refresh parameter. 
+virion_data_remote <- virion$load_remote_csv_file(file_key = "virion.csv.gz",
+                                                  refresh = TRUE)
+
+```
+
+
+## What do the fields mean?
+
+The `datapackage.json` describes the contents of the files, including
+field level descriptions. The `get_data_dictionary` method creates a table of
+field names, types, and descriptions for each csv file. 
+
+```{r data-dictionary, results='asis'}
+
+data_dictionary <- virion$get_data_dictionary(refresh = FALSE)
+
+data_dictionary$virion_csv |>
+  dplyr::mutate(description = stringr::str_wrap(description)) |>
+  kableExtra::kbl() |>
+  kableExtra::kable_material(full_width = FALSE) |>
+  kableExtra::column_spec(3, width = "30em") 
+
+```
+
+## Citation information
+
+You can get the citation text or bibtex for the working version.
+
+```{r citation}
+
+virion$working_citation |>
+  stringr::str_wrap() |>
+  cat()
+
+
+```
+
+```{r bibtex}
+virion$working_bibtex |> cat()
+
+```
+
+## Working version deposit metadata
+
+If you want to access the full deposit metadata for the current working version,
+maybe to dig into the persistent identifier graph or pull out the code version
+used to make the data, you can do that by looking at the `working_json` field.
+
+```{r working_version_metadata}
+## When was the version last modified?
+virion$working_json$modified
+
+## What version of the `virion` codebase was used to make this version of virion?
+virion$working_json$metadata$related_identifiers |>
+  dplyr::filter(resource_type == "software") |>
+  dplyr::pull(identifier) |>
+  (\(val) glue::glue("https://doi.org/{val}"))()
+
+
+```
+
+## Functional programming approach
+
+This approach uses package environment variables, making
+working with multiple version slightly more complicated. Users also need to be 
+aware of when the working version will and won't be changed, and when 
+that will impact the way functions work. 
+
+Changes set in the R6 object will not be propogate 
+
+
+### Check available versions of the dataset
 
 ```{r list deposits}
  list_deposit_versions()
-  deposit_summary()
+  deposit_summary() |>
+    head()
 
 ```
 
@@ -54,7 +199,7 @@ virion <- vroom::vroom(file = "outputs/15692263/virion.csv.gz")
 Citing data makes increases reproducibility and incentivizes data sharing. 
 
 
-```{r citation, results='markup'}
+```{r citation-functional, results='markup'}
 
 # by default the citation will be generated for the current working version.
 # this is set when we run `get_versioned_data`

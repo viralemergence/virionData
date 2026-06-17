@@ -2,10 +2,10 @@
 
 #' Get json
 #'
-#' \link{jsonlite::fromJSON} wrapped in \link{rlang::try_fetch} to make calls
+#' [jsonlite::fromJSON()] wrapped in [rlang::try_fetch()] to make calls
 #' smoother.
 #'
-#' @param url String. A url fed to \link{jsonlite::fromJSON}
+#' @param url String. A url fed to [jsonlite::fromJSON()]
 #'
 #' @returns List. JSON as a list
 #' @export

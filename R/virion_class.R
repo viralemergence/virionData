@@ -7,6 +7,7 @@
 #'
 #' @description An R6 client for getting virion data and metadata.
 #'
+#'
 #' @return A `deposit` class (R6 class)
 #' @examples
 #' \dontrun{
@@ -46,6 +47,8 @@ deposit <- R6::R6Class("deposit",
                          working_citation = "",
                          #' @field working_files Data frame. Working files consist of key (file name) and url (url to file on zenodo)
                          working_files = data.frame(),
+                         #' @field working_json list. Metadata for the working version.
+                         working_json = list(),
 
                          #' @description Create a new `deposit` object, as an [R6][R6::R6-package]
                          #' client. This object is connected to the zenodo deposit for virion
@@ -74,9 +77,23 @@ deposit <- R6::R6Class("deposit",
 
                            versions_json <- get_json(parent_json$links$versions)
 
-                           self$all_versions <- as.character(versions_json$hits$hits$id)
-                           versions_metadata <- versions_json$hits$hits
+                           ## multiple pages of versions are returned so must
+                           # iterate over them
 
+                           versions_metadata <- purrr::map_df( versions_json$links,function(x){
+                             json_x <- get_json(x)
+
+                             out <- (json_x$hits$hits)
+                             return(out)
+                           }
+                           )
+
+
+                           self$all_versions <- versions_metadata |>
+                             dplyr::pull(id) |>
+                             as.character()
+
+                           # latest version is always on first page so does not need to change
                            versions_metadata$latest_version <- purrr::map_lgl(versions_metadata$metadata$relations$version, \(x){
                              x$is_last
                            })
@@ -138,6 +155,7 @@ deposit <- R6::R6Class("deposit",
                            self$working_citation <- get_version_citation(zenodo_id = self$working_version,
                                                                          style = style,
                                                                          verbose = print_citation)
+                           self$working_json <- working_json
 
                            invisible(self)
                          },
@@ -152,11 +170,11 @@ deposit <- R6::R6Class("deposit",
                          #' The local file cache is removed when your R session
                          #' restarts.
                          #'
-                         #' Consider using the \link{download_versioned_data} to
+                         #' Consider using the `download_versioned_data` to
                          #' save a persistent version of the virion dataset on
                          #' your machine.
                          #'
-                         #' @param file_key String. A file key as seen in the working files field
+                         #' @param file_key String. A file key as seen in the `working_files` field
                          #' @param ... Additional arguments to pass to [readr::read_csv()]
                          #' @param refresh Logical. Should files be re-downloaded.
                          #'
@@ -175,7 +193,7 @@ deposit <- R6::R6Class("deposit",
                                                          ... # additional arguments for read_csv
                          ){
 
-                           match.arg(arg = fs::path_ext(file_key),choices = c("csv","csv.gz"))
+                           match.arg(arg = fs::path_ext(file_key),choices = c("csv","gz"))
 
                            local_path <- private$load_remote_file(file_key = file_key,
                                                                   dir = tempdir(),
@@ -255,7 +273,8 @@ deposit <- R6::R6Class("deposit",
                          ## load a persistent version of the file
                          ## assume working version is the version id
                          ## inform?
-                         #' Load a local csv file
+                         #' @description
+                         #' Load a local version of the csv.
                          #'
                          #' Assumes you would like to load the file from
                          #' the current working version.
@@ -263,7 +282,7 @@ deposit <- R6::R6Class("deposit",
                          #' If the csv file is not present, a persistent version
                          #' of the file will be downloaded to your machine.
                          #'
-                         #' @param file_key string. Name of file from \link{working_files}
+                         #' @param file_key string. Name of file from `working_files`
                          #' @param refresh logical. Should the file be re-downloaded?
                          #' @param ... Additional parameters to pass to [readr::read_csv()]
                          #'
@@ -284,7 +303,7 @@ deposit <- R6::R6Class("deposit",
                                                         ...){
 
                            # should be one of csv or csg.gz
-                           match.arg(fs::path_ext(file_key),choices = c(".csv", "csv.gz"))
+                           match.arg(fs::path_ext(file_key),choices = c("csv", "gz"))
 
                            ## loads from the working version
                            if(self$working_version == ""){
@@ -307,7 +326,7 @@ deposit <- R6::R6Class("deposit",
                          #'
                          #' Look for key words like working or latest and convert
                          #' them to interger ids OR pass the zenodo id directly
-                         #' to \link{sanitize_id}
+                         #' to `sanitize_id()`
                          #'
                          #' @param zenodo_id String. One of working, latest, or a zenodo id
                          #'
@@ -397,9 +416,9 @@ deposit <- R6::R6Class("deposit",
 
                            invisible(content_text)
                          },
-                         #' Title
+                         #' @description Create a list of data dictionaries.
                          #'
-                         #' @param file_key string. Name of file from \link{working_files}
+                         #' @param file_key string. Name of file from `working_files`
                          #' @param dir string. Name of directory
                          #' @param refresh refresh Logical. Should files be re-downloaded.
                          #'
@@ -440,7 +459,7 @@ deposit <- R6::R6Class("deposit",
                        private = list(
                          # @description Downloads remote files to a specific location.
                          #
-                         # @param file_key string. Name of file from \link{working_files}
+                         # @param file_key string. Name of file from [deposit$working_files]
                          # @param dir string. Name of directory
                          # @param refresh Logical. Should files be re-downloaded.
                          #

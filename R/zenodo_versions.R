@@ -40,8 +40,17 @@ list_deposit_versions <- function(parent_id = "15643003"){
 
   versions_json <- jsonlite::fromJSON(parent_json$links$versions)
 
-  zenodo_id <- as.character(versions_json$hits$hits$id)
-  versions_metadata <- versions_json$hits$hits
+  versions_metadata <- purrr::map_df( versions_json$links,function(x){
+    json_x <- get_json(x)
+    out <- (json_x$hits$hits)
+
+    return(out)
+  }
+  )
+
+  zenodo_id <- versions_metadata |>
+    dplyr::pull(.data$id) |>
+    as.character()
 
   versions_metadata$latest_version <- purrr::map_lgl(versions_metadata$metadata$relations$version, \(x){
     x$is_last
@@ -105,6 +114,8 @@ download_deposit_version <- function(zenodo_id, deposit_versions = list_deposit_
   fs::dir_create(path = version_dir)
 
   ## use id to get the thing
+  deposit_versions <- deposit_versions
+
   version_files <- deposit_versions[deposit_versions$id == zenodo_id,"files"][[1]]
 
 
@@ -232,11 +243,15 @@ sanitize_version <- function(version){
 #' @returns Character. path to versioned data.
 #' @export
 #'
-get_versioned_data <- function(version = "latest", style = "apa",dir_path, refresh_deposits_versions = TRUE, verbose = TRUE, ...){
+get_versioned_data <- function(version = "latest",
+                               style = "apa",
+                               dir_path,
+                               refresh_deposits_versions = TRUE,
+                               verbose = TRUE, ...){
 
 
   if(refresh_deposits_versions || the$all_versions == ""){
-    list_deposit_versions()
+    deposit_versions <- list_deposit_versions()
   }
 
   # sanitize version
@@ -249,7 +264,7 @@ get_versioned_data <- function(version = "latest", style = "apa",dir_path, refre
   get_version_citation(style = style,verbose = verbose)
 
   # download data
-  out <- download_deposit_version(zenodo_id = version,dir_path = dir_path,...)
+  out <- download_deposit_version(zenodo_id = version,dir_path = dir_path,deposit_versions = ...)
 
   return(out)
 

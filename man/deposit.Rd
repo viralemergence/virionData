@@ -96,14 +96,6 @@ virion_deposit$download_versioned_data("latest")
 virion_deposit$download_versioned_data("19502921")
 }
 
-Load a local csv file
-
-Assumes you would like to load the file from
-the current working version.
-
-If the csv file is not present, a persistent version
-of the file will be downloaded to your machine.
-
 
 ## ------------------------------------------------
 ## Method `deposit$load_local_csv_file`
@@ -144,8 +136,6 @@ virion_deposit$sanitize_id(" 2948598")
  virion_deposit$export_metadata("working")
 }
 
-Title
-
 
 ## ------------------------------------------------
 ## Method `deposit$get_data_dictionary`
@@ -177,6 +167,8 @@ virion$get_data_dictionary()
 \item{\code{working_citation}}{String. Citation for the version of the zenodo deposit you are working with.}
 
 \item{\code{working_files}}{Data frame. Working files consist of key (file name) and url (url to file on zenodo)}
+
+\item{\code{working_json}}{list. Metadata for the working version.}
 }
 \if{html}{\out{</div>}}
 }
@@ -288,7 +280,7 @@ then returns a dataframe.
 The local file cache is removed when your R session
 restarts.
 
-Consider using the \link{download_versioned_data} to
+Consider using the \code{download_versioned_data} to
 save a persistent version of the virion dataset on
 your machine.
 \subsection{Usage}{
@@ -298,7 +290,7 @@ your machine.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{file_key}}{String. A file key as seen in the working files field}
+\item{\code{file_key}}{String. A file key as seen in the \code{working_files} field}
 
 \item{\code{refresh}}{Logical. Should files be re-downloaded.}
 
@@ -362,14 +354,6 @@ virion_deposit$download_versioned_data("latest")
 virion_deposit$download_versioned_data("19502921")
 }
 
-Load a local csv file
-
-Assumes you would like to load the file from
-the current working version.
-
-If the csv file is not present, a persistent version
-of the file will be downloaded to your machine.
-
 }
 \if{html}{\out{</div>}}
 
@@ -380,6 +364,13 @@ of the file will be downloaded to your machine.
 \if{html}{\out{<a id="method-deposit-load_local_csv_file"></a>}}
 \if{latex}{\out{\hypertarget{method-deposit-load_local_csv_file}{}}}
 \subsection{Method \code{load_local_csv_file()}}{
+Load a local version of the csv.
+
+Assumes you would like to load the file from
+the current working version.
+
+If the csv file is not present, a persistent version
+of the file will be downloaded to your machine.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{deposit$load_local_csv_file(file_key, refresh, ...)}\if{html}{\out{</div>}}
 }
@@ -387,7 +378,7 @@ of the file will be downloaded to your machine.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{file_key}}{string. Name of file from \link{working_files}}
+\item{\code{file_key}}{string. Name of file from \code{working_files}}
 
 \item{\code{refresh}}{logical. Should the file be re-downloaded?}
 
@@ -419,7 +410,7 @@ Check the zenodo ID
 
 Look for key words like working or latest and convert
 them to interger ids OR pass the zenodo id directly
-to \link{sanitize_id}
+to \code{sanitize_id()}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{deposit$check_zenodo_id(zenodo_id)}\if{html}{\out{</div>}}
 }
@@ -499,8 +490,6 @@ Export metadata for a version of the deposit.
  virion_deposit$export_metadata("working")
 }
 
-Title
-
 }
 \if{html}{\out{</div>}}
 
@@ -511,6 +500,7 @@ Title
 \if{html}{\out{<a id="method-deposit-get_data_dictionary"></a>}}
 \if{latex}{\out{\hypertarget{method-deposit-get_data_dictionary}{}}}
 \subsection{Method \code{get_data_dictionary()}}{
+Create a list of data dictionaries.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{deposit$get_data_dictionary(
   file_key = "datapackage.json",
@@ -522,7 +512,7 @@ Title
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{file_key}}{string. Name of file from \link{working_files}}
+\item{\code{file_key}}{string. Name of file from \code{working_files}}
 
 \item{\code{dir}}{string. Name of directory}
 
