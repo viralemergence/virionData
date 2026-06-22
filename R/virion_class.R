@@ -26,6 +26,9 @@
 #'
 #' }
 #' @export
+#' @import R6
+#' @import readr
+#'
 
 
 
@@ -498,3 +501,15 @@ deposit <- R6::R6Class("deposit",
 
 
 )
+
+
+#' Dummy function to pass RMD check
+#'
+#' Apparently a known issue in R6 as the class is not created until install.
+#'
+#' @returns
+#'
+dummy_imports <- function() {
+  R6::R6Class
+  readr::read_csv
+}
