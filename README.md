@@ -14,6 +14,8 @@ with, provides easy access to metadata, and allows users to export metadata.
 
 The pipeline for creating virion can be found here: https://github.com/viralemergence/virion
 
+Python users can use [py-virion-data](https://pypi.org/project/py-virion-data/).
+
 ## Installation
 
 You can install the development version of virionData from [GitHub](https://github.com/) with:
