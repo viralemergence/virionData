@@ -19,7 +19,7 @@ library(virionData)
 ```
 
 
-On 28 April 2026, Virion 2.0 was released with goal of streamlining the processing pipeline. Starting with deposit version `19837096`, the data structure diverges significantly from the [original manuscript](https://journals.asm.org/doi/10.1128/mbio.02985-21) and previous versions of the data. 
+On 28 April 2026, Virion 2.0 was released with the goal of streamlining the processing pipeline. Starting with deposit version `19837096`, the data structure diverges significantly from the [original manuscript](https://journals.asm.org/doi/10.1128/mbio.02985-21) and previous versions of the data. 
 
 The major difference is that taxonomic data, database metadata, and NCBI accession numbers are now stored in separate tables to avoid unnecessary operations on those data and to avoid repeating information in the virion table (data normalization). 
 

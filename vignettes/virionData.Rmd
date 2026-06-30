@@ -158,11 +158,11 @@ virion$working_json$metadata$related_identifiers |>
 ## Functional programming approach
 
 This approach uses package environment variables, making
-working with multiple version slightly more complicated. Users also need to be 
+working with multiple versions slightly more complicated. Users also need to be 
 aware of when the working version will and won't be changed, and when 
 that will impact the way functions work. 
 
-Changes set in the R6 object will not be propogate 
+Changes set in the R6 object will not be propogated
 
 
 ### Check available versions of the dataset

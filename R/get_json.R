@@ -1,4 +1,4 @@
-## get json in a way that fail elegantly
+## get json in a way that fails elegantly
 
 #' Get json
 #'
