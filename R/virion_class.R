@@ -351,6 +351,7 @@ deposit <- R6::R6Class("deposit",
                            if( zenodo_id == "latest"){
                              zenodo_id = self$latest_version
                            }
+                           # this forces all IDs to sanitized 
                            if(!zenodo_id %in% c("latest","working")){
                              zenodo_id = self$sanitize_id(zenodo_id)
                            }
