@@ -12,7 +12,7 @@
 #' @examples
 #' \dontrun{
 #' # make a client
-#' virion_deposit <- deposit$new("")
+#' virion_deposit <- deposit$new()
 #'
 #' # methods
 #' virion_deposit$set_working_version("latest")
@@ -305,7 +305,7 @@ deposit <- R6::R6Class("deposit",
                                                         refresh,
                                                         ...){
 
-                           # should be one of csv or csg.gz
+                           # should be one of csv or csv.gz
                            match.arg(fs::path_ext(file_key),choices = c("csv", "gz"))
 
                            ## loads from the working version
@@ -328,7 +328,7 @@ deposit <- R6::R6Class("deposit",
                          #' @description Check the zenodo ID
                          #'
                          #' Look for key words like working or latest and convert
-                         #' them to interger ids OR pass the zenodo id directly
+                         #' them to integer ids OR pass the zenodo id directly
                          #' to `sanitize_id()`
                          #'
                          #' @param zenodo_id String. One of working, latest, or a zenodo id
@@ -382,7 +382,7 @@ deposit <- R6::R6Class("deposit",
                              assertthat::assert_that(is.character(zenodo_id_tws))
                              return(zenodo_id_tws)
                            }
-                           msg <- sprintf("version (%s) is not an interger.",zenodo_id_tws)
+                           msg <- sprintf("version (%s) is not an integer.",zenodo_id_tws)
                            rlang::abort(msg)
                          },
                          # export metadata
