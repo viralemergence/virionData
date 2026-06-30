@@ -219,7 +219,7 @@ deposit <- R6::R6Class("deposit",
                          #' @param dir String. Storage location for files
                          #' @param refresh Logical. Should files be re-downloaded.
                          #'
-                         #' @returns String. Path to downlod location.
+                         #' @returns String. Path to download location.
                          #' @export
                          #'
                          #' @examples
