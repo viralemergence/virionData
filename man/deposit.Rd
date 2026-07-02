@@ -10,13 +10,11 @@ invisibly returns self
 
 dataframe of remote csv file.
 
-String. Path to downlod location.
+String. Path to download location.
 
 data.frame from \code{\link[readr:read_delim]{readr::read_csv()}}
 
 String. cleaned zenodo id
-
-String. A cleaned zenodo id.
 
 metadata in the specificed format (invisible)
 
@@ -33,7 +31,7 @@ An R6 client for getting virion data and metadata.
 \examples{
 \dontrun{
 # make a client
-virion_deposit <- deposit$new("")
+virion_deposit <- deposit$new()
 
 # methods
 virion_deposit$set_working_version("latest")
@@ -120,14 +118,6 @@ virion_deposit$check_zenodo_id("latest")
 }
 
 ## ------------------------------------------------
-## Method `deposit$sanitize_id`
-## ------------------------------------------------
-
-\dontrun{
-virion_deposit$sanitize_id(" 2948598")
-}
-
-## ------------------------------------------------
 ## Method `deposit$export_metadata`
 ## ------------------------------------------------
 
@@ -181,7 +171,6 @@ virion$get_data_dictionary()
 \item \href{#method-deposit-download_versioned_data}{\code{deposit$download_versioned_data()}}
 \item \href{#method-deposit-load_local_csv_file}{\code{deposit$load_local_csv_file()}}
 \item \href{#method-deposit-check_zenodo_id}{\code{deposit$check_zenodo_id()}}
-\item \href{#method-deposit-sanitize_id}{\code{deposit$sanitize_id()}}
 \item \href{#method-deposit-export_metadata}{\code{deposit$export_metadata()}}
 \item \href{#method-deposit-get_data_dictionary}{\code{deposit$get_data_dictionary()}}
 \item \href{#method-deposit-clone}{\code{deposit$clone()}}
@@ -409,7 +398,7 @@ virion$load_local_csv_file("virion.csv.gz")
 Check the zenodo ID
 
 Look for key words like working or latest and convert
-them to interger ids OR pass the zenodo id directly
+them to integer ids OR pass the zenodo id directly
 to \code{sanitize_id()}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{deposit$check_zenodo_id(zenodo_id)}\if{html}{\out{</div>}}
@@ -427,35 +416,6 @@ to \code{sanitize_id()}
 \preformatted{
 \dontrun{
 virion_deposit$check_zenodo_id("latest")
-}
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-deposit-sanitize_id"></a>}}
-\if{latex}{\out{\hypertarget{method-deposit-sanitize_id}{}}}
-\subsection{Method \code{sanitize_id()}}{
-Sanitize a zenodo id
-
-Remove any white space and check that it conforms to the zenodo id pattern.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{deposit$sanitize_id(zenodo_id)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{zenodo_id}}{String. A zenodo id.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{\dontrun{
-virion_deposit$sanitize_id(" 2948598")
 }
 }
 \if{html}{\out{</div>}}

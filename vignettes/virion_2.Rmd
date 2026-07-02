@@ -28,7 +28,8 @@ The major difference is that taxonomic data, database metadata, and NCBI accessi
 # create a new virion deposit object
 virion_deposit <- deposit$new()
 
-# set the working version
+# set the working version to latest version of virion.
+# it is always a better idea to set the version explicitly.
 virion_deposit$set_working_version(print_citation = FALSE,print_bibtex = FALSE)
 
 # get the data
@@ -36,7 +37,7 @@ virion_deposit$set_working_version(print_citation = FALSE,print_bibtex = FALSE)
 # virion_deposit$working_files$file_key
 # 
 
-tax_table <- virion_deposit$load_remote_csv_file(file_key = "tax_table.csv.gz",col_types = "c")
+tax_table <- virion_deposit$load_remote_csv_file(file_key = "tax_table.csv.gz",col_types = "c", refresh = FALSE)
 
 db_table <- virion_deposit$load_remote_csv_file(file_key = "db_table.csv",col_types = "c")
 

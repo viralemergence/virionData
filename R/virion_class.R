@@ -195,8 +195,10 @@ deposit <- R6::R6Class("deposit",
                                                          refresh = FALSE,
                                                          ... # additional arguments for read_csv
                          ){
-
+                           # check for proper file extension
                            match.arg(arg = fs::path_ext(file_key),choices = c("csv","gz"))
+                           # check the file is in the working files
+                           match.arg(file_key,choices = self$working_files$file_key)
 
                            local_path <- private$load_remote_file(file_key = file_key,
                                                                   dir = tempdir(),
@@ -307,6 +309,8 @@ deposit <- R6::R6Class("deposit",
 
                            # should be one of csv or csv.gz
                            match.arg(fs::path_ext(file_key),choices = c("csv", "gz"))
+                           # check the file is in the working files
+                           match.arg(file_key,choices = self$working_files$file_key)
 
                            ## loads from the working version
                            if(self$working_version == ""){
@@ -351,40 +355,12 @@ deposit <- R6::R6Class("deposit",
                            if( zenodo_id == "latest"){
                              zenodo_id = self$latest_version
                            }
-                           # this forces all IDs to sanitized 
+                           # this forces all IDs to sanitized
                            if(!zenodo_id %in% c("latest","working")){
-                             zenodo_id = self$sanitize_id(zenodo_id)
+                             zenodo_id = sanitize_id(zenodo_id)
                            }
 
                            return(zenodo_id)
-                         },
-                         ## sanitize id -- consider making this private as it should only be used as part of check_id
-                         #' @description Sanitize a zenodo id
-                         #'
-                         #' Remove any white space and check that it conforms to the zenodo id pattern.
-                         #'
-                         #' @param zenodo_id String. A zenodo id.
-                         #'
-                         #' @returns String. A cleaned zenodo id.
-                         #' @export
-                         #'
-                         #' @examples
-                         #'\dontrun{
-                         #' virion_deposit$sanitize_id(" 2948598")
-                         #'}
-                         sanitize_id = function(zenodo_id){
-
-                           zenodo_id_chr  <- as.character(zenodo_id)
-                           zenodo_id_tws <- trimws(zenodo_id_chr)
-
-                           verify_integer <- grepl(pattern = "^[0-9]+$",x = zenodo_id_tws)
-
-                           if(verify_integer){
-                             assertthat::assert_that(is.character(zenodo_id_tws))
-                             return(zenodo_id_tws)
-                           }
-                           msg <- sprintf("version (%s) is not an integer.",zenodo_id_tws)
-                           rlang::abort(msg)
                          },
                          # export metadata
                          #' @description Export metadata for a version of the deposit.
@@ -487,6 +463,8 @@ deposit <- R6::R6Class("deposit",
                              assertthat::is.flag(refresh),msg = "refresh must be TRUE or FALSE."
                            )
 
+                           match.arg(file_key,choices = self$working_files$file_key)
+
                            file_url <- self$working_files[self$working_files$file_key == file_key, "file_url"]
 
                            # make a directory in dir for the current working version
@@ -508,10 +486,10 @@ deposit <- R6::R6Class("deposit",
 #'
 #' Apparently a known issue in R6 as the class is not created until install.
 #'
-#' @returns Character string explaining why this function exists. 
+#' @returns Character string explaining why this function exists.
 #'
 dummy_imports <- function() {
   R6::R6Class
   readr::read_csv
-  return("this function is used to have CMD checks import R6 and readr packages") 
+  return("this function is used to have CMD checks import R6 and readr packages")
 }

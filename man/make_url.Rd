@@ -18,6 +18,6 @@ String. URL for zenodo api.
 Appends a zenodo id to the zenodo api url.
 }
 \examples{
-make_url(id = "some_id")
+make_url(id = "1235600")
 
 }

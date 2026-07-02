@@ -206,14 +206,34 @@ sanitize_version <- function(version){
     }
   }
 
-  verify_integer <- grepl(pattern = "^[0-9]+$",x = version_nows)
+  sanitize_id(version_nows)
+}
+
+
+#' Sanitize a zenodo id
+#'
+#' Remove any white space and check that it conforms to the zenodo id pattern.
+#'
+#' @param zenodo_id String. A zenodo id.
+#'
+#' @returns String. A cleaned zenodo id.
+#' @export
+#'
+#' @examples
+#' sanitize_id(" 2948598")
+#'
+sanitize_id = function(zenodo_id){
+
+  zenodo_id_chr  <- as.character(zenodo_id)
+  zenodo_id_tws <- trimws(zenodo_id_chr)
+
+  verify_integer <- grepl(pattern = "^[0-9]+$",x = zenodo_id_tws)
 
   if(verify_integer){
-    assertthat::assert_that(is.character(version_nows))
-    return(version_nows)
+    assertthat::assert_that(is.character(zenodo_id_tws))
+    return(zenodo_id_tws)
   }
-
-  msg <- sprintf("version (%s) is not an interger.",version_nows)
+  msg <- sprintf("version (%s) is not an integer.",zenodo_id_tws)
   rlang::abort(msg)
 }
 
