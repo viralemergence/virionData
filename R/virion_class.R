@@ -34,25 +34,6 @@
 
 deposit <- R6::R6Class("deposit",
                        public = list(
-                         #' @field parent_id String. Identifier for a Zenodo deposit with multiple versions.
-                         parent_id = "",
-                         #' @field all_versions Character. All zenodo ids for versions of the deposit.
-                         all_versions = "",
-                         #' @field summary_df Data frame. A table of all zenodo ids for versions of the deposit.
-                         summary_df = data.frame(),
-                         #' @field latest_version String. Identifier for the latest version of the zenodo deposit.
-                         latest_version = "",
-                         #' @field working_version String. Identifier for the version of the zenodo deposit you are working with.
-                         working_version = "",
-                         #' @field working_bibtex String. Bibtex for the version of the zenodo deposit you are working with.
-                         working_bibtex = "",
-                         #' @field working_citation String. Citation for the version of the zenodo deposit you are working with.
-                         working_citation = "",
-                         #' @field working_files Data frame. Working files consist of key (file name) and url (url to file on zenodo)
-                         working_files = data.frame(),
-                         #' @field working_json list. Metadata for the working version.
-                         working_json = list(),
-
                          #' @description Create a new `deposit` object, as an [R6][R6::R6-package]
                          #' client. This object is connected to the zenodo deposit for virion
                          #' and is the gateway for accessing different versions of the data.
@@ -69,7 +50,7 @@ deposit <- R6::R6Class("deposit",
 
                            assertthat::assert_that(is.character(parent_id))
 
-                           self$parent_id <- parent_id
+                           private$parent_id <- parent_id
                            parent_url <- sprintf("https://zenodo.org/api/records/%s",parent_id)
 
                            # get the parent json
@@ -83,16 +64,9 @@ deposit <- R6::R6Class("deposit",
                            ## multiple pages of versions are returned so must
                            # iterate over them
 
-                           versions_metadata <- purrr::map_df( versions_json$links,function(x){
-                             json_x <- get_json(x)
+                           versions_metadata <- get_all_versions(versions_json$links$self)
 
-                             out <- (json_x$hits$hits)
-                             return(out)
-                           }
-                           )
-
-
-                           self$all_versions <- versions_metadata |>
+                           private$all_versions <- versions_metadata |>
                              dplyr::pull(id) |>
                              as.character()
 
@@ -101,11 +75,11 @@ deposit <- R6::R6Class("deposit",
                              x$is_last
                            })
 
-                           self$latest_version <- latest_id
+                           private$latest_version <- latest_id
 
                            summary_df <- versions_metadata[c("id","latest_version","doi_url")]
                            summary_df$publication_date <- versions_metadata$metadata$publication_date
-                           self$summary_df <- summary_df[c("id","latest_version","publication_date","doi_url")]
+                           private$summary_df <- summary_df[c("id","latest_version","publication_date","doi_url")]
 
                            invisible(self)
                          },
@@ -138,7 +112,7 @@ deposit <- R6::R6Class("deposit",
                                                         print_bibtex = TRUE,
                                                         print_citation = TRUE) {
                            zenodo_id <- self$check_zenodo_id(zenodo_id)
-                           self$working_version <- zenodo_id
+                           private$working_version <- zenodo_id
                            working_url <- make_url(id = zenodo_id)
                            working_json <- get_json(working_url)
                            # add files to a dataframe
@@ -152,13 +126,13 @@ deposit <- R6::R6Class("deposit",
                              file_url <- item$links$self
                              file_df[i,] <- c(file_key,file_url)
                            }
-                           self$working_files <- file_df
-                           self$working_bibtex <- export_deposit_bibtex(zenodo_id = self$working_version,
+                           private$working_files <- file_df
+                           private$working_bibtex <- export_deposit_bibtex(zenodo_id = private$working_version,
                                                                         verbose = print_bibtex)
-                           self$working_citation <- get_version_citation(zenodo_id = self$working_version,
+                           private$working_citation <- get_version_citation(zenodo_id = private$working_version,
                                                                          style = style,
                                                                          verbose = print_citation)
-                           self$working_json <- working_json
+                           private$working_json <- working_json
 
                            invisible(self)
                          },
@@ -198,7 +172,7 @@ deposit <- R6::R6Class("deposit",
                            # check for proper file extension
                            match.arg(arg = fs::path_ext(file_key),choices = c("csv","gz"))
                            # check the file is in the working files
-                           match.arg(file_key,choices = self$working_files$file_key)
+                           match.arg(file_key,choices = private$working_files$file_key)
 
                            local_path <- private$load_remote_file(file_key = file_key,
                                                                   dir = tempdir(),
@@ -240,7 +214,7 @@ deposit <- R6::R6Class("deposit",
                                                             dir = "outputs",
                                                             refresh = FALSE){
                            # preserve the working version of the object
-                           working_version <- self$working_version
+                           working_version <- private$working_version
 
                            if(zenodo_id!="working"){
 
@@ -250,23 +224,23 @@ deposit <- R6::R6Class("deposit",
                                                       print_citation = FALSE)
                            }
                            # make the directory if it doesnt exist
-                           version_dir <- fs::path(dir, self$working_version)
+                           version_dir <- fs::path(dir, private$working_version)
                            fs::dir_create(path = version_dir)
-                           self$working_files$local_path <- ""
+                           private$working_files$local_path <- ""
 
-                           for(i in 1:nrow(self$working_files)){
-                             item <- self$working_files[i,]
+                           for(i in 1:nrow(private$working_files)){
+                             item <- private$working_files[i,]
 
                              local <- private$load_remote_file(file_key =item$file_key,
                                                                dir = version_dir,
                                                                refresh = refresh )
 
                              # append local files to working files
-                             self$working_files[i,"local_path"] <- local
+                             private$working_files[i,"local_path"] <- local
                            }
 
                            #keep the working version the same
-                           if(working_version != self$working_version){
+                           if(working_version != private$working_version){
                              self$set_working_version(zenodo_id = working_version,
                                                       print_bibtex = FALSE,
                                                       print_citation = FALSE)
@@ -310,18 +284,18 @@ deposit <- R6::R6Class("deposit",
                            # should be one of csv or csv.gz
                            match.arg(fs::path_ext(file_key),choices = c("csv", "gz"))
                            # check the file is in the working files
-                           match.arg(file_key,choices = self$working_files$file_key)
+                           match.arg(file_key,choices = private$working_files$file_key)
 
                            ## loads from the working version
-                           if(self$working_version == ""){
+                           if(private$working_version == ""){
                              rlang::abort("Set the working version")
                            }
                            ## check that there are local files in the working files
-                           if(any(!"local_path" %in% names(self$working_files), refresh)){
+                           if(any(!"local_path" %in% names(private$working_files), refresh)){
                              self$download_versioned_data(refresh = refresh)
                            }
                            ## match to key
-                           local_path <- self$working_files[self$working_files$file_key == file_key, "local_path"]
+                           local_path <- private$working_files[private$working_files$file_key == file_key, "local_path"]
 
                            out <- readr::read_csv(local_path,...)
 
@@ -350,10 +324,10 @@ deposit <- R6::R6Class("deposit",
                            zenodo_id  <- trimws(zenodo_id)
 
                            if(zenodo_id == "working"){
-                             zenodo_id = self$working_version
+                             zenodo_id = private$working_version
                            }
                            if( zenodo_id == "latest"){
-                             zenodo_id = self$latest_version
+                             zenodo_id = private$latest_version
                            }
                            # this forces all IDs to sanitized
                            if(!zenodo_id %in% c("latest","working")){
@@ -418,25 +392,126 @@ deposit <- R6::R6Class("deposit",
                          #'
                          get_data_dictionary = function(file_key = "datapackage.json", dir = tempdir(), refresh){
                            ## loads from the working version
-                           if(self$working_version == ""){
+                           if(private$working_version == ""){
                              rlang::abort("Set the working version")
                            }
 
-                           if(any(refresh,!"local_path" %in% names(self$working_files))){
+                           if(any(refresh,!"local_path" %in% names(private$latest_version))){
                              # always load the file from remote if refresh is true or no local paths
                              local_path <- private$load_remote_file(file_key = file_key,
                                                                     dir = dir,
                                                                     refresh = refresh)
-                           } else if("local_path" %in% names(self$working_files)){
+                           } else if("local_path" %in% names(private$latest_version)){
                              # else grab the file from self if a local path is recorded
-                             local_path <- self$working_files[self$working_files$file_key == file_key, "local_path"]
+                             local_path <- private$latest_version[private$working_files$file_key == file_key, "local_path"]
                            }
 
                            get_data_dictionary(datapackage_json = local_path)
+                         },
+                         #' @description Get a property of the object that is private
+                         #'
+                         #' * all_versions Character. All zenodo ids for versions of the deposit.
+                         #' * summary_df Data frame. A table of all zenodo ids for versions of the deposit.
+                         #' * latest_version String. Identifier for the latest version of the zenodo deposit.
+                         #' * working_version String. Identifier for the version of the zenodo deposit you are working with.
+                         #' * working_bibtex String. Bibtex for the version of the zenodo deposit you are working with.,
+                         #' * working_citation String. Citation for the version of the zenodo deposit you are working with.
+                         #' * working_files Data frame. Working files consist of key (file name) and url (url to file on zenodo)
+                         #' * working_json list. Metadata for the working version.
+                         #'
+                         #' @returns parent_id String. Identifier for a Zenodo deposit with multiple versions.
+                         #' @export
+                         #'
+                         get_parent_id = function(){
+                           private$parent_id
+                         },
+                         # @field all_versions Character. All zenodo ids for versions of the deposit.
+                         #' @description Get a property of the object that is private
+                         #'
+                         #' @returns all_versions Character. All zenodo ids for versions of the deposit.
+                         #' @export
+                         #'
+                         get_all_versions = function(){
+                           private$all_versions
+                         },
+                         # @field summary_df Data frame. A table of all zenodo ids for versions of the deposit.
+                         #' @description Get a property of the object that is private
+                         #'
+                         #' * latest_version String. Identifier for the latest version of the zenodo deposit.
+                         #' * working_version String. Identifier for the version of the zenodo deposit you are working with.
+                         #' * working_bibtex String. Bibtex for the version of the zenodo deposit you are working with.,
+                         #' * working_citation String. Citation for the version of the zenodo deposit you are working with.
+                         #' * working_files Data frame. Working files consist of key (file name) and url (url to file on zenodo)
+                         #' * working_json list. Metadata for the working version.
+                         #' @returns  summary_df Data frame. A table of all zenodo ids for versions of the deposit.
+                         #' @export
+                         get_summary_df = function(){
+                           private$summary_df
+                         },
+                         # @field latest_version String. Identifier for the latest version of the zenodo deposit.
+                         #' @description Get a property of the object that is private
+                         #' @returns  latest_version String. Identifier for the latest version of the zenodo deposit.
+                         #' @export
+                         get_latest_version = function(){
+                           private$latest_version
+                         },
+                         # @field working_version String. Identifier for the version of the zenodo deposit you are working with.
+                         #' @description Get a property of the object that is private
+                         #' @returns  working_version String. Identifier for the version of the zenodo deposit you are working with
+                         #' @export
+                         get_working_version = function(){
+                           out <- private$working_version
+                         },
+                         # @field working_bibtex String. Bibtex for the version of the zenodo deposit you are working with.
+                         #' @description Get a property of the object that is private
+                         #' @returns  working_bibtex String. Bibtex for the version of the zenodo deposit you are working with.
+                         #' @export
+                         get_working_bibtex = function(){
+                           private$working_bibtex
+                         },
+                         # @field working_citation String. Citation for the version of the zenodo deposit you are working with.
+                         #' @description Get a property of the object that is private
+                         #' @returns  working_citation String. Citation for the version of the zenodo deposit you are working with.
+                         #' @export
+                         get_working_citation = function(){
+                           private$working_citation
+                         },
+                         # @field working_files Data frame. Working files consist of key (file name) and url (url to file on zenodo)
+                         #' @description Get a property of the object that is private
+                         #' @returns  working_files Data frame. Working files consist of key (file name) and url (url to file on zenodo)
+                         #' @export
+                         get_working_files = function(){
+                           private$working_files
+                         },
+                         # @field working_json list. Metadata for the working version.
+                         #' @description Get a property of the object that is private
+                         #' @returns  working_json list. Metadata for the working version.
+                         #' @export
+                         get_working_json = function(){
+                           private$working_json
                          }
-
                        ),
                        private = list(
+                         # @field parent_id String. Identifier for a Zenodo deposit with multiple versions.
+                         parent_id = "",
+                         # @field all_versions Character. All zenodo ids for versions of the deposit.
+                         all_versions = "",
+                         # @field summary_df Data frame. A table of all zenodo ids for versions of the deposit.
+                         summary_df = data.frame(),
+                         # @field latest_version String. Identifier for the latest version of the zenodo deposit.
+                         latest_version = "",
+                         # @field working_version String. Identifier for the version of the zenodo deposit you are working with.
+                         working_version = "",
+                         # @field working_bibtex String. Bibtex for the version of the zenodo deposit you are working with.
+                         working_bibtex = "",
+                         # @field working_citation String. Citation for the version of the zenodo deposit you are working with.
+                         working_citation = "",
+                         # @field working_files Data frame. Working files consist of key (file name) and url (url to file on zenodo)
+                         working_files = data.frame(),
+                         # @field working_json list. Metadata for the working version.
+                         working_json = list(),
+
+
                          # @description Downloads remote files to a specific location.
                          #
                          # @param file_key string. Name of file from [deposit$working_files]
@@ -447,7 +522,7 @@ deposit <- R6::R6Class("deposit",
                          # @noRd
                          load_remote_file = function(file_key, dir, refresh ){
 
-                           if(self$working_version == ""){
+                           if(private$working_version == ""){
                              rlang::abort("set working version")
                            }
 
@@ -463,12 +538,12 @@ deposit <- R6::R6Class("deposit",
                              assertthat::is.flag(refresh),msg = "refresh must be TRUE or FALSE."
                            )
 
-                           match.arg(file_key,choices = self$working_files$file_key)
+                           match.arg(file_key,choices = private$working_files$file_key)
 
-                           file_url <- self$working_files[self$working_files$file_key == file_key, "file_url"]
+                           file_url <- private$working_files[private$working_files$file_key == file_key, "file_url"]
 
                            # make a directory in dir for the current working version
-                           local_dir <- fs::path(dir,self$working_version)
+                           local_dir <- fs::path(dir,private$working_version)
                            fs::dir_create(local_dir)
                            # make a file path in that directory
                            local_path <- fs::path(local_dir, file_key)

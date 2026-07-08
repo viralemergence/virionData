@@ -40,13 +40,18 @@ list_deposit_versions <- function(parent_id = "15643003"){
 
   versions_json <- jsonlite::fromJSON(parent_json$links$versions)
 
-  versions_metadata <- purrr::map_df( versions_json$links,function(x){
-    json_x <- get_json(x)
-    out <- (json_x$hits$hits)
+  # total number of versions
+  versions_total <- versions_json$hits$total
 
-    return(out)
+  # cycle through the nexts
+  versions_metadata<- get_all_versions(versions_json$links$self)
+
+  if(versions_total != nrow(versions_metadata)){
+
+    msg_totals <- sprintf("Did not retrieve the expected number of versions for the deposit.Expected = %s, Retrieved = %s",versions_total, nrow(versions_metadata))
+    rlang::warn(msg = msg_totals)
   }
-  )
+
 
   zenodo_id <- versions_metadata |>
     dplyr::pull(.data$id) |>
@@ -288,6 +293,36 @@ get_versioned_data <- function(version = "latest",
 
   return(out)
 
+}
+
+#' Get all deposit versions
+#'
+#' Recursively traverse a deposit link to get all versions of a deposit.
+#'
+#' @param self_link Character. URL for a version of the deposit.
+#'
+#' @returns Data.frame. Metadata for all deposit version
+#' @export
+#'
+#' @examples
+#'
+#' \dontrun{
+#'
+#' self_link <- "https://zenodo.org/api/records/21232661/versions?page=1&size=25&sort=version"
+#' get_all_versions(self_link)
+#' }
+#'
+get_all_versions <- function(self_link){
+
+  versions_json <- get_json(self_link)
+  out <- versions_json$hits$hits
+
+  if("next" %in% names(versions_json$links)){
+    df <- get_all_versions(versions_json$links$`next`)
+    out <- dplyr::bind_rows(out,df)
+  }
+
+ return(out)
 }
 
 

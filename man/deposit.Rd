@@ -24,6 +24,24 @@ List. Named list of data frames with the following fields:
 \item type = field type
 \item description = characterization of the field
 }
+
+parent_id String. Identifier for a Zenodo deposit with multiple versions.
+
+all_versions Character. All zenodo ids for versions of the deposit.
+
+summary_df Data frame. A table of all zenodo ids for versions of the deposit.
+
+latest_version String. Identifier for the latest version of the zenodo deposit.
+
+working_version String. Identifier for the version of the zenodo deposit you are working with
+
+working_bibtex String. Bibtex for the version of the zenodo deposit you are working with.
+
+working_citation String. Citation for the version of the zenodo deposit you are working with.
+
+working_files Data frame. Working files consist of key (file name) and url (url to file on zenodo)
+
+working_json list. Metadata for the working version.
 }
 \description{
 An R6 client for getting virion data and metadata.
@@ -139,29 +157,6 @@ virion$get_data_dictionary()
 }
 
 }
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{parent_id}}{String. Identifier for a Zenodo deposit with multiple versions.}
-
-\item{\code{all_versions}}{Character. All zenodo ids for versions of the deposit.}
-
-\item{\code{summary_df}}{Data frame. A table of all zenodo ids for versions of the deposit.}
-
-\item{\code{latest_version}}{String. Identifier for the latest version of the zenodo deposit.}
-
-\item{\code{working_version}}{String. Identifier for the version of the zenodo deposit you are working with.}
-
-\item{\code{working_bibtex}}{String. Bibtex for the version of the zenodo deposit you are working with.}
-
-\item{\code{working_citation}}{String. Citation for the version of the zenodo deposit you are working with.}
-
-\item{\code{working_files}}{Data frame. Working files consist of key (file name) and url (url to file on zenodo)}
-
-\item{\code{working_json}}{list. Metadata for the working version.}
-}
-\if{html}{\out{</div>}}
-}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -173,6 +168,15 @@ virion$get_data_dictionary()
 \item \href{#method-deposit-check_zenodo_id}{\code{deposit$check_zenodo_id()}}
 \item \href{#method-deposit-export_metadata}{\code{deposit$export_metadata()}}
 \item \href{#method-deposit-get_data_dictionary}{\code{deposit$get_data_dictionary()}}
+\item \href{#method-deposit-get_parent_id}{\code{deposit$get_parent_id()}}
+\item \href{#method-deposit-get_all_versions}{\code{deposit$get_all_versions()}}
+\item \href{#method-deposit-get_summary_df}{\code{deposit$get_summary_df()}}
+\item \href{#method-deposit-get_latest_version}{\code{deposit$get_latest_version()}}
+\item \href{#method-deposit-get_working_version}{\code{deposit$get_working_version()}}
+\item \href{#method-deposit-get_working_bibtex}{\code{deposit$get_working_bibtex()}}
+\item \href{#method-deposit-get_working_citation}{\code{deposit$get_working_citation()}}
+\item \href{#method-deposit-get_working_files}{\code{deposit$get_working_files()}}
+\item \href{#method-deposit-get_working_json}{\code{deposit$get_working_json()}}
 \item \href{#method-deposit-clone}{\code{deposit$clone()}}
 }
 }
@@ -492,6 +496,114 @@ virion$get_data_dictionary()
 }
 \if{html}{\out{</div>}}
 
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-deposit-get_parent_id"></a>}}
+\if{latex}{\out{\hypertarget{method-deposit-get_parent_id}{}}}
+\subsection{Method \code{get_parent_id()}}{
+Get a property of the object that is private
+\itemize{
+\item all_versions Character. All zenodo ids for versions of the deposit.
+\item summary_df Data frame. A table of all zenodo ids for versions of the deposit.
+\item latest_version String. Identifier for the latest version of the zenodo deposit.
+\item working_version String. Identifier for the version of the zenodo deposit you are working with.
+\item working_bibtex String. Bibtex for the version of the zenodo deposit you are working with.,
+\item working_citation String. Citation for the version of the zenodo deposit you are working with.
+\item working_files Data frame. Working files consist of key (file name) and url (url to file on zenodo)
+\item working_json list. Metadata for the working version.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{deposit$get_parent_id()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-deposit-get_all_versions"></a>}}
+\if{latex}{\out{\hypertarget{method-deposit-get_all_versions}{}}}
+\subsection{Method \code{get_all_versions()}}{
+Get a property of the object that is private
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{deposit$get_all_versions()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-deposit-get_summary_df"></a>}}
+\if{latex}{\out{\hypertarget{method-deposit-get_summary_df}{}}}
+\subsection{Method \code{get_summary_df()}}{
+Get a property of the object that is private
+\itemize{
+\item latest_version String. Identifier for the latest version of the zenodo deposit.
+\item working_version String. Identifier for the version of the zenodo deposit you are working with.
+\item working_bibtex String. Bibtex for the version of the zenodo deposit you are working with.,
+\item working_citation String. Citation for the version of the zenodo deposit you are working with.
+\item working_files Data frame. Working files consist of key (file name) and url (url to file on zenodo)
+\item working_json list. Metadata for the working version.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{deposit$get_summary_df()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-deposit-get_latest_version"></a>}}
+\if{latex}{\out{\hypertarget{method-deposit-get_latest_version}{}}}
+\subsection{Method \code{get_latest_version()}}{
+Get a property of the object that is private
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{deposit$get_latest_version()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-deposit-get_working_version"></a>}}
+\if{latex}{\out{\hypertarget{method-deposit-get_working_version}{}}}
+\subsection{Method \code{get_working_version()}}{
+Get a property of the object that is private
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{deposit$get_working_version()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-deposit-get_working_bibtex"></a>}}
+\if{latex}{\out{\hypertarget{method-deposit-get_working_bibtex}{}}}
+\subsection{Method \code{get_working_bibtex()}}{
+Get a property of the object that is private
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{deposit$get_working_bibtex()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-deposit-get_working_citation"></a>}}
+\if{latex}{\out{\hypertarget{method-deposit-get_working_citation}{}}}
+\subsection{Method \code{get_working_citation()}}{
+Get a property of the object that is private
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{deposit$get_working_citation()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-deposit-get_working_files"></a>}}
+\if{latex}{\out{\hypertarget{method-deposit-get_working_files}{}}}
+\subsection{Method \code{get_working_files()}}{
+Get a property of the object that is private
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{deposit$get_working_files()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-deposit-get_working_json"></a>}}
+\if{latex}{\out{\hypertarget{method-deposit-get_working_json}{}}}
+\subsection{Method \code{get_working_json()}}{
+Get a property of the object that is private
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{deposit$get_working_json()}\if{html}{\out{</div>}}
 }
 
 }
