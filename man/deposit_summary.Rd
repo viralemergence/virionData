@@ -8,10 +8,12 @@ deposit_summary()
 }
 \value{
 data frame. Simplified deposit metadata with the following fields:
-* id = zenodo id
-* latest_version = True or False indicating if that record is the latest version of the dataset.
-* publication_date = YMD the item was published to zenodo
-* doi_url = digital object identifier for that version of the record.
+\itemize{
+\item id = zenodo id
+\item latest_version = True or False indicating if that record is the latest version of the dataset.
+\item publication_date = YMD the item was published to zenodo
+\item doi_url = digital object identifier for that version of the record.
+}
 }
 \description{
 Simple summary data frame for the deposit

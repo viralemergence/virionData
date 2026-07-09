@@ -40,8 +40,22 @@ list_deposit_versions <- function(parent_id = "15643003"){
 
   versions_json <- jsonlite::fromJSON(parent_json$links$versions)
 
-  zenodo_id <- as.character(versions_json$hits$hits$id)
-  versions_metadata <- versions_json$hits$hits
+  # total number of versions
+  versions_total <- versions_json$hits$total
+
+  # cycle through the nexts
+  versions_metadata<- get_all_versions(versions_json$links$self)
+
+  if(versions_total != nrow(versions_metadata)){
+
+    msg_totals <- sprintf("Did not retrieve the expected number of versions for the deposit.Expected = %s, Retrieved = %s",versions_total, nrow(versions_metadata))
+    rlang::warn(msg = msg_totals)
+  }
+
+
+  zenodo_id <- versions_metadata |>
+    dplyr::pull(.data$id) |>
+    as.character()
 
   versions_metadata$latest_version <- purrr::map_lgl(versions_metadata$metadata$relations$version, \(x){
     x$is_last
@@ -105,6 +119,8 @@ download_deposit_version <- function(zenodo_id, deposit_versions = list_deposit_
   fs::dir_create(path = version_dir)
 
   ## use id to get the thing
+  deposit_versions <- deposit_versions
+
   version_files <- deposit_versions[deposit_versions$id == zenodo_id,"files"][[1]]
 
 
@@ -195,14 +211,34 @@ sanitize_version <- function(version){
     }
   }
 
-  verify_integer <- grepl(pattern = "^[0-9]+$",x = version_nows)
+  sanitize_id(version_nows)
+}
+
+
+#' Sanitize a zenodo id
+#'
+#' Remove any white space and check that it conforms to the zenodo id pattern.
+#'
+#' @param zenodo_id String. A zenodo id.
+#'
+#' @returns String. A cleaned zenodo id.
+#' @export
+#'
+#' @examples
+#' sanitize_id(" 2948598")
+#'
+sanitize_id = function(zenodo_id){
+
+  zenodo_id_chr  <- as.character(zenodo_id)
+  zenodo_id_tws <- trimws(zenodo_id_chr)
+
+  verify_integer <- grepl(pattern = "^[0-9]+$",x = zenodo_id_tws)
 
   if(verify_integer){
-    assertthat::assert_that(is.character(version_nows))
-    return(version_nows)
+    assertthat::assert_that(is.character(zenodo_id_tws))
+    return(zenodo_id_tws)
   }
-
-  msg <- sprintf("version (%s) is not an interger.",version_nows)
+  msg <- sprintf("version (%s) is not an integer.",zenodo_id_tws)
   rlang::abort(msg)
 }
 
@@ -232,11 +268,15 @@ sanitize_version <- function(version){
 #' @returns Character. path to versioned data.
 #' @export
 #'
-get_versioned_data <- function(version = "latest", style = "apa",dir_path, refresh_deposits_versions = TRUE, verbose = TRUE, ...){
+get_versioned_data <- function(version = "latest",
+                               style = "apa",
+                               dir_path,
+                               refresh_deposits_versions = TRUE,
+                               verbose = TRUE, ...){
 
 
   if(refresh_deposits_versions || the$all_versions == ""){
-    list_deposit_versions()
+    deposit_versions <- list_deposit_versions()
   }
 
   # sanitize version
@@ -249,10 +289,40 @@ get_versioned_data <- function(version = "latest", style = "apa",dir_path, refre
   get_version_citation(style = style,verbose = verbose)
 
   # download data
-  out <- download_deposit_version(zenodo_id = version,dir_path = dir_path,...)
+  out <- download_deposit_version(zenodo_id = version,dir_path = dir_path,deposit_versions = ...)
 
   return(out)
 
+}
+
+#' Get all deposit versions
+#'
+#' Recursively traverse a deposit link to get all versions of a deposit.
+#'
+#' @param url Character. URL for a version of the deposit.
+#'
+#' @returns Data.frame. Metadata for all deposit version
+#' @export
+#'
+#' @examples
+#'
+#' \dontrun{
+#'
+#' self_link <- "https://zenodo.org/api/records/21232661/versions?page=1&size=25&sort=version"
+#' get_all_versions(self_link)
+#' }
+#'
+get_all_versions <- function(url){
+
+  versions_json <- get_json(url)
+  out <- versions_json$hits$hits
+
+  if("next" %in% names(versions_json$links)){
+    df <- get_all_versions(versions_json$links$`next`)
+    out <- dplyr::bind_rows(out,df)
+  }
+
+ return(out)
 }
 
 

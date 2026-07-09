@@ -11,9 +11,11 @@ get_data_dictionary(datapackage_json)
 }
 \value{
 List. Named list of data frames with the following fields:
-* name = field name
-* type = field type
-* description = characterization of the field
+\itemize{
+\item name = field name
+\item type = field type
+\item description = characterization of the field
+}
 }
 \description{
 Creates a list of data frames that constitutes the data dictionary.

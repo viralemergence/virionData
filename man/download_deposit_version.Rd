@@ -14,7 +14,7 @@ download_deposit_version(
 \arguments{
 \item{zenodo_id}{String. ID for a Zenodo deposit. Should correspond to the version of a deposit.}
 
-\item{deposit_versions}{data frame. Output from `list_deposit_versions`}
+\item{deposit_versions}{data frame. Output from \code{list_deposit_versions}}
 
 \item{dir_path}{String. Path to directory where the files should be downloaded
 e.g. "inst/extdata/wdds_archive" note no trailing slash on the path.}

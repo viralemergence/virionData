@@ -30,16 +30,16 @@ versions of the deposit?}
 
 \item{verbose}{Logical. Include print statements?}
 
-\item{...}{Additional arguments to pass to `download_deposit_version`}
+\item{...}{Additional arguments to pass to \code{download_deposit_version}}
 }
 \value{
 Character. path to versioned data.
 }
 \description{
 This is a convenience function that downloads a specific version of the
- data and returns attribution information.
+data and returns attribution information.
 }
 \details{
-If you would like to download a bibtex entry use `export_deposit_bibtex`. For
- other metadata types (CSL, CFF, JSON-LD, etcetera) use `export_deposit_metadata`.
+If you would like to download a bibtex entry use \code{export_deposit_bibtex}. For
+other metadata types (CSL, CFF, JSON-LD, etcetera) use \code{export_deposit_metadata}.
 }

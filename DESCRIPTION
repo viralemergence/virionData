@@ -1,7 +1,7 @@
 Package: virionData
 Type: Package
 Title: Access Versioned VIRION Data
-Version: 1.0.0
+Version: 2.0.0
 Authors@R: c(
     person(
       "Collin", "Schwantes",
@@ -19,20 +19,28 @@ URL: https://github.com/viralemergence/virionData, https://viralemergence.github
 BugReports: https://github.com/viralemergence/virionData/issues
 Suggests: 
     dplyr,
-    frictionless,
+    glue,
     httptest,
     kableExtra,
     knitr,
     rmarkdown,
+    stringr,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Imports: 
     assertthat,
     curl,
+    frictionless,
     fs,
     httr,
     jsonlite,
     purrr,
+    R6,
+    readr,
     rlang
 VignetteBuilder: knitr
+Roxygen: list(markdown = TRUE)
+Depends: 
+    R (>= 4.1.0)
+Config/roxygen2/version: 8.0.0
 RoxygenNote: 7.3.2

@@ -28,7 +28,7 @@ export_deposit_metadata <- function(zenodo_id = the$working_version, format, ver
   content_text <- httr::content(content,as = "text",encoding = "UTF-8")
 
   if(verbose){
-    cat(content_text)
+    rlang::inform(content_text)
   }
 
   invisible(content_text)
@@ -111,7 +111,7 @@ get_version_citation <- function(zenodo_id = the$working_version,
                                  encoding = "UTF-8")
 
   if(verbose){
-    cat(citation_text)
+    rlang::inform(citation_text)
   }
 
   invisible(citation_text)

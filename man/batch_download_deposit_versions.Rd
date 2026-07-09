@@ -11,13 +11,13 @@ batch_download_deposit_versions(zenodo_ids = "all", dir_path, ...)
 
 \item{dir_path}{Character. Path to folder where files should be downloaded.}
 
-\item{...}{Other arguments passed to `download_deposit_version`}
+\item{...}{Other arguments passed to \code{download_deposit_version}}
 }
 \value{
 List of download locations.
 }
 \description{
-This is `download_deposit_version` wrapped in a `purr::map` call.
+This is \code{download_deposit_version} wrapped in a \code{purr::map} call.
 }
 \examples{
 \dontrun{
