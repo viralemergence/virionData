@@ -4,6 +4,7 @@
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/viralemergence/virionData/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/viralemergence/virionData/actions/workflows/R-CMD-check.yaml)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Codecov test coverage](https://codecov.io/gh/viralemergence/virionData/graph/badge.svg)](https://app.codecov.io/gh/viralemergence/virionData)
 <!-- badges: end -->
 
 The goal of virionData is to provide a consistent and ergonomic way to access
