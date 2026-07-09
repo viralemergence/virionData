@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Getting Started • virionData</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Getting Started">
 </head>
@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">virionData</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,6 +31,12 @@
       <ul class="navbar-nav me-auto">
 <li class="active nav-item"><a class="nav-link" href="../articles/virionData.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/virion_2.html">Working with Virion 2.0</a></li>
+  </ul>
+</li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
@@ -54,7 +60,7 @@
       <h1>Getting Started</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/viralemergence/virionData/blob/v1.0.0/vignettes/virionData.Rmd" class="external-link"><code>vignettes/virionData.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/viralemergence/virionData/blob/main/vignettes/virionData.Rmd" class="external-link"><code>vignettes/virionData.Rmd</code></a></small>
       <div class="d-none name"><code>virionData.Rmd</code></div>
     </div>
 
@@ -63,39 +69,549 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/viralemergence/virionData" class="external-link">virionData</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/frictionlessdata/frictionless-r" class="external-link">frictionless</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://haozhu233.github.io/kableExtra/" class="external-link">kableExtra</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://haozhu233.github.io/kableExtra/" class="external-link">kableExtra</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://glue.tidyverse.org/" class="external-link">glue</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org" class="external-link">stringr</a></span><span class="op">)</span></span></code></pre></div>
+<p>The <strong>virionData</strong> package is meant to facilitate access
+to the virion dataset on Zenodo and nudge users towards best practices
+for data use.</p>
 <div class="section level2">
-<h2 id="check-available-versions-of-the-dataset">Check available versions of the dataset<a class="anchor" aria-label="anchor" href="#check-available-versions-of-the-dataset"></a>
+<h2 id="make-a-new-deposit-object">Make a new deposit object<a class="anchor" aria-label="anchor" href="#make-a-new-deposit-object"></a>
 </h2>
+<p>The virionData package contains a <a href="https://r6.r-lib.org/articles/Introduction.html#basics" class="external-link">class of
+object</a> called a deposit. The deposit object contains attributes
+related to the Zenodo deposit, allows you to establish a working version
+of the data, and contains methods for accessing versioned data.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span> <span class="fu"><a href="../reference/list_deposit_versions.html">list_deposit_versions</a></span><span class="op">(</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="../reference/deposit_summary.html">deposit_summary</a></span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span></span>
+<span><span class="va">virion</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/deposit.html">deposit</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co"># see the latest version of virion </span></span>
+<span><span class="va">virion</span><span class="op">$</span><span class="fu">get_latest_version</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "21232661"</span></span>
+<span><span class="co"># see a table of all versions, their publication dates, and doi's</span></span>
+<span><span class="va">virion</span><span class="op">$</span><span class="fu">get_summary_df</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         id latest_version publication_date</span></span>
-<span><span class="co">#&gt; 1 15733485           TRUE       2025-06-24</span></span>
-<span><span class="co">#&gt; 2 15732796          FALSE       2025-06-24</span></span>
-<span><span class="co">#&gt; 3 15723628          FALSE       2025-06-23</span></span>
-<span><span class="co">#&gt; 4 15723072          FALSE       2025-06-23</span></span>
-<span><span class="co">#&gt; 5 15692263          FALSE       2025-06-18</span></span>
-<span><span class="co">#&gt; 6 15677843          FALSE       2025-06-16</span></span>
-<span><span class="co">#&gt; 7 15677137          FALSE       2025-06-16</span></span>
-<span><span class="co">#&gt; 8 15643004          FALSE       2025-06-11</span></span>
+<span><span class="co">#&gt; 1 21232661           TRUE       2026-07-07</span></span>
+<span><span class="co">#&gt; 2 21056787          FALSE       2026-06-30</span></span>
+<span><span class="co">#&gt; 3 20818239          FALSE       2026-06-23</span></span>
+<span><span class="co">#&gt; 4 20712496          FALSE       2026-06-16</span></span>
+<span><span class="co">#&gt; 5 20618632          FALSE       2026-06-09</span></span>
+<span><span class="co">#&gt; 6 20604548          FALSE       2026-06-09</span></span>
 <span><span class="co">#&gt;                                   doi_url</span></span>
-<span><span class="co">#&gt; 1 https://doi.org/10.5281/zenodo.15733485</span></span>
-<span><span class="co">#&gt; 2 https://doi.org/10.5281/zenodo.15732796</span></span>
-<span><span class="co">#&gt; 3 https://doi.org/10.5281/zenodo.15723628</span></span>
-<span><span class="co">#&gt; 4 https://doi.org/10.5281/zenodo.15723072</span></span>
-<span><span class="co">#&gt; 5 https://doi.org/10.5281/zenodo.15692263</span></span>
-<span><span class="co">#&gt; 6 https://doi.org/10.5281/zenodo.15677843</span></span>
-<span><span class="co">#&gt; 7 https://doi.org/10.5281/zenodo.15677137</span></span>
-<span><span class="co">#&gt; 8 https://doi.org/10.5281/zenodo.15643004</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 https://doi.org/10.5281/zenodo.21232661</span></span>
+<span><span class="co">#&gt; 2 https://doi.org/10.5281/zenodo.21056787</span></span>
+<span><span class="co">#&gt; 3 https://doi.org/10.5281/zenodo.20818239</span></span>
+<span><span class="co">#&gt; 4 https://doi.org/10.5281/zenodo.20712496</span></span>
+<span><span class="co">#&gt; 5 https://doi.org/10.5281/zenodo.20618632</span></span>
+<span><span class="co">#&gt; 6 https://doi.org/10.5281/zenodo.20604548</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="set-the-working-version">Set the working version<a class="anchor" aria-label="anchor" href="#set-the-working-version"></a>
+</h2>
+<p>After you make a new deposit object, you will likely want to set the
+data version. Here you can supply a specific Zenodo id OR simply use
+“latest” to get the latest version of the data.</p>
+<p>Setting the working version will add some additional metadata to your
+virion object and enable you to start working with data.</p>
+<p><code>virion$working_files</code> will be added to the object,
+allowing you to specify the files you’d like to work with.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># get the latest version of the data</span></span>
+<span><span class="va">virion</span><span class="op">$</span><span class="fu">set_working_version</span><span class="op">(</span>zenodo_id <span class="op">=</span> <span class="st">"latest"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; @misc{collin_schwantes_2026_21232661,</span></span>
+<span><span class="co">#&gt;   author       = {Collin Schwantes and</span></span>
+<span><span class="co">#&gt;                   Cole Brookson and</span></span>
+<span><span class="co">#&gt;                   Timothée Poisot and</span></span>
+<span><span class="co">#&gt;                   Tad Dallas and</span></span>
+<span><span class="co">#&gt;                   Greg Albery and</span></span>
+<span><span class="co">#&gt;                   Colin J. Carlson and</span></span>
+<span><span class="co">#&gt;                   Cecilia A. Sanchez and</span></span>
+<span><span class="co">#&gt;                   Renata Muylaert and</span></span>
+<span><span class="co">#&gt;                   Evan Eskew and</span></span>
+<span><span class="co">#&gt;                   Rory Gibb and</span></span>
+<span><span class="co">#&gt;                   Maxwell J Farrell},</span></span>
+<span><span class="co">#&gt;   title        = {The Global Virome in One Network (VIRION): Data</span></span>
+<span><span class="co">#&gt;                    Package</span></span>
+<span><span class="co">#&gt;                   },</span></span>
+<span><span class="co">#&gt;   month        = jul,</span></span>
+<span><span class="co">#&gt;   year         = 2026,</span></span>
+<span><span class="co">#&gt;   publisher    = {Zenodo},</span></span>
+<span><span class="co">#&gt;   doi          = {10.5281/zenodo.21232661},</span></span>
+<span><span class="co">#&gt;   url          = {https://doi.org/10.5281/zenodo.21232661},</span></span>
+<span><span class="co">#&gt; }</span></span>
+<span><span class="co">#&gt; Collin Schwantes, Cole Brookson, Timothée Poisot, Tad Dallas, Greg Albery, Colin J. Carlson, Cecilia A. Sanchez, Renata Muylaert, Evan Eskew, Rory Gibb&amp; Maxwell J Farrell. (2026). The Global Virome in One Network (VIRION): Data Package. Zenodo. https://doi.org/10.5281/zenodo.21232661</span></span>
+<span><span class="co"># Get a specific version of the data. </span></span>
+<span><span class="co"># It is usually a good idea to explicitly provide the version id. </span></span>
+<span><span class="va">virion</span><span class="op">$</span><span class="fu">set_working_version</span><span class="op">(</span>zenodo_id <span class="op">=</span> <span class="st">"20517628"</span>, print_bibtex <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                           print_citation <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># after you've set the working version, you can get the working citation or working bibtex.</span></span>
+<span><span class="va">virion</span><span class="op">$</span><span class="fu">get_working_citation</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Collin Schwantes, Cole Brookson, Timothée Poisot, Tad Dallas, Greg Albery, Colin J. Carlson, Cecilia A. Sanchez, Renata Muylaert, Evan Eskew, Rory Gibb&amp; Maxwell J Farrell. (2026). The Global Virome in One Network (VIRION): Data Package. Zenodo. https://doi.org/10.5281/zenodo.20517628"</span></span>
+<span></span>
+<span><span class="co"># you can also see the files contained in that version of virion</span></span>
+<span><span class="co"># the file_key field is used throughout the package to access the files.</span></span>
+<span><span class="va">virion</span><span class="op">$</span><span class="fu">get_working_files</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                 file_key</span></span>
+<span><span class="co">#&gt; 1           db_table.csv</span></span>
+<span><span class="co">#&gt; 2       detection.csv.gz</span></span>
+<span><span class="co">#&gt; 3      taxonomy_host.csv</span></span>
+<span><span class="co">#&gt; 4     taxonomy_virus.csv</span></span>
+<span><span class="co">#&gt; 5           edgelist.csv</span></span>
+<span><span class="co">#&gt; 6        temporal.csv.gz</span></span>
+<span><span class="co">#&gt; 7      provenance.csv.gz</span></span>
+<span><span class="co">#&gt; 8  ncbi_accession.csv.gz</span></span>
+<span><span class="co">#&gt; 9       tax_table.csv.gz</span></span>
+<span><span class="co">#&gt; 10         virion.csv.gz</span></span>
+<span><span class="co">#&gt; 11      datapackage.json</span></span>
+<span><span class="co">#&gt;                                                                       file_url</span></span>
+<span><span class="co">#&gt; 1           https://zenodo.org/api/records/20517628/files/db_table.csv/content</span></span>
+<span><span class="co">#&gt; 2       https://zenodo.org/api/records/20517628/files/detection.csv.gz/content</span></span>
+<span><span class="co">#&gt; 3      https://zenodo.org/api/records/20517628/files/taxonomy_host.csv/content</span></span>
+<span><span class="co">#&gt; 4     https://zenodo.org/api/records/20517628/files/taxonomy_virus.csv/content</span></span>
+<span><span class="co">#&gt; 5           https://zenodo.org/api/records/20517628/files/edgelist.csv/content</span></span>
+<span><span class="co">#&gt; 6        https://zenodo.org/api/records/20517628/files/temporal.csv.gz/content</span></span>
+<span><span class="co">#&gt; 7      https://zenodo.org/api/records/20517628/files/provenance.csv.gz/content</span></span>
+<span><span class="co">#&gt; 8  https://zenodo.org/api/records/20517628/files/ncbi_accession.csv.gz/content</span></span>
+<span><span class="co">#&gt; 9       https://zenodo.org/api/records/20517628/files/tax_table.csv.gz/content</span></span>
+<span><span class="co">#&gt; 10         https://zenodo.org/api/records/20517628/files/virion.csv.gz/content</span></span>
+<span><span class="co">#&gt; 11      https://zenodo.org/api/records/20517628/files/datapackage.json/content</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="start-working-with-data">Start working with data<a class="anchor" aria-label="anchor" href="#start-working-with-data"></a>
+</h2>
+<p>Here you have two options. One is to download a persistent copy of
+the data to your machine and the other is to load the data from Zenodo
+without storing a persistent copy.</p>
+<p><em>Note</em> Starting in May 2026, taxonomic data is split from the
+main <code>virion.csv.gz</code> file and can be joined based on
+TaxHashID.</p>
+<p><code>load_*_csv</code> assumes you are trying to load the data from
+the current working version.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># if the csv is not already downloaded, it will be downloaded first</span></span>
+<span><span class="va">virion_data</span> <span class="op">&lt;-</span> <span class="va">virion</span><span class="op">$</span><span class="fu">load_local_csv_file</span><span class="op">(</span>file_key <span class="op">=</span> <span class="st">"virion.csv.gz"</span>,</span>
+<span>                                          refresh <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; refreshing file cache</span></span>
+<span><span class="co">#&gt; refreshing file cache</span></span>
+<span><span class="co">#&gt; refreshing file cache</span></span>
+<span><span class="co">#&gt; refreshing file cache</span></span>
+<span><span class="co">#&gt; refreshing file cache</span></span>
+<span><span class="co">#&gt; refreshing file cache</span></span>
+<span><span class="co">#&gt; refreshing file cache</span></span>
+<span><span class="co">#&gt; refreshing file cache</span></span>
+<span><span class="co">#&gt; refreshing file cache</span></span>
+<span><span class="co">#&gt; refreshing file cache</span></span>
+<span><span class="co">#&gt; refreshing file cache</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">883890</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">20</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">chr</span>  (9): HostOriginal, VirusOriginal, DetectionMethod, DetectionOriginal, D...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span>  (9): PublicationYear, PMID, ReleaseYear, ReleaseMonth, ReleaseDay, Coll...</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">lgl</span>  (1): HostFlagID</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">date</span> (1): Release_Date</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span></span>
+<span><span class="co"># loading a remote csv creates a temporary file that will be deleted when</span></span>
+<span><span class="co"># the R session ends.</span></span>
+<span><span class="va">virion_data_remote</span> <span class="op">&lt;-</span> <span class="va">virion</span><span class="op">$</span><span class="fu">load_remote_csv_file</span><span class="op">(</span>file_key <span class="op">=</span> <span class="st">"virion.csv.gz"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; downloading file</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">883890</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">20</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">chr</span>  (9): HostOriginal, VirusOriginal, DetectionMethod, DetectionOriginal, D...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span>  (9): PublicationYear, PMID, ReleaseYear, ReleaseMonth, ReleaseDay, Coll...</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">lgl</span>  (1): HostFlagID</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">date</span> (1): Release_Date</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span></span>
+<span><span class="co"># While files for a particular version of virion on Zenodo are unlikely to change,</span></span>
+<span><span class="co"># you can re-download cached files by using the the refresh parameter. </span></span>
+<span><span class="va">virion_data_remote</span> <span class="op">&lt;-</span> <span class="va">virion</span><span class="op">$</span><span class="fu">load_remote_csv_file</span><span class="op">(</span>file_key <span class="op">=</span> <span class="st">"virion.csv.gz"</span>,</span>
+<span>                                                  refresh <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; refreshing file cache</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">883890</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">20</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">chr</span>  (9): HostOriginal, VirusOriginal, DetectionMethod, DetectionOriginal, D...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span>  (9): PublicationYear, PMID, ReleaseYear, ReleaseMonth, ReleaseDay, Coll...</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">lgl</span>  (1): HostFlagID</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">date</span> (1): Release_Date</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="what-do-the-fields-mean">What do the fields mean?<a class="anchor" aria-label="anchor" href="#what-do-the-fields-mean"></a>
+</h2>
+<p>The <code>datapackage.json</code> describes the contents of the
+files, including field level descriptions. The
+<code>get_data_dictionary</code> method creates a table of field names,
+types, and descriptions for each csv file.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="va">data_dictionary</span> <span class="op">&lt;-</span> <span class="va">virion</span><span class="op">$</span><span class="fu">get_data_dictionary</span><span class="op">(</span>refresh <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; downloading file</span></span>
+<span></span>
+<span><span class="va">data_dictionary</span><span class="op">$</span><span class="va">virion_csv</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>description <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_wrap.html" class="external-link">str_wrap</a></span><span class="op">(</span><span class="va">description</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html" class="external-link">kbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_classic.html" class="external-link">kable_material</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/column_spec.html" class="external-link">column_spec</a></span><span class="op">(</span><span class="fl">3</span>, width <span class="op">=</span> <span class="st">"30em"</span><span class="op">)</span> </span></code></pre></div>
+<table class="table  lightable-material" style='font-family: "Source Sans Pro", helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'>
+<thead><tr>
+<th style="text-align:left;">
+name
+</th>
+<th style="text-align:left;">
+type
+</th>
+<th style="text-align:left;">
+description
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+HostOriginal
+</td>
+<td style="text-align:left;">
+string
+</td>
+<td style="text-align:left;width: 30em; ">
+Host name from original dataset
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VirusOriginal
+</td>
+<td style="text-align:left;">
+string
+</td>
+<td style="text-align:left;width: 30em; ">
+Virus name from original dataset
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+HostFlagID
+</td>
+<td style="text-align:left;">
+boolean
+</td>
+<td style="text-align:left;width: 30em; ">
+Denotes the presence of possible uncertainty in host identification,
+which users may want to check before proceeding any further.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DetectionMethod
+</td>
+<td style="text-align:left;">
+string
+</td>
+<td style="text-align:left;width: 30em; ">
+Four harmonized categories in descending order of strength of evidence:
+“Isolation/Observation,” “PCR/Sequencing,” “Antibodies,” and “Not
+specified”. In some cases where detection method is not available via
+metadata, source information is used as DetectionOriginal (e.g., “NCBI
+Nucleotide”).
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DetectionOriginal
+</td>
+<td style="text-align:left;">
+string
+</td>
+<td style="text-align:left;width: 30em; ">
+Method used for determing the presence of a virus as described in the
+original work
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DatabaseVersion
+</td>
+<td style="text-align:left;">
+string
+</td>
+<td style="text-align:left;width: 30em; ">
+For static data, a citation. For dynamic data (e.g. Genbank) the access
+URL and a time stamp
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PublicationYear
+</td>
+<td style="text-align:left;">
+number
+</td>
+<td style="text-align:left;width: 30em; ">
+For literature derived records. PublicationYear provides the year the
+literature source was published, accessed either from the original
+database’s reference description or from scraping the PubMed database.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ReferenceText
+</td>
+<td style="text-align:left;">
+string
+</td>
+<td style="text-align:left;width: 30em; ">
+A text description of literature sources
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PMID
+</td>
+<td style="text-align:left;">
+number
+</td>
+<td style="text-align:left;width: 30em; ">
+PubMed identifiers for literature sources
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ReleaseYear
+</td>
+<td style="text-align:left;">
+number
+</td>
+<td style="text-align:left;width: 30em; ">
+The year a given association was “released” in public information (EID2
+and PREDICT) or a publicly deposited sample on GenBank. For PREDICT, all
+values are given as 2021, given the release of a static file at that
+time even though some findings may have been published or deposited in
+GenBank earlier. (This redundancy should be captured in overlap with
+GenBank and EID2.)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ReleaseMonth
+</td>
+<td style="text-align:left;">
+number
+</td>
+<td style="text-align:left;width: 30em; ">
+The month a given association was “released” to the public
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ReleaseDay
+</td>
+<td style="text-align:left;">
+number
+</td>
+<td style="text-align:left;width: 30em; ">
+The day a given association was “released” to the public
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CollectionYear
+</td>
+<td style="text-align:left;">
+number
+</td>
+<td style="text-align:left;width: 30em; ">
+Reports the year of actual sample collection (GenBank and Predict)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CollectionMonth
+</td>
+<td style="text-align:left;">
+number
+</td>
+<td style="text-align:left;width: 30em; ">
+Reports the month of actual sample collection (GenBank and Predict)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CollectionDay
+</td>
+<td style="text-align:left;">
+number
+</td>
+<td style="text-align:left;width: 30em; ">
+Reports the day of actual sample collection (GenBank and Predict)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+HostTaxHashID
+</td>
+<td style="text-align:left;">
+string
+</td>
+<td style="text-align:left;width: 30em; ">
+Foreign Key for the taxa definitions table
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VirusTaxHashID
+</td>
+<td style="text-align:left;">
+string
+</td>
+<td style="text-align:left;width: 30em; ">
+Foreign Key for the taxa definitions table
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AssocID
+</td>
+<td style="text-align:left;">
+number
+</td>
+<td style="text-align:left;width: 30em; ">
+Row number used as an id for a host-virus association. Will be specific
+to a given version of the data
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Release_Date
+</td>
+<td style="text-align:left;">
+date
+</td>
+<td style="text-align:left;width: 30em; ">
+Date data were released
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Collection_Date
+</td>
+<td style="text-align:left;">
+string
+</td>
+<td style="text-align:left;width: 30em; ">
+Date of actual sample collection
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level2">
+<h2 id="citation-information">Citation information<a class="anchor" aria-label="anchor" href="#citation-information"></a>
+</h2>
+<p>You can get the citation text or bibtex for the working version.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="va">virion</span><span class="op">$</span><span class="fu">get_working_citation</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_wrap.html" class="external-link">str_wrap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Collin Schwantes, Cole Brookson, Timothée Poisot, Tad Dallas, Greg Albery, Colin</span></span>
+<span><span class="co">#&gt; J. Carlson, Cecilia A. Sanchez, Renata Muylaert, Evan Eskew, Rory Gibb&amp; Maxwell</span></span>
+<span><span class="co">#&gt; J Farrell. (2026). The Global Virome in One Network (VIRION): Data Package.</span></span>
+<span><span class="co">#&gt; Zenodo. https://doi.org/10.5281/zenodo.20517628</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">virion</span><span class="op">$</span><span class="fu">get_working_bibtex</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; @misc{collin_schwantes_2026_20517628,</span></span>
+<span><span class="co">#&gt;   author       = {Collin Schwantes and</span></span>
+<span><span class="co">#&gt;                   Cole Brookson and</span></span>
+<span><span class="co">#&gt;                   Timothée Poisot and</span></span>
+<span><span class="co">#&gt;                   Tad Dallas and</span></span>
+<span><span class="co">#&gt;                   Greg Albery and</span></span>
+<span><span class="co">#&gt;                   Colin J. Carlson and</span></span>
+<span><span class="co">#&gt;                   Cecilia A. Sanchez and</span></span>
+<span><span class="co">#&gt;                   Renata Muylaert and</span></span>
+<span><span class="co">#&gt;                   Evan Eskew and</span></span>
+<span><span class="co">#&gt;                   Rory Gibb and</span></span>
+<span><span class="co">#&gt;                   Maxwell J Farrell},</span></span>
+<span><span class="co">#&gt;   title        = {The Global Virome in One Network (VIRION): Data</span></span>
+<span><span class="co">#&gt;                    Package</span></span>
+<span><span class="co">#&gt;                   },</span></span>
+<span><span class="co">#&gt;   month        = jun,</span></span>
+<span><span class="co">#&gt;   year         = 2026,</span></span>
+<span><span class="co">#&gt;   publisher    = {Zenodo},</span></span>
+<span><span class="co">#&gt;   doi          = {10.5281/zenodo.20517628},</span></span>
+<span><span class="co">#&gt;   url          = {https://doi.org/10.5281/zenodo.20517628},</span></span>
+<span><span class="co">#&gt; }</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="working-version-deposit-metadata">Working version deposit metadata<a class="anchor" aria-label="anchor" href="#working-version-deposit-metadata"></a>
+</h2>
+<p>If you want to access the full deposit metadata for the current
+working version, maybe to dig into the persistent identifier graph or
+pull out the code version used to make the data, you can do that by
+looking at the <code>working_json</code> field.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## get the working json</span></span>
+<span><span class="va">working_json</span> <span class="op">&lt;-</span> <span class="va">virion</span><span class="op">$</span><span class="fu">get_working_json</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## When was the version last modified?</span></span>
+<span><span class="va">working_json</span><span class="op">$</span><span class="va">modified</span></span>
+<span><span class="co">#&gt; [1] "2026-06-02T22:19:54.305277+00:00"</span></span>
+<span></span>
+<span><span class="co">## What version of the `virion` codebase was used to make this version of virion?</span></span>
+<span><span class="va">working_json</span><span class="op">$</span><span class="va">metadata</span><span class="op">$</span><span class="va">related_identifiers</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">resource_type</span> <span class="op">==</span> <span class="st">"software"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">identifier</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="op">(</span>\<span class="op">(</span><span class="va">val</span><span class="op">)</span> <span class="fu">glue</span><span class="fu">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">glue</a></span><span class="op">(</span><span class="st">"https://doi.org/{val}"</span><span class="op">)</span><span class="op">)</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; https://doi.org/10.5281/zenodo.20517323</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="functional-programming-approach">Functional programming approach<a class="anchor" aria-label="anchor" href="#functional-programming-approach"></a>
+</h2>
+<p>This approach uses package environment variables, making working with
+multiple versions slightly more complicated. Users also need to be aware
+of when the working version will and won’t be changed, and when that
+will impact the way functions work.</p>
+<p>Changes set in the R6 object will not be propogated</p>
+<div class="section level3">
+<h3 id="check-available-versions-of-the-dataset">Check available versions of the dataset<a class="anchor" aria-label="anchor" href="#check-available-versions-of-the-dataset"></a>
+</h3>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span> <span class="fu"><a href="../reference/list_deposit_versions.html">list_deposit_versions</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/deposit_summary.html">deposit_summary</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         id latest_version publication_date</span></span>
+<span><span class="co">#&gt; 1 21232661           TRUE       2026-07-07</span></span>
+<span><span class="co">#&gt; 2 21056787          FALSE       2026-06-30</span></span>
+<span><span class="co">#&gt; 3 20818239          FALSE       2026-06-23</span></span>
+<span><span class="co">#&gt; 4 20712496          FALSE       2026-06-16</span></span>
+<span><span class="co">#&gt; 5 20618632          FALSE       2026-06-09</span></span>
+<span><span class="co">#&gt; 6 20604548          FALSE       2026-06-09</span></span>
+<span><span class="co">#&gt;                                   doi_url</span></span>
+<span><span class="co">#&gt; 1 https://doi.org/10.5281/zenodo.21232661</span></span>
+<span><span class="co">#&gt; 2 https://doi.org/10.5281/zenodo.21056787</span></span>
+<span><span class="co">#&gt; 3 https://doi.org/10.5281/zenodo.20818239</span></span>
+<span><span class="co">#&gt; 4 https://doi.org/10.5281/zenodo.20712496</span></span>
+<span><span class="co">#&gt; 5 https://doi.org/10.5281/zenodo.20618632</span></span>
+<span><span class="co">#&gt; 6 https://doi.org/10.5281/zenodo.20604548</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="get-latest-version-of-the-data">Get latest version of the data<a class="anchor" aria-label="anchor" href="#get-latest-version-of-the-data"></a>
 </h2>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get data - by default this is the latest version of the data.</span></span>
 <span><span class="fu"><a href="../reference/get_versioned_data.html">get_versioned_data</a></span><span class="op">(</span>version <span class="op">=</span> <span class="st">"15692263"</span>, dir_path <span class="op">=</span> <span class="st">"outputs"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Cole Brookson, Collin Schwantes, Timothée Poisot, Tad Dallas, Greg Albery, Colin J. Carlson, Cecilia A. Sanchez, Renata Muylaert, Evan Eskew, Rory Gibb, &amp; Maxwell J Farrell. (2025). The Global Virome in One Network (VIRION): Data Package [Data set]. Zenodo. https://doi.org/10.5281/zenodo.15692263</span></span>
+<span><span class="co">#&gt; Cole Brookson, Collin Schwantes, Timothée Poisot, Tad Dallas, Greg Albery, Colin J. Carlson, Cecilia A. Sanchez, Renata Muylaert, Evan Eskew, Rory Gibb&amp; Maxwell J Farrell. (2025). The Global Virome in One Network (VIRION): Data Package [Dataset]. Zenodo. https://doi.org/10.5281/zenodo.15692263</span></span>
 <span><span class="co">#&gt; deposit will download to outputs/15692263</span></span>
 <span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">outputs/15692263</span></span></span>
 <span><span class="co"># list files</span></span>
@@ -110,26 +626,30 @@
 </h2>
 <p>Now that you have the data locally, you can read it! The virion files
 are comma delimited with period decimal markers.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="va">virion</span> <span class="op">&lt;-</span> <span class="fu">vroom</span><span class="fu">::</span><span class="fu"><a href="https://vroom.r-lib.org/reference/vroom.html" class="external-link">vroom</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"outputs/15692263/virion.csv.gz"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">virion</span> <span class="op">&lt;-</span> <span class="fu">vroom</span><span class="fu">::</span><span class="fu"><a href="https://vroom.tidyverse.org/reference/vroom.html" class="external-link">vroom</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"outputs/15692263/virion.csv.gz"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="cite-the-data">Cite the data<a class="anchor" aria-label="anchor" href="#cite-the-data"></a>
 </h2>
 <p>Citing data makes increases reproducibility and incentivizes data
 sharing.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># by default the citation will be generated for the current working version.</span></span>
 <span><span class="co"># this is set when we run `get_versioned_data`</span></span>
 <span><span class="fu"><a href="../reference/get_version_citation.html">get_version_citation</a></span><span class="op">(</span>style <span class="op">=</span> <span class="st">"modern-language-association"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Cole Brookson, et al. The Global Virome in One Network (VIRION): Data Package. Zenodo, 18 June 2025, doi:10.5281/zenodo.15692263.</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt; Cole Brookson, et al. “The Global Virome in One Network (VIRION): Data</span></span>
+<span><span class="co">#&gt; Package”. Zenodo, 18 June 2025, https://doi.org/10.5281/zenodo.15692263.</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># we can cite a specific version by providing a zenodo id</span></span>
 <span><span class="fu"><a href="../reference/get_version_citation.html">get_version_citation</a></span><span class="op">(</span>zenodo_id <span class="op">=</span> <span class="st">"15643004"</span>,style <span class="op">=</span> <span class="st">"apa"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Cole Brookson, Collin Schwantes, Timothée Poisot, Tad Dallas, Greg Albery, Colin J. Carlson, Cecilia A. Sanchez, Renata Muylaert, Evan Eskew, Rory Gibb, &amp; Maxwell J Farrell. (2025). The Global Virome in One Network (VIRION): Data Package [Data set]. Zenodo. https://doi.org/10.5281/zenodo.15643004</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt; Cole Brookson, Collin Schwantes, Timothée Poisot, Tad Dallas, Greg Albery,</span></span>
+<span><span class="co">#&gt; Colin J. Carlson, Cecilia A. Sanchez, Renata Muylaert, Evan Eskew, Rory Gibb&amp;</span></span>
+<span><span class="co">#&gt; Maxwell J Farrell. (2025). The Global Virome in One Network (VIRION): Data</span></span>
+<span><span class="co">#&gt; Package [Dataset]. Zenodo. https://doi.org/10.5281/zenodo.15643004</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># sometimes you want a bibtex entry item</span></span>
 <span><span class="fu"><a href="../reference/export_deposit_bibtex.html">export_deposit_bibtex</a></span><span class="op">(</span><span class="st">"15643004"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; @dataset{cole_brookson_2025_15643004,</span></span>
@@ -159,7 +679,7 @@ sharing.</p>
 <p>The data sources used to create Virion are referenced directly in the
 deposit metadata. These can be accessed by retrieving the deposit
 metadata.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">metadata_json_text</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/export_deposit_metadata.html">export_deposit_metadata</a></span><span class="op">(</span>zenodo_id <span class="op">=</span> <span class="st">"15692263"</span>,format <span class="op">=</span> <span class="st">"json"</span>,verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
@@ -294,7 +814,7 @@ descriptions. It is fairly human readable but we can take a closer look
 using some built in functions.</p>
 <p>For a deeper dive, check out the <a href="https://docs.ropensci.org/frictionless/" class="external-link">frictionless</a>
 package.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># this function wraps frictionless functions and extracts </span></span>
 <span><span class="va">dict_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_data_dictionary.html">get_data_dictionary</a></span><span class="op">(</span>datapackage_json <span class="op">=</span> <span class="st">"outputs/15692263/datapackage.json"</span><span class="op">)</span></span>
@@ -310,7 +830,7 @@ package.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> NCBIAccession     string  A unique identifier assigned to a record in sequenc…</span></span></code></pre></div>
 <p>Use <code><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">purrr::map</a></code> to make a full data dictionary for a
 given deposit.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">html_tables</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">dict_list</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="va">html_tables</span> <span class="op">&lt;-</span> <span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -1334,7 +1854,7 @@ GenBank
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>
