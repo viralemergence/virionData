@@ -165,7 +165,7 @@ structure of Virion data may change through time.
     virion_deposit$set_working_version("latest")
 
     # set the working versino to an arbitrary deposit
-    virion_deposit$all_versions
+    virion_deposit$get_all_versions()
     virion_deposit$set_working_version("19502921")
     }
 
@@ -207,7 +207,8 @@ version of the virion dataset on your machine.
 
     \dontrun{
     ## see the working files
-    virion_deposit$working_files
+    working_files <- virion$get_working_files()
+    working_files$file_key
     virion_data <- virion_deposit$load_remote_csv_file("virion.csv.gz")
 
     }
@@ -295,7 +296,8 @@ downloaded to your machine.
 
     virion <- deposit$new()
     virion$set_working_version()
-    virion$working_files$file_key
+    working_files <- virion$get_working_files()
+    working_files$file_key
     virion$load_local_csv_file("virion.csv.gz")
     }
 
@@ -549,7 +551,7 @@ virion_deposit <- deposit$new()
 
 # methods
 virion_deposit$set_working_version("latest")
-virion_deposit$working_files
+virion_deposit$get_working_files()
 
 # load remote data directly into your session
 virion_data  <- virion_deposit$load_remote_csv_file(file_key = "virion.csv.gz")
@@ -577,7 +579,7 @@ if (FALSE) { # \dontrun{
 virion_deposit$set_working_version("latest")
 
 # set the working versino to an arbitrary deposit
-virion_deposit$all_versions
+virion_deposit$get_all_versions()
 virion_deposit$set_working_version("19502921")
 } # }
 
@@ -588,7 +590,8 @@ virion_deposit$set_working_version("19502921")
 
 if (FALSE) { # \dontrun{
 ## see the working files
-virion_deposit$working_files
+working_files <- virion$get_working_files()
+working_files$file_key
 virion_data <- virion_deposit$load_remote_csv_file("virion.csv.gz")
 
 } # }
@@ -617,7 +620,8 @@ if (FALSE) { # \dontrun{
 
 virion <- deposit$new()
 virion$set_working_version()
-virion$working_files$file_key
+working_files <- virion$get_working_files()
+working_files$file_key
 virion$load_local_csv_file("virion.csv.gz")
 } # }
 

@@ -161,7 +161,7 @@ data may change through time.</p><div class="section">
 virion_deposit$set_working_version("latest")
 
 # set the working versino to an arbitrary deposit
-virion_deposit$all_versions
+virion_deposit$get_all_versions()
 virion_deposit$set_working_version("19502921")
 }
 
@@ -205,7 +205,8 @@ your machine.</p><div class="section">
 <h4 id="examples-2">Examples<a class="anchor" aria-label="anchor" href="#examples-2"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
 ## see the working files
-virion_deposit$working_files
+working_files &lt;- virion$get_working_files()
+working_files$file_key
 virion_data &lt;- virion_deposit$load_remote_csv_file("virion.csv.gz")
 
 }
@@ -293,7 +294,8 @@ of the file will be downloaded to your machine.</p><div class="section">
 
 virion &lt;- deposit$new()
 virion$set_working_version()
-virion$working_files$file_key
+working_files &lt;- virion$get_working_files()
+working_files$file_key
 virion$load_local_csv_file("virion.csv.gz")
 }
 
@@ -517,7 +519,7 @@ virion$get_data_dictionary()
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># methods</span></span></span>
 <span class="r-in"><span><span class="va">virion_deposit</span><span class="op">$</span><span class="fu">set_working_version</span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">virion_deposit</span><span class="op">$</span><span class="va">working_files</span></span></span>
+<span class="r-in"><span><span class="va">virion_deposit</span><span class="op">$</span><span class="fu">get_working_files</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># load remote data directly into your session</span></span></span>
 <span class="r-in"><span><span class="va">virion_data</span>  <span class="op">&lt;-</span> <span class="va">virion_deposit</span><span class="op">$</span><span class="fu">load_remote_csv_file</span><span class="op">(</span>file_key <span class="op">=</span> <span class="st">"virion.csv.gz"</span><span class="op">)</span></span></span>
@@ -545,7 +547,7 @@ virion$get_data_dictionary()
 <span class="r-in"><span><span class="va">virion_deposit</span><span class="op">$</span><span class="fu">set_working_version</span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># set the working versino to an arbitrary deposit</span></span></span>
-<span class="r-in"><span><span class="va">virion_deposit</span><span class="op">$</span><span class="va">all_versions</span></span></span>
+<span class="r-in"><span><span class="va">virion_deposit</span><span class="op">$</span><span class="fu">get_all_versions</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">virion_deposit</span><span class="op">$</span><span class="fu">set_working_version</span><span class="op">(</span><span class="st">"19502921"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
@@ -556,7 +558,8 @@ virion$get_data_dictionary()
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="co">## see the working files</span></span></span>
-<span class="r-in"><span><span class="va">virion_deposit</span><span class="op">$</span><span class="va">working_files</span></span></span>
+<span class="r-in"><span><span class="va">working_files</span> <span class="op">&lt;-</span> <span class="va">virion</span><span class="op">$</span><span class="fu">get_working_files</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">working_files</span><span class="op">$</span><span class="va">file_key</span></span></span>
 <span class="r-in"><span><span class="va">virion_data</span> <span class="op">&lt;-</span> <span class="va">virion_deposit</span><span class="op">$</span><span class="fu">load_remote_csv_file</span><span class="op">(</span><span class="st">"virion.csv.gz"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
@@ -585,7 +588,8 @@ virion$get_data_dictionary()
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">virion</span> <span class="op">&lt;-</span> <span class="va">deposit</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">virion</span><span class="op">$</span><span class="fu">set_working_version</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">virion</span><span class="op">$</span><span class="va">working_files</span><span class="op">$</span><span class="va">file_key</span></span></span>
+<span class="r-in"><span><span class="va">working_files</span> <span class="op">&lt;-</span> <span class="va">virion</span><span class="op">$</span><span class="fu">get_working_files</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">working_files</span><span class="op">$</span><span class="va">file_key</span></span></span>
 <span class="r-in"><span><span class="va">virion</span><span class="op">$</span><span class="fu">load_local_csv_file</span><span class="op">(</span><span class="st">"virion.csv.gz"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
