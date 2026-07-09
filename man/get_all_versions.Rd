@@ -4,10 +4,10 @@
 \alias{get_all_versions}
 \title{Get all deposit versions}
 \usage{
-get_all_versions(self_link)
+get_all_versions(url)
 }
 \arguments{
-\item{self_link}{Character. URL for a version of the deposit.}
+\item{url}{Character. URL for a version of the deposit.}
 }
 \value{
 Data.frame. Metadata for all deposit version

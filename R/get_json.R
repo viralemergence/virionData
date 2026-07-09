@@ -39,6 +39,7 @@ get_json <- function(url){
 #'
 make_url <- function(base_url = "https://zenodo.org/api/records/%s", id){
 
+  assertthat::assert_that(assertthat::is.string(base_url),msg = "base_url must be a string")
   id_clean <- sanitize_id(id)
 
  out <- sprintf("https://zenodo.org/api/records/%s", id_clean)

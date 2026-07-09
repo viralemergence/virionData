@@ -299,7 +299,7 @@ get_versioned_data <- function(version = "latest",
 #'
 #' Recursively traverse a deposit link to get all versions of a deposit.
 #'
-#' @param self_link Character. URL for a version of the deposit.
+#' @param url Character. URL for a version of the deposit.
 #'
 #' @returns Data.frame. Metadata for all deposit version
 #' @export
@@ -312,9 +312,9 @@ get_versioned_data <- function(version = "latest",
 #' get_all_versions(self_link)
 #' }
 #'
-get_all_versions <- function(self_link){
+get_all_versions <- function(url){
 
-  versions_json <- get_json(self_link)
+  versions_json <- get_json(url)
   out <- versions_json$hits$hits
 
   if("next" %in% names(versions_json$links)){
