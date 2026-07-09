@@ -16,7 +16,7 @@
 #'
 #' # methods
 #' virion_deposit$set_working_version("latest")
-#' virion_deposit$working_files
+#' virion_deposit$get_working_files()
 #'
 #' # load remote data directly into your session
 #' virion_data  <- virion_deposit$load_remote_csv_file(file_key = "virion.csv.gz")
@@ -103,7 +103,7 @@ deposit <- R6::R6Class("deposit",
                          #' virion_deposit$set_working_version("latest")
                          #'
                          #' # set the working versino to an arbitrary deposit
-                         #' virion_deposit$all_versions
+                         #' virion_deposit$get_all_versions()
                          #' virion_deposit$set_working_version("19502921")
                          #' }
                          #'
@@ -161,7 +161,8 @@ deposit <- R6::R6Class("deposit",
                          #' @examples
                          #' \dontrun{
                          #' ## see the working files
-                         #' virion_deposit$working_files
+                         #' working_files <- virion$get_working_files()
+                         #' working_files$file_key
                          #' virion_data <- virion_deposit$load_remote_csv_file("virion.csv.gz")
                          #'
                          #' }
@@ -273,7 +274,8 @@ deposit <- R6::R6Class("deposit",
                          #'
                          #' virion <- deposit$new()
                          #' virion$set_working_version()
-                         #' virion$working_files$file_key
+                         #' working_files <- virion$get_working_files()
+                         #' working_files$file_key
                          #' virion$load_local_csv_file("virion.csv.gz")
                          #' }
                          #'
