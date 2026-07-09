@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   virion_2: virion_2.html
   virionData: virionData.html
-last_built: 2026-07-09T20:39Z
+last_built: 2026-07-09T21:03Z
 urls:
   reference: https://viralemergence.github.io/virionData/reference
   article: https://viralemergence.github.io/virionData/articles
